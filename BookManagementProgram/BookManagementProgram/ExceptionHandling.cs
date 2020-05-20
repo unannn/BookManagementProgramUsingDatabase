@@ -108,7 +108,7 @@ namespace BookManagementProgram
             ConsoleKeyInfo ckey;            
             int number = 0;
             string inputPassword = "";
-            //bool isSpecial = false;
+            
 
             while (true)
             {
@@ -136,7 +136,7 @@ namespace BookManagementProgram
                     inputPassword = inputPassword.Remove(number - 1, 1);
                     --number;
                 }                
-                else if(Char.IsLetterOrDigit(ckey.KeyChar))  //특수문자입력 X                  
+                else if(Char.IsDigit(ckey.KeyChar) || Char.IsLower(ckey.KeyChar) || Char.IsUpper(ckey.KeyChar))  //특수문자입력 X                  
                 {
                     Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                     Console.Write("*");
@@ -146,9 +146,18 @@ namespace BookManagementProgram
                 }
                 else
                 {
-                    Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                    Console.Write(" ");
-                    Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                    if(Encoding.Default.GetByteCount(ckey.KeyChar.ToString()) == 2)            //한글입력시
+                    {
+                        Console.SetCursorPosition(Console.CursorLeft - 2, Console.CursorTop);
+                        Console.Write("  ");
+                        Console.SetCursorPosition(Console.CursorLeft - 2, Console.CursorTop);
+                    }
+                    else                                                                      //기타 특수문자 입력시
+                    {
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        Console.Write(" ");
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                    }
 
                 }
             }
