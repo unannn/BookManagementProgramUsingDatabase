@@ -46,6 +46,7 @@
     <Compile Include="BookManagementProgram.cs" />
     <Compile Include="Book\BookInformationVO.cs" />
     <Compile Include="Book\BookManagement.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Customoer\CustomerInformationVO.cs" />
     <Compile Include="Customoer\CustomerManagement.cs" />
     <Compile Include="ExceptionHandling.cs" />

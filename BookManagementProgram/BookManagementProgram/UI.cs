@@ -34,6 +34,8 @@ namespace BookManagementProgram
 
             while(inputNumber < 0) // 올바른 입력시 탈출
             {
+                Console.Clear();
+
                 PrintTitle(7);
 
                 PrintMenuList(initialMenu);
@@ -89,81 +91,35 @@ namespace BookManagementProgram
             CustomerInformationVO customerToBeAdded = new CustomerInformationVO();
             NewAccountException newAccountException = new NewAccountException();
 
-            bool loginSucessful = false;
-            bool sameIdContinue = false;
+            
 
-            while (!loginSucessful)
-            {
-                Console.Clear();
+            Console.Clear();
 
-                PrintTitle(7);
+            PrintTitle(7);
+            Console.WriteLine("q입력 시 종료\n");
 
-                customerToBeAdded = customerManagement.InputCustomerAccountInformation(newAccountException);
+            Console.WriteLine("아이디 (특수문자 없이 2~11글자)");
+            PrintInputBox("");
 
-                if (customerToBeAdded == null) continue;
+            Console.WriteLine("비밀번호(특수문자 없이 2~11글자)");
+            PrintInputBox("");
 
-                if (newAccountException.previousOrStay == "stay")   //n 을 입력시
-                {
-                    newAccountException.previousOrStay = " ";
 
-                    continue;
-                }
-                else if (newAccountException.previousOrStay == "previous")  //y 입력시
-                {
-                    newAccountException.previousOrStay = " ";
-                    Console.Clear();
-                    return null;
-                }
-                
-                foreach(CustomerInformationVO customer in customerList)
-                {
-                    if (string.Compare(customerToBeAdded.Id, customer.Id) == 0)  //같은 아이디 존재
-                    {
-                        newAccountException.sameId = true;
-                        sameIdContinue = true;
-                    }
-                }
+            Console.WriteLine("비밀번호확인 (2~11글자)");
+            PrintInputBox("");
 
-                if (sameIdContinue)    //잘못된 입력 체크
-                {
-                    sameIdContinue = false;
-                    continue;
-                }
+            Console.WriteLine("이름 1~20글자 (2~11글자)");
+            PrintInputBox("");
 
-                if (customerToBeAdded.Id == null)
-                {
-                    newAccountException.wrongId = true;
-                    continue;
-                }
+            Console.WriteLine("휴대폰번호('-'없이 11글자)");
+            PrintInputBox("");
 
-                if (customerToBeAdded.Password == null)
-                {
-                    newAccountException.wrongPassword = true;
-                    continue;
-                }
+            Console.WriteLine("주소 1~20글자");
+            PrintInputBox("");
 
-                if (customerToBeAdded.Name == null)
-                {
-                    newAccountException.wrongName = true;
-                    continue;
-                }
+            customerToBeAdded = customerManagement.InputCustomerAccountInformation(newAccountException, customerList);
 
-                if(customerToBeAdded.PhoneNumber == null)
-                {
-                    newAccountException.wrongPhoneNumber = true;
-                    continue;
-                }
 
-                if (customerToBeAdded.Adress == null)
-                {
-                    newAccountException.wrongAdress = true;
-                    continue;
-                }
-
-                loginSucessful = true;
-
-                Console.Clear();
-            }
 
             return customerToBeAdded;
         }

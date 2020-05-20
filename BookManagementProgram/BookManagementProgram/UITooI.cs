@@ -72,7 +72,7 @@ namespace BookManagementProgram
             Console.SetCursorPosition(Console.CursorLeft + 2, Console.CursorTop + 2);
              Console.Write(whiteSpace);
             Console.SetCursorPosition(2, Console.CursorTop);
-            password = ExceptionHandling.InputPassword();                       
+            password = ExceptionHandling.InputPassword(null);                       
         }
               
         protected void PrintInputBox(string inputData)        //사각박스 출력

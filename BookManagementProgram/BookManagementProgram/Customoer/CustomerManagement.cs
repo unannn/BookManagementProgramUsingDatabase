@@ -8,7 +8,7 @@ namespace BookManagementProgram
 {
     class CustomerManagement : UITooI
     {   
-        public CustomerInformationVO InputCustomerAccountInformation(NewAccountException newAccountException)   //등록하고자하는 계정정보 반환
+        public CustomerInformationVO InputCustomerAccountInformation(NewAccountException newAccountException, List<CustomerInformationVO> customerList)   //등록하고자하는 계정정보 반환
         {
             CustomerInformationVO newCustomer = new CustomerInformationVO();
             string id = null;
@@ -17,96 +17,56 @@ namespace BookManagementProgram
             string phoneNumber = null;
             string adress = null;
             string yesOrNo = null;
-            int exceptionNumber = 0;
-
-            Console.WriteLine("아이디 (특수문자 없이 2~11글자)");
-            PrintInputBox("");
-
-            Console.WriteLine("비밀번호(특수문자 없이 2~11글자)");
-            PrintInputBox("");
-
-
-            Console.WriteLine("비밀번호확인 (2~11글자)");
-            PrintInputBox("");
-
-            Console.WriteLine("이름 1~20글자 (2~11글자)");
-            PrintInputBox("");
-
-            Console.WriteLine("휴대폰번호('-'없이 11글자)");
-            PrintInputBox("");
-
-            Console.WriteLine("주소 1~20글자");
-            PrintInputBox("");
-
-            if (newAccountException.sameId == true)
+            int createOrder = 0;
+            while (createOrder < 6)
             {
-                Console.WriteLine("아이디가 이미 존재 합니다.");
-                newAccountException.initialize(false);
-                exceptionNumber = 1;
-            }
-            else if (newAccountException.wrongId == true)
-            {
-                Console.WriteLine("아이디를 다시 입력해주세요.");
-                newAccountException.initialize(false);
-                exceptionNumber = 1;
-            }
-            else if (newAccountException.wrongPassword == true)
-            {
-                Console.WriteLine("비밀번호를 다시 입력해주세요.");
-                newAccountException.initialize(false);
-                exceptionNumber = 1;
-            }
-            else if (newAccountException.wrongName == true)
-            {
-                Console.WriteLine("이름을 다시 입력해주세요.");
-                newAccountException.initialize(false);
-                exceptionNumber = 1;
-            }
-            else if (newAccountException.wrongPhoneNumber == true)
-            {
-                Console.WriteLine("휴대번호를 다시 입력해주세요.");
-                newAccountException.initialize(false);
-                exceptionNumber = 1;
-            }
-            else if (newAccountException.wrongAdress == true)
-            {
-                Console.WriteLine("주소를 다시 입력해주세요.");
-                newAccountException.initialize(false);
-                exceptionNumber = 1;
-            }
-            
-            if(exceptionNumber == 1)
-            {
-                Console.Write("초기화면으로 돌아가시겠습니까?[y,n] ");
-                yesOrNo = ExceptionHandling.InputString(1, 1);
-                if(yesOrNo != null)
+                switch (createOrder)
                 {
-                    if (yesOrNo == "y") newAccountException.previousOrStay = "previous";
-                    else if(yesOrNo == "n")newAccountException.previousOrStay = "stay";                   
+                    case 0:
+                        Console.SetCursorPosition(2, Constants.INPUTID_LOCATION_Y);
+                        id = ExceptionHandling.InputId(customerList);   //id 입력
+                        if (id == null) --createOrder;
+                        else if (id == "q") return null;
+                        break;
+
+                    case 1:                       
+                        Console.SetCursorPosition(2, Constants.PASSWORD_LOCATION_Y);
+                        password = ExceptionHandling.InputPassword(null);  //password 입력
+                        if (password == null) --createOrder;
+                        else if (password == "q") return null;
+                        break;
+
+                    case 2:
+                        Console.SetCursorPosition(2, Constants.PASSWORD_CONF_LOCATION_Y);
+                        passwordConfirmation = ExceptionHandling.InputPassword(password);  //비밀번호 확인 입력
+                        if (passwordConfirmation == null) --createOrder;
+                       
+                        else if (passwordConfirmation == "q") return null;
+                        break;
+
+                    case 3:
+                        Console.SetCursorPosition(2, Constants.NAME_LOCATION_Y);
+                        name = ExceptionHandling.InputString(2, 20);
+                        if (name == null) --createOrder;
+                        else if (name == "q") return null;
+                        break;
+
+                    case 4:
+                        Console.SetCursorPosition(2, Constants.PHONE_LOCATION_Y);
+                        phoneNumber = ExceptionHandling.InputPhoneNumber();  //휴대번호 입력
+                        if (phoneNumber == null) --createOrder;
+                        else if (phoneNumber == "q") return null;
+                        break;
+
+                    case 5:
+                        Console.SetCursorPosition(2, Constants.ADRESS_LOCATION_Y);                        ;
+                        adress = ExceptionHandling.InputString(1, 30);       //주소 입력
+                        if (adress == null) --createOrder;
+                        else if (adress == "q") return null;
+                        break;
                 }
-
-                return newCustomer;
-            }
-
-
-            Console.SetCursorPosition(Console.CursorLeft + 2, Console.CursorTop - 22 - exceptionNumber);
-
-            id = ExceptionHandling.InputId();   //id 입력
-
-            MoveCursor();
-            password = ExceptionHandling.InputPassword();  //password 입력
-
-            MoveCursor();
-            passwordConfirmation = ExceptionHandling.InputPassword();  //비밀번호 확인 입력
-
-            MoveCursor();
-            name = ExceptionHandling.InputString(2, 20);              //이름 입력
-
-            MoveCursor();
-            phoneNumber = ExceptionHandling.InputPhoneNumber();  //휴대번호 입력
-
-            MoveCursor();
-            adress = ExceptionHandling.InputString(1, 30);       //주소 입력
+                ++createOrder;              
+            }      
 
             newCustomer.Id = id;
             newCustomer.Password = password;
@@ -116,6 +76,7 @@ namespace BookManagementProgram
 
             return newCustomer;
         }
+
         public void ModifyAdress(CustomerInformationVO logInCustomer)
         {
             string modifiedAdress = null;

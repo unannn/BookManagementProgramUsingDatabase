@@ -83,12 +83,15 @@ namespace BookManagementProgram
             return null;
         }
 
-        static public string InputId()   //id입력 예외처리
+        static public string InputId(List<CustomerInformationVO> customerList)   //id입력 예외처리
         {
             string id = null;
             bool isSpecial = false;
                         
             id = Console.ReadLine();
+
+            if (id == "q") return id;     //q입력시 종료
+
             isSpecial = Regex.IsMatch(id, @"[^a-zA-Z0-9가-힣]");     //정규식
             
 
@@ -96,20 +99,34 @@ namespace BookManagementProgram
             {
                 if(!id.Contains(" ") && !isSpecial)            //띄어쓰기가 없어야 함
                 {
-                    return id;
+                    foreach(CustomerInformationVO customer in customerList)
+                    {
+                        if(customer.Id == id)
+                        {
+                            Console.SetCursorPosition(Constants.ERROR_MESSAGE_LOCATION_X, Console.CursorTop - 1);
+                            Console.Write("이미 존재하는 아이디 입니다.");
+                            Console.SetCursorPosition(2, Console.CursorTop);
+                            Console.Write(new string(' ', Constants.ERROR_MESSAGE_LOCATION_X - 2));
+
+                            return null;
+                        }
+                    }
+                    return id;                   
                 }
             }
 
+            Console.WriteLine("다시 입력해주세요.");
+
             return null;
+            
         }
 
-        static public string InputPassword()   //패스워드는 별로 표시
+        static public string InputPassword(string password)   //패스워드는 별로 표시
         {           
             ConsoleKeyInfo ckey;            
             int number = 0;
             string inputPassword = "";
             
-
             while (true)
             {
                 ckey = Console.ReadKey();
@@ -117,9 +134,26 @@ namespace BookManagementProgram
                 if (ckey.Key == ConsoleKey.Enter)
                 {
                     Console.WriteLine();
-
-                    if (inputPassword.Length <= 11) return inputPassword;
-                    else return null;
+                    if (inputPassword.Length <= 11 && inputPassword.Length >= 2)
+                    {
+                        if (inputPassword != password && password != null)
+                        {
+                            Console.SetCursorPosition(35, Console.CursorTop - 1);
+                            Console.Write("비밀번호가 서로 다릅니다.");
+                            Console.SetCursorPosition(2, Console.CursorTop);
+                            Console.Write(new string(' ', Constants.ERROR_MESSAGE_LOCATION_X - 2));
+                            return null;
+                        }
+                        return inputPassword;
+                    }
+                    else
+                    {
+                        Console.SetCursorPosition(35, Console.CursorTop - 1);
+                        Console.Write("잘못된 입력입니다.");
+                        Console.SetCursorPosition(2, Console.CursorTop);
+                        Console.Write(new string(' ', Constants.ERROR_MESSAGE_LOCATION_X - 2));
+                        return null;
+                    }
                 }
                 else if (Console.CursorLeft < 2)
                 {
@@ -144,7 +178,7 @@ namespace BookManagementProgram
                     inputPassword += ckey.KeyChar;
                     ++number;
                 }
-                else
+                else   //특수기호나 한글 입력시 입력되지 않게 처리
                 {
                     if(Encoding.Default.GetByteCount(ckey.KeyChar.ToString()) == 2)            //한글입력시
                     {
@@ -170,6 +204,8 @@ namespace BookManagementProgram
 
             phoneNumber = Console.ReadLine();
 
+            if (phoneNumber == "q") return phoneNumber;
+
             if(phoneNumber.Length == 11)
             {
 
@@ -181,10 +217,15 @@ namespace BookManagementProgram
                     }
                 }
 
-                if (number != 11) phoneNumber = null;
+                if (number != 11)
+                {
+                    Console.Write("잘못된 입력입니다.");
+                    phoneNumber = null;
+                }
             }
             else
             {
+                Console.Write("잘못된 입력입니다.");
                 phoneNumber = null;
             }
 
@@ -194,15 +235,16 @@ namespace BookManagementProgram
         static public string InputString(int above, int below) //above 이상 below 이하 만큼 크기의 문자열 입력 실패시 널 반환
         {
             string inputString = null;
-                      
-
+            
             inputString = Console.ReadLine();
 
+            if (inputString == "q") return inputString;
+        
             if (!string.IsNullOrEmpty(inputString) && inputString.Length >= above && inputString.Length <= below)       // above 이상 below 이하의 길이 일때
             {
                 return inputString;
             }
-
+            
             return null;
 
         }
