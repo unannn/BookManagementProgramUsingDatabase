@@ -89,6 +89,7 @@ namespace BookManagementProgram
                             return null;
                         }
                     }
+                    ClearErrorMessage();
                     return id;
                 }
             }
@@ -112,6 +113,9 @@ namespace BookManagementProgram
                 if (ckey.Key == ConsoleKey.Enter)
                 {
                     Console.WriteLine();
+
+                    if (inputPassword == "q") return inputPassword;
+
                     if (inputPassword.Length <= 11 && inputPassword.Length >= 2)
                     {
                         if (inputPassword != password && password != null)
@@ -120,6 +124,8 @@ namespace BookManagementProgram
                             PrintErrorMessage("비밀번호가 서로 다릅니다.");
                             return null;
                         }
+
+                        ClearErrorMessage();
                         return inputPassword;
                     }
                     else
@@ -193,19 +199,19 @@ namespace BookManagementProgram
                 if (number != 11)
                 {
                     PrintErrorMessage("잘못된 입력입니다.");
-                    phoneNumber = null;
+                    return null;
                 }
+                ClearErrorMessage();
+                return phoneNumber;
             }
             else
             {
                 PrintErrorMessage("잘못된 입력입니다.");
-                phoneNumber = null;
+                return null;
             }
-
-            return phoneNumber;
         }
 
-        public string InputName() //
+        public string InputName() 
         {
             string name;
 
@@ -216,16 +222,16 @@ namespace BookManagementProgram
 
             if (!string.IsNullOrEmpty(name) && name.Length >= 2 && name.Length <= 11)       // above 이상 below 이하의 길이 일때
             {
+                ClearErrorMessage();
                 return name;
             }
             else
             {
                 PrintErrorMessage("잘못된 입력입니다.");
                 return null;
-            }
-
-            return name;
+            }            
         }
+
         public string InputString(int above, int below) //above 이상 below 이하 만큼 크기의 문자열 입력 실패시 널 반환
         {
             string inputString = null;
@@ -240,15 +246,22 @@ namespace BookManagementProgram
             }
             
             return null;
-
         }      
         
         private void PrintErrorMessage(string message)
         {
             Console.SetCursorPosition(35, Console.CursorTop - 1);
+            Console.WriteLine(new string(' ', 30));
+            Console.SetCursorPosition(35, Console.CursorTop - 1);
             Console.Write(message);
             Console.SetCursorPosition(2, Console.CursorTop);
             Console.Write(new string(' ', Constants.ERROR_MESSAGE_LOCATION_X - 2));
+        }
+
+        private void ClearErrorMessage()
+        {
+            Console.SetCursorPosition(35, Console.CursorTop - 1);
+            Console.Write(new string(' ',30));
         }
     }
 }

@@ -39,8 +39,7 @@ namespace BookManagementProgram
                     case 2:
                         Console.SetCursorPosition(2, Constants.PASSWORD_CONF_LOCATION_Y);
                         passwordConfirmation = ExceptionHandling.Instance.InputPassword(password);  //비밀번호 확인 입력
-                        if (passwordConfirmation == null) --createOrder;
-                       
+                        if (passwordConfirmation == null) --createOrder;                       
                         else if (passwordConfirmation == "q") return null;
                         break;
 
