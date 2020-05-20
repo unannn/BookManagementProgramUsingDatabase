@@ -47,7 +47,7 @@ namespace BookManagementProgram
 
                 inputNumberInString = Console.ReadLine();
 
-                inputNumber = ExceptionHandling.InputNumber(InputNumberRange.startNumber, initialMenu.Count, inputNumberInString);  //정수입력
+                inputNumber = ExceptionHandling.Instance.InputNumber(InputNumberRange.startNumber, initialMenu.Count, inputNumberInString);  //정수입력
 
                 Console.Clear();
             }
@@ -89,8 +89,7 @@ namespace BookManagementProgram
         {
             CustomerManagement customerManagement = new CustomerManagement();
             CustomerInformationVO customerToBeAdded = new CustomerInformationVO();
-            NewAccountException newAccountException = new NewAccountException();
-
+            
             
 
             Console.Clear();
@@ -101,23 +100,23 @@ namespace BookManagementProgram
             Console.WriteLine("아이디 (특수문자 없이 2~11글자)");
             PrintInputBox("");
 
-            Console.WriteLine("비밀번호(특수문자 없이 2~11글자)");
+            Console.WriteLine("비밀번호 (특수문자 없이 2~11글자)");
             PrintInputBox("");
 
 
             Console.WriteLine("비밀번호확인 (2~11글자)");
             PrintInputBox("");
 
-            Console.WriteLine("이름 1~20글자 (2~11글자)");
+            Console.WriteLine("이름 (1~20글자)");
             PrintInputBox("");
 
-            Console.WriteLine("휴대폰번호('-'없이 11글자)");
+            Console.WriteLine("휴대폰번호 ('-'없이 11글자)");
             PrintInputBox("");
 
-            Console.WriteLine("주소 1~20글자");
+            Console.WriteLine("주소 (1~20글자)");
             PrintInputBox("");
 
-            customerToBeAdded = customerManagement.InputCustomerAccountInformation(newAccountException, customerList);
+            customerToBeAdded = customerManagement.InputCustomerAccountInformation(customerList);
 
 
 
@@ -151,7 +150,7 @@ namespace BookManagementProgram
                 Console.Write("1 ~ 9입력 : ");
 
                 inputNumberInString = Console.ReadLine();
-                inputNumber = ExceptionHandling.InputNumber(1, Menu.Count, inputNumberInString);
+                inputNumber = ExceptionHandling.Instance.InputNumber(1, Menu.Count, inputNumberInString);
 
                 Console.Clear();
             }
@@ -181,7 +180,7 @@ namespace BookManagementProgram
                 Console.Write("1 ~ 5입력 : ");
 
                 inputNumberInString = Console.ReadLine();
-                inputNumber = ExceptionHandling.InputNumber(1, menu.Count, inputNumberInString);
+                inputNumber = ExceptionHandling.Instance.InputNumber(1, menu.Count, inputNumberInString);
 
                 Console.Clear();
             }
@@ -221,7 +220,7 @@ namespace BookManagementProgram
                 }
 
                 inputNumberInString = Console.ReadLine();
-                inputNumber = ExceptionHandling.InputNumber(1, controlMenu.Count, inputNumberInString);
+                inputNumber = ExceptionHandling.Instance.InputNumber(1, controlMenu.Count, inputNumberInString);
 
                 if(inputNumber == ExceptionHandling.wrongInput)
                 {
@@ -298,7 +297,7 @@ namespace BookManagementProgram
 
             Console.Write("대여할 책 번호 입력 : ");
             inputNumberInString = Console.ReadLine();
-            inputNumber = ExceptionHandling.InputNumber(1, bookList.Count, inputNumberInString);
+            inputNumber = ExceptionHandling.Instance.InputNumber(1, bookList.Count, inputNumberInString);
             
             if(inputNumber != ExceptionHandling.wrongInput && bookList[inputNumber - 1].Quantity > 0) //올바른 번호가 입력되고 남은 수량이 있으면
             {
@@ -364,7 +363,7 @@ namespace BookManagementProgram
                 }
 
                 inputNumberInString = Console.ReadLine();
-                inputNumber = ExceptionHandling.InputNumber(1,logInCustomer.RentedBook.Count,inputNumberInString);
+                inputNumber = ExceptionHandling.Instance.InputNumber(1,logInCustomer.RentedBook.Count,inputNumberInString);
                                 
                 
                if(inputNumber != ExceptionHandling.wrongInput)
@@ -372,7 +371,7 @@ namespace BookManagementProgram
                     while (true)
                     {
                         Console.Write("정말로 반납 하시겠습니까?[y,n]");
-                        confirmationMessage = ExceptionHandling.InputString(1, 1);
+                        confirmationMessage = ExceptionHandling.Instance.InputString(1, 1);
 
                         if (confirmationMessage != "y" && confirmationMessage != "n") continue;
                        
@@ -426,7 +425,7 @@ namespace BookManagementProgram
                 Console.Write("\n    1~3정수 입력 : ");
 
                 inputNumberInString = Console.ReadLine();
-                inputNumber = ExceptionHandling.InputNumber(1,3,inputNumberInString);
+                inputNumber = ExceptionHandling.Instance.InputNumber(1,3,inputNumberInString);
 
                 if(inputNumber != ExceptionHandling.wrongInput)
                 {
@@ -467,7 +466,7 @@ namespace BookManagementProgram
                 //책정보입력
                 Console.WriteLine();
                 Console.Write("  도서 이름 : ");
-                name = ExceptionHandling.InputString(1, 30);
+                name = ExceptionHandling.Instance.InputString(1, 30);
                 if (name == null)
                 {
                     PrintFailMessage("잘못된 입력 입니다.");
@@ -478,7 +477,7 @@ namespace BookManagementProgram
 
                 Console.WriteLine();
                 Console.Write("  도서 저자 : ");
-                author = ExceptionHandling.InputString(1, 20);
+                author = ExceptionHandling.Instance.InputString(1, 20);
 
                 if (author == null)
                 {
@@ -490,7 +489,7 @@ namespace BookManagementProgram
 
                 Console.WriteLine();
                 Console.Write("도서 출판사 : ");
-                publisher = ExceptionHandling.InputString(1, 10);
+                publisher = ExceptionHandling.Instance.InputString(1, 10);
                 if (publisher == null)
                 {
                     PrintFailMessage("잘못된 입력 입니다.");
@@ -502,7 +501,7 @@ namespace BookManagementProgram
                 Console.WriteLine();
                 Console.Write("      권수 : ");
                 quantityInString = Console.ReadLine();
-                quantity = ExceptionHandling.InputNumber(1, 10, quantityInString);
+                quantity = ExceptionHandling.Instance.InputNumber(1, 10, quantityInString);
 
                 if (quantity == ExceptionHandling.wrongInput)
                 {
@@ -543,12 +542,12 @@ namespace BookManagementProgram
             bookManagement.PrintBookList(bookList);
 
             Console.Write(" 삭제할 도서 이름 입력 : ");
-            name = ExceptionHandling.InputString(1, 30);
+            name = ExceptionHandling.Instance.InputString(1, 30);
 
             while (true)
             {
                 Console.Write("정말로 삭제 하시겠습니까?[y,n]");
-                confirmationMessage = ExceptionHandling.InputString(1, 1);
+                confirmationMessage = ExceptionHandling.Instance.InputString(1, 1);
 
                 if (confirmationMessage != "y" && confirmationMessage != "n") continue;
 
@@ -617,7 +616,7 @@ namespace BookManagementProgram
             customerManagement.PrintAllCustomer(customerList);
 
             Console.Write("      회원 아이디 입력 : ");
-            inputId = ExceptionHandling.InputString(1, 11);
+            inputId = ExceptionHandling.Instance.InputString(1, 11);
            
             if (inputId != null)
             {

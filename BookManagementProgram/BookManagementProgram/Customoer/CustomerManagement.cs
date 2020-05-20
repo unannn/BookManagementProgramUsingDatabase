@@ -8,7 +8,7 @@ namespace BookManagementProgram
 {
     class CustomerManagement : UITooI
     {   
-        public CustomerInformationVO InputCustomerAccountInformation(NewAccountException newAccountException, List<CustomerInformationVO> customerList)   //등록하고자하는 계정정보 반환
+        public CustomerInformationVO InputCustomerAccountInformation( List<CustomerInformationVO> customerList)   //등록하고자하는 계정정보 반환
         {
             CustomerInformationVO newCustomer = new CustomerInformationVO();
             string id = null;
@@ -24,21 +24,21 @@ namespace BookManagementProgram
                 {
                     case 0:
                         Console.SetCursorPosition(2, Constants.INPUTID_LOCATION_Y);
-                        id = ExceptionHandling.InputId(customerList);   //id 입력
+                        id = ExceptionHandling.Instance.InputId(customerList);   //id 입력
                         if (id == null) --createOrder;
                         else if (id == "q") return null;
                         break;
 
                     case 1:                       
                         Console.SetCursorPosition(2, Constants.PASSWORD_LOCATION_Y);
-                        password = ExceptionHandling.InputPassword(null);  //password 입력
+                        password = ExceptionHandling.Instance.InputPassword(null);  //password 입력
                         if (password == null) --createOrder;
                         else if (password == "q") return null;
                         break;
 
                     case 2:
                         Console.SetCursorPosition(2, Constants.PASSWORD_CONF_LOCATION_Y);
-                        passwordConfirmation = ExceptionHandling.InputPassword(password);  //비밀번호 확인 입력
+                        passwordConfirmation = ExceptionHandling.Instance.InputPassword(password);  //비밀번호 확인 입력
                         if (passwordConfirmation == null) --createOrder;
                        
                         else if (passwordConfirmation == "q") return null;
@@ -46,21 +46,21 @@ namespace BookManagementProgram
 
                     case 3:
                         Console.SetCursorPosition(2, Constants.NAME_LOCATION_Y);
-                        name = ExceptionHandling.InputString(2, 20);
+                        name = ExceptionHandling.Instance.InputName();
                         if (name == null) --createOrder;
                         else if (name == "q") return null;
                         break;
 
                     case 4:
                         Console.SetCursorPosition(2, Constants.PHONE_LOCATION_Y);
-                        phoneNumber = ExceptionHandling.InputPhoneNumber();  //휴대번호 입력
+                        phoneNumber = ExceptionHandling.Instance.InputPhoneNumber();  //휴대번호 입력
                         if (phoneNumber == null) --createOrder;
                         else if (phoneNumber == "q") return null;
                         break;
 
                     case 5:
                         Console.SetCursorPosition(2, Constants.ADRESS_LOCATION_Y);                        ;
-                        adress = ExceptionHandling.InputString(1, 30);       //주소 입력
+                        adress = ExceptionHandling.Instance.InputString(1, 30);       //주소 입력
                         if (adress == null) --createOrder;
                         else if (adress == "q") return null;
                         break;
@@ -86,7 +86,7 @@ namespace BookManagementProgram
             Console.WriteLine();
             Console.Write("바꿀 주소(2~20글자) : ");
 
-            modifiedAdress = ExceptionHandling.InputString(2, 20);
+            modifiedAdress = ExceptionHandling.Instance.InputString(2, 20);
             if(modifiedAdress != null)
             {
                 logInCustomer.Adress = modifiedAdress;
@@ -111,7 +111,7 @@ namespace BookManagementProgram
             Console.WriteLine();
             Console.Write("바꿀 번호 : ");
 
-            modifiedPhoneNumber = ExceptionHandling.InputPhoneNumber();
+            modifiedPhoneNumber = ExceptionHandling.Instance.InputPhoneNumber();
             if (modifiedPhoneNumber != null)
             {
                 logInCustomer.PhoneNumber = modifiedPhoneNumber;

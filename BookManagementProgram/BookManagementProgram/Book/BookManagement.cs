@@ -58,7 +58,7 @@ namespace BookManagementProgram
             Console.Write("                  ");
             Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
 
-            inputString = ExceptionHandling.InputString(1, 20);
+            inputString = ExceptionHandling.Instance.InputString(1, 20);
             
             
             for (int book = 0; book < bookList.Count; book++)
@@ -81,7 +81,7 @@ namespace BookManagementProgram
             Console.Write("                  ");
             Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
 
-            inputString = ExceptionHandling.InputString(1, 20);
+            inputString = ExceptionHandling.Instance.InputString(1, 20);
 
 
             for (int book = 0; book < bookList.Count; book++)
@@ -104,7 +104,7 @@ namespace BookManagementProgram
             Console.Write("                  ");
             Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
 
-            inputString = ExceptionHandling.InputString(1, 20);
+            inputString = ExceptionHandling.Instance.InputString(1, 20);
 
 
             for (int book = 0; book < bookList.Count; book++)

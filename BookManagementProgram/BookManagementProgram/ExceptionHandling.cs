@@ -4,46 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+
 namespace BookManagementProgram
-{
-    class NewAccountException //정규식 추가하면 좋을듯
+{  
+    class ExceptionHandling
     {
-        public bool sameId;
-        public bool wrongId;   //isIdlect
-        public bool wrongPassword;
-        public bool wrongName;
-        public bool wrongPhoneNumber;
-        public bool wrongAdress;
-        public string previousOrStay;
+        private static ExceptionHandling instance = null;
 
-        public NewAccountException()
+        public static ExceptionHandling Instance
         {
-            sameId = false;
-            wrongId = false;
-            wrongPassword = false;
-            wrongName = false;
-            wrongPhoneNumber = false;
-            wrongAdress = false;
-            previousOrStay = " ";
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ExceptionHandling();
+                }
+                return instance;
+            }
         }
 
-        public void initialize(bool trueOrFalse)
-        {
-            sameId = trueOrFalse;
-            wrongId = trueOrFalse;
-            wrongPassword = trueOrFalse;
-            wrongName = trueOrFalse;
-            wrongPhoneNumber = trueOrFalse;
-            wrongAdress = trueOrFalse;
-            previousOrStay = " ";
-        }
-    }
-   
-    static class ExceptionHandling
-    {
         public const int wrongInput = -1;
-               
-        static public int InputNumber(int start, int end, string numberInString) //여러자리 가능하지만 익셉션발생 수정해야함
+
+        public int InputNumber(int start, int end, string numberInString) //여러자리 가능하지만 익셉션발생 수정해야함
         {
             int inputNumber = wrongInput;
             int number = 0;
@@ -65,7 +47,7 @@ namespace BookManagementProgram
             return inputNumber;
         }
 
-        static public string InputYesOrNo(string yesOrNo)   //문자열이 y 인지 n인지 아님 다른값이 들어왔는지 판단 후 반환
+        public string InputYesOrNo(string yesOrNo)   //문자열이 y 인지 n인지 아님 다른값이 들어왔는지 판단 후 반환
         {
             if (!string.IsNullOrEmpty(yesOrNo) && yesOrNo.Length == 1)
             {
@@ -83,7 +65,7 @@ namespace BookManagementProgram
             return null;
         }
 
-        static public string InputId(List<CustomerInformationVO> customerList)   //id입력 예외처리
+        public string InputId(List<CustomerInformationVO> customerList)   //id입력 예외처리
         {
             string id = null;
             bool isSpecial = false;
@@ -97,31 +79,27 @@ namespace BookManagementProgram
 
             if (!string.IsNullOrEmpty(id) && id.Length >= 2 && id.Length <= 11)       //두 글자 이상 열한글자 이하이고
             {
-                if(!id.Contains(" ") && !isSpecial)            //띄어쓰기가 없어야 함
+                if (!id.Contains(" ") && !isSpecial)            //띄어쓰기가 없어야 함
                 {
-                    foreach(CustomerInformationVO customer in customerList)
+                    foreach (CustomerInformationVO customer in customerList)
                     {
-                        if(customer.Id == id)
+                        if (customer.Id == id)
                         {
-                            Console.SetCursorPosition(Constants.ERROR_MESSAGE_LOCATION_X, Console.CursorTop - 1);
-                            Console.Write("이미 존재하는 아이디 입니다.");
-                            Console.SetCursorPosition(2, Console.CursorTop);
-                            Console.Write(new string(' ', Constants.ERROR_MESSAGE_LOCATION_X - 2));
-
+                            PrintErrorMessage("이미 존재하는 아이디 입니다.");
                             return null;
                         }
                     }
-                    return id;                   
+                    return id;
                 }
             }
 
-            Console.WriteLine("다시 입력해주세요.");
+            PrintErrorMessage("다시 입력해주세요.");
 
             return null;
             
         }
 
-        static public string InputPassword(string password)   //패스워드는 별로 표시
+        public string InputPassword(string password)   //패스워드는 별로 표시
         {           
             ConsoleKeyInfo ckey;            
             int number = 0;
@@ -138,20 +116,15 @@ namespace BookManagementProgram
                     {
                         if (inputPassword != password && password != null)
                         {
-                            Console.SetCursorPosition(35, Console.CursorTop - 1);
-                            Console.Write("비밀번호가 서로 다릅니다.");
-                            Console.SetCursorPosition(2, Console.CursorTop);
-                            Console.Write(new string(' ', Constants.ERROR_MESSAGE_LOCATION_X - 2));
+                            
+                            PrintErrorMessage("비밀번호가 서로 다릅니다.");
                             return null;
                         }
                         return inputPassword;
                     }
                     else
                     {
-                        Console.SetCursorPosition(35, Console.CursorTop - 1);
-                        Console.Write("잘못된 입력입니다.");
-                        Console.SetCursorPosition(2, Console.CursorTop);
-                        Console.Write(new string(' ', Constants.ERROR_MESSAGE_LOCATION_X - 2));
+                        PrintErrorMessage("잘못된 입력입니다.");
                         return null;
                     }
                 }
@@ -197,7 +170,7 @@ namespace BookManagementProgram
             }
         }
 
-        static public string InputPhoneNumber() //전화번호 입력후 11자리 숫자가 입력되면 string으로 반환 아니면 null 반환
+        public string InputPhoneNumber() //전화번호 입력후 11자리 숫자가 입력되면 string으로 반환 아니면 null 반환
         {
             string phoneNumber;
             int number;
@@ -219,20 +192,41 @@ namespace BookManagementProgram
 
                 if (number != 11)
                 {
-                    Console.Write("잘못된 입력입니다.");
+                    PrintErrorMessage("잘못된 입력입니다.");
                     phoneNumber = null;
                 }
             }
             else
             {
-                Console.Write("잘못된 입력입니다.");
+                PrintErrorMessage("잘못된 입력입니다.");
                 phoneNumber = null;
             }
 
             return phoneNumber;
         }
 
-        static public string InputString(int above, int below) //above 이상 below 이하 만큼 크기의 문자열 입력 실패시 널 반환
+        public string InputName() //
+        {
+            string name;
+
+            name = Console.ReadLine();
+
+            if (name == "q") return name;
+
+
+            if (!string.IsNullOrEmpty(name) && name.Length >= 2 && name.Length <= 11)       // above 이상 below 이하의 길이 일때
+            {
+                return name;
+            }
+            else
+            {
+                PrintErrorMessage("잘못된 입력입니다.");
+                return null;
+            }
+
+            return name;
+        }
+        public string InputString(int above, int below) //above 이상 below 이하 만큼 크기의 문자열 입력 실패시 널 반환
         {
             string inputString = null;
             
@@ -247,6 +241,14 @@ namespace BookManagementProgram
             
             return null;
 
+        }      
+        
+        private void PrintErrorMessage(string message)
+        {
+            Console.SetCursorPosition(35, Console.CursorTop - 1);
+            Console.Write(message);
+            Console.SetCursorPosition(2, Console.CursorTop);
+            Console.Write(new string(' ', Constants.ERROR_MESSAGE_LOCATION_X - 2));
         }
     }
 }
