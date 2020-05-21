@@ -51,7 +51,7 @@ namespace BookManagementProgram
 
                     case 4:
                         Console.SetCursorPosition(2, Constants.PHONE_LOCATION_Y);
-                        phoneNumber = ExceptionHandling.Instance.InputPhoneNumber();  //휴대번호 입력
+                        phoneNumber = ExceptionHandling.Instance.InputPhoneNumber(customerList);  //휴대번호 입력
                         if (phoneNumber == null) --createOrder;
                         else if (phoneNumber == "q") return null;
                         break;
@@ -100,7 +100,7 @@ namespace BookManagementProgram
             }
         }
 
-        public void ModifyPhoneNumber(CustomerInformationVO logInCustomer)
+        public void ModifyPhoneNumber(CustomerInformationVO logInCustomer,List<CustomerInformationVO> customerList)
         {
             string modifiedPhoneNumber = null;
 
@@ -109,7 +109,7 @@ namespace BookManagementProgram
             Console.WriteLine();
             Console.Write("바꿀 번호 : ");
 
-            modifiedPhoneNumber = ExceptionHandling.Instance.InputPhoneNumber();
+            modifiedPhoneNumber = ExceptionHandling.Instance.InputPhoneNumber(customerList);
             if (modifiedPhoneNumber != null)
             {
                 logInCustomer.PhoneNumber = modifiedPhoneNumber;

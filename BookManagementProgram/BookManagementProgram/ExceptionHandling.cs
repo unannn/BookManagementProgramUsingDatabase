@@ -176,7 +176,7 @@ namespace BookManagementProgram
             }
         }
 
-        public string InputPhoneNumber() //전화번호 입력후 11자리 숫자가 입력되면 string으로 반환 아니면 null 반환
+        public string InputPhoneNumber(List<CustomerInformationVO> customerList) //전화번호 입력후 11자리 숫자가 입력되면 string으로 반환 아니면 null 반환
         {
             string phoneNumber;
             int number;
@@ -201,6 +201,15 @@ namespace BookManagementProgram
                     PrintErrorMessage("잘못된 입력입니다.");
                     return null;
                 }
+                foreach (CustomerInformationVO customer in customerList)
+                {
+                    if (customer.PhoneNumber == phoneNumber)
+                    {
+                        PrintErrorMessage("이미 존재하는 번호 입니다.");
+                        return null;
+                    }
+                }
+
                 ClearErrorMessage();
                 return phoneNumber;
             }

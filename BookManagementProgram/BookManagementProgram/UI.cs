@@ -118,8 +118,6 @@ namespace BookManagementProgram
 
             customerToBeAdded = customerManagement.InputCustomerAccountInformation(customerList);
 
-
-
             return customerToBeAdded;
         }
               
@@ -396,7 +394,7 @@ namespace BookManagementProgram
             }
 
         }
-        public void ModifyMyData(CustomerInformationVO logInCustomer)   //고객의 개인정보 수정
+        public void ModifyMyData(CustomerInformationVO logInCustomer,List<CustomerInformationVO> customerList)   //고객의 개인정보 수정
         {
             bool isEnd = false;
             int inputNumber = 0;
@@ -432,7 +430,7 @@ namespace BookManagementProgram
                     switch (inputNumber)
                     {
                         case 1:
-                            customerManagement.ModifyPhoneNumber(logInCustomer);
+                            customerManagement.ModifyPhoneNumber(logInCustomer,customerList);
                             break;
                         case 2:
                             customerManagement.ModifyAdress(logInCustomer);

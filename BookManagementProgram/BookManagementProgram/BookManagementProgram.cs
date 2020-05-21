@@ -104,7 +104,7 @@ namespace BookManagementProgram
                                 break;
                             case 7:           //내정보 수정
                                 Console.SetWindowSize(90, 36);
-                                ui.ModifyMyData(logInCustomer);
+                                ui.ModifyMyData(logInCustomer,customerList);
                                 break;
                             case 8:           //로그아웃
                                 loginSucessful = false;
@@ -142,7 +142,7 @@ namespace BookManagementProgram
                                 break;                            
                             case 3:           //내정보 수정
                                 Console.SetWindowSize(90, 36);
-                                ui.ModifyMyData(logInCustomer);
+                                ui.ModifyMyData(logInCustomer,customerList);
                                 break;
                             case 4:           //로그아웃
                                 loginSucessful = false;
