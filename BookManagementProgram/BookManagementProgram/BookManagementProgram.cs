@@ -15,8 +15,10 @@ namespace BookManagementProgram
             List<BookInformationVO> bookList = new List<BookInformationVO>();
             List<CustomerInformationVO> customerList = new List<CustomerInformationVO>();
             BookManagement bookManagement = new BookManagement();
+            CustomerManagement customerMangement = new CustomerManagement();
 
             bookManagement.InitializeBookList(bookList);
+            customerMangement.IntializeCustomerList(customerList);
 
             CustomerInformationVO logInCustomer = null;
             UI ui = new UI();

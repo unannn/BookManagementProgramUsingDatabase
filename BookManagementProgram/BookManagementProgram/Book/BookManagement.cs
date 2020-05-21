@@ -9,7 +9,7 @@ namespace BookManagementProgram
 {
     class BookManagement:UITooI
     {
-        public void InitializeBookList(List<BookInformationVO> BookList)
+        public void InitializeBookList(List<BookInformationVO> bookList)
         {
             MySqlConnection connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
 
@@ -18,11 +18,11 @@ namespace BookManagementProgram
             connection.Open();
             MySqlCommand command = new MySqlCommand(selectQuery, connection);
 
-            MySqlDataReader bookLIst = command.ExecuteReader();
+            MySqlDataReader books = command.ExecuteReader();
 
-            while (bookLIst.Read())
+            while (books.Read())
             {
-                BookList.Add(new BookInformationVO(int.Parse(bookLIst["no"].ToString()), bookLIst["title"].ToString(), bookLIst["author"].ToString(), bookLIst["publisher"].ToString(), int.Parse(bookLIst["quantity"].ToString()),int.Parse(bookLIst["maxQuntity"].ToString())));
+                bookList.Add(new BookInformationVO(int.Parse(books["no"].ToString()), books["title"].ToString(), books["author"].ToString(), books["publisher"].ToString(), int.Parse(books["quantity"].ToString()),int.Parse(books["maxQuntity"].ToString())));
             }
         }
 

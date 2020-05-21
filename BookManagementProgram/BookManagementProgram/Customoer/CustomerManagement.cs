@@ -3,11 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace BookManagementProgram
 {
     class CustomerManagement : UITooI
     {   
+        public void IntializeCustomerList(List<CustomerInformationVO> customerList)
+        {
+            MySqlConnection connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
+
+            string selectQuery = "SELECT * FROM customer";
+
+            connection.Open();
+            MySqlCommand command = new MySqlCommand(selectQuery, connection);
+            MySqlDataReader customers = command.ExecuteReader();
+
+            while (customers.Read())
+            {
+                customerList.Add(new CustomerInformationVO(int.Parse(customers["no"].ToString()), customers["id"].ToString(), customers["password"].ToString(), customers["name"].ToString(), customers["phoneNumber"].ToString(), customers["adress"].ToString(), bool.Parse(customers["administrator"].ToString())));
+            }
+        }
+
         public CustomerInformationVO InputCustomerAccountInformation( List<CustomerInformationVO> customerList)   //등록하고자하는 계정정보 반환
         {
             CustomerInformationVO newCustomer = new CustomerInformationVO();

@@ -8,6 +8,7 @@ namespace BookManagementProgram
 {
     class CustomerInformationVO :ICloneable
     {
+        private int no;
         private string id;
         private string password;
         private string name;
@@ -15,6 +16,12 @@ namespace BookManagementProgram
         private string adress;
         private bool isAdministrator;
         private List<BookInformationVO> rentedBook;
+
+        private int No
+        {
+            get { return no; }
+            set { no = value; }
+        }
 
         public string Id
         {
@@ -71,6 +78,18 @@ namespace BookManagementProgram
 
         public CustomerInformationVO(string id, string password, string name, string phoneNumber, string adress,bool isAdministrator)
         {
+            this.id = id;
+            this.password = password;
+            this.name = name;
+            this.phoneNumber = phoneNumber;
+            this.adress = adress;
+            this.isAdministrator = isAdministrator;
+            this.rentedBook = new List<BookInformationVO>();
+        }
+
+        public CustomerInformationVO(int no, string id, string password, string name, string phoneNumber, string adress, bool isAdministrator)
+        {
+            this.no = no;
             this.id = id;
             this.password = password;
             this.name = name;
