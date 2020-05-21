@@ -467,7 +467,7 @@ namespace BookManagementProgram
                 Console.WriteLine("\n      새 도서 등록\n");
                 //책정보입력
                 Console.WriteLine();
-                Console.Write("  도서 이름 : ");
+                Console.Write("     도서 이름 : ");
                 name = ExceptionHandling.Instance.InputString(1, 30);
                 if (name == null)
                 {
@@ -478,7 +478,7 @@ namespace BookManagementProgram
                 }
 
                 Console.WriteLine();
-                Console.Write("  도서 저자 : ");
+                Console.Write("     도서 저자 : ");
                 author = ExceptionHandling.Instance.InputString(1, 20);
 
                 if (author == null)
@@ -490,7 +490,7 @@ namespace BookManagementProgram
                 }
 
                 Console.WriteLine();
-                Console.Write("도서 출판사 : ");
+                Console.Write("   도서 출판사 : ");
                 publisher = ExceptionHandling.Instance.InputString(1, 10);
                 if (publisher == null)
                 {
@@ -501,7 +501,7 @@ namespace BookManagementProgram
                 }
 
                 Console.WriteLine();
-                Console.Write("      권수 : ");
+                Console.Write("(10권까지)권수 : ");
                 quantityInString = Console.ReadLine();
                 quantity = ExceptionHandling.Instance.InputNumber(1, 10, quantityInString);
 
@@ -552,8 +552,14 @@ namespace BookManagementProgram
                 Console.Write("정말로 삭제 하시겠습니까?[y,n]");
                 confirmationMessage = ExceptionHandling.Instance.InputString(1, 1);
 
-                if (confirmationMessage != "y" && confirmationMessage != "n") continue;
+                if (confirmationMessage != "y" && confirmationMessage != "n")
+                {
+                    Console.SetCursorPosition(0, Console.CursorTop-1);
+                    Console.Write(new string(' ', 76));
+                    Console.SetCursorPosition(0, Console.CursorTop);
 
+                    continue;
+                }
 
                 break;
             }
