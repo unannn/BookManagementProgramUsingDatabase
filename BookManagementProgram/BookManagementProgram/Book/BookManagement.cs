@@ -3,12 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace BookManagementProgram
 {
     class BookManagement:UITooI
     {
-        
+        public void InitializeBookList(List<BookInformationVO> BookList)
+        {
+            MySqlConnection connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
+
+            string selectQuery = "SELECT * FROM book";
+
+            connection.Open();
+            MySqlCommand command = new MySqlCommand(selectQuery, connection);
+
+            MySqlDataReader bookLIst = command.ExecuteReader();
+
+            while (bookLIst.Read())
+            {
+                BookList.Add(new BookInformationVO(int.Parse(bookLIst["no"].ToString()), bookLIst["title"].ToString(), bookLIst["author"].ToString(), bookLIst["publisher"].ToString(), int.Parse(bookLIst["quantity"].ToString()),int.Parse(bookLIst["maxQuntity"].ToString())));
+            }
+        }
+
         public void PrintBookList(List<BookInformationVO> bookList)
         {
             string divisionLine = new String('-', 76);

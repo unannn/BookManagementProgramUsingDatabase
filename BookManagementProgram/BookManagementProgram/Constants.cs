@@ -15,7 +15,7 @@ namespace BookManagementProgram
         public const int INIT_WIDTH = 50;
         public const int INIT_HEIGHT = 30;
 
-        public const int CREATE_ACCOUNT_WIDTH = 50;
+        public const int CREATE_ACCOUNT_WIDTH = 64;
         public const int CREATE_ACCOUNT_HEIGHT = 40;
 
         public const int CUSTOMER_PROCESS_WIDTH = 130;
@@ -37,8 +37,6 @@ namespace BookManagementProgram
 
         //입력 범위
         public const int STARTING_NUMBER = 1;
-        public const int inputLocationX = 40;
-        public const int inputLocationY = 5;
-
+        public const int BOOK_MAXIMUM = 10;
     }
 }

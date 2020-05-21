@@ -8,6 +8,7 @@ namespace BookManagementProgram
 {
     class BookInformationVO:ICloneable
     {
+        private int no;             //고유 책 번호
         private string name;        //책이름 최대20자
         private string author;      //작가이름 최대10자 
         private string publisher;   //출판사 최대10자
@@ -44,6 +45,12 @@ namespace BookManagementProgram
             set { maxQuantity = value; }
         }
 
+        private int No
+        {
+            get { return no; }
+            set { no = value; }
+        }
+
         public BookInformationVO()
         {
             name = null;
@@ -51,14 +58,25 @@ namespace BookManagementProgram
             publisher = null;
             quantity = 0;
         }
-
-        public BookInformationVO(string name, string author, string publisher, int quantity)
+                
+        public BookInformationVO(int no, string name, string author, string publisher, int quantity)
         {
+            this.no = no;
             this.name = name;
             this.author = author;
             this.publisher = publisher;
             this.quantity = quantity;
             this.maxQuantity = quantity;
+        }
+
+        public BookInformationVO(int no, string name, string author, string publisher, int quantity, int maxQuantity)
+        {
+            this.no = no;
+            this.name = name;
+            this.author = author;
+            this.publisher = publisher;
+            this.quantity = quantity;
+            this.maxQuantity = maxQuantity;
         }
 
         public object Clone()

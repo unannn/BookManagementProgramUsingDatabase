@@ -274,7 +274,7 @@ namespace BookManagementProgram
                 Console.Write("1 ~ 9입력 : ");
 
                 inputNumberInString = Console.ReadLine();
-                inputNumber = ExceptionHandling.Instance.InputNumber(1, Menu.Count, inputNumberInString);
+                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Menu.Count, inputNumberInString);
 
                 Console.Clear();
             }                      
@@ -303,7 +303,7 @@ namespace BookManagementProgram
                 Console.Write("1 ~ 5입력 : ");
 
                 inputNumberInString = Console.ReadLine();
-                inputNumber = ExceptionHandling.Instance.InputNumber(1, menu.Count, inputNumberInString);
+                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, menu.Count, inputNumberInString);
 
                 Console.Clear();
             }
@@ -343,7 +343,7 @@ namespace BookManagementProgram
                 }
 
                 inputNumberInString = Console.ReadLine();
-                inputNumber = ExceptionHandling.Instance.InputNumber(1, controlMenu.Count, inputNumberInString);
+                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, controlMenu.Count, inputNumberInString);
 
                 if(inputNumber == ExceptionHandling.wrongInput)
                 {
@@ -425,7 +425,7 @@ namespace BookManagementProgram
 
             Console.Write("대여할 책 번호 입력 : ");
             inputNumberInString = Console.ReadLine();
-            inputNumber = ExceptionHandling.Instance.InputNumber(1, bookList.Count, inputNumberInString);
+            inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, bookList.Count, inputNumberInString);
             
             if(inputNumber != ExceptionHandling.wrongInput && bookList[inputNumber - 1].Quantity > 0) //올바른 번호가 입력되고 남은 수량이 있으면
             {
@@ -491,7 +491,7 @@ namespace BookManagementProgram
                 }
 
                 inputNumberInString = Console.ReadLine();
-                inputNumber = ExceptionHandling.Instance.InputNumber(1,logInCustomer.RentedBook.Count,inputNumberInString);
+                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER,logInCustomer.RentedBook.Count,inputNumberInString);
                                 
                 
                if(inputNumber != ExceptionHandling.wrongInput)
@@ -553,7 +553,7 @@ namespace BookManagementProgram
                 Console.Write("\n    1~3정수 입력 : ");
 
                 inputNumberInString = Console.ReadLine();
-                inputNumber = ExceptionHandling.Instance.InputNumber(1,3,inputNumberInString);
+                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER,menu.Count,inputNumberInString);
 
                 if(inputNumber != ExceptionHandling.wrongInput)
                 {
@@ -629,7 +629,7 @@ namespace BookManagementProgram
                 Console.WriteLine();
                 Console.Write("(10권까지)권수 : ");
                 quantityInString = Console.ReadLine();
-                quantity = ExceptionHandling.Instance.InputNumber(1, 10, quantityInString);
+                quantity = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_MAXIMUM, quantityInString);
 
                 if (quantity == ExceptionHandling.wrongInput)
                 {
