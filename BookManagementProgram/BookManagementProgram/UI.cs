@@ -74,7 +74,7 @@ namespace BookManagementProgram
                 {
                     if(customer.Id == id && customer.Password == password)
                     {
-                        loginCustomer = (CustomerInformationVO)customer.Clone();  //깊은복사
+                        loginCustomer = customer;  //깊은복사
                     }
                 }
 
