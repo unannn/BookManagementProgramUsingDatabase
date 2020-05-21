@@ -8,6 +8,12 @@ namespace BookManagementProgram
 {
     static class Constants
     {
+        //초기화면
+        public const int LOGIN = 1;
+        public const int CREATE_ACCOUNT = 2;
+        public const int PROGRAM_END = 3;
+
+
         //계정 생성시
         public const int INPUTID_LOCATION_Y = 10;
         public const int ERROR_MESSAGE_LOCATION_X = 35;

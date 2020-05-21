@@ -12,16 +12,152 @@ namespace BookManagementProgram
         public const int inputLocationX = 40;
         public const int inputLocationY = 5;
     }
-    class User      //초기화면 사용자의 입력값 정의
-    {
-        public const int logIn = 1;
-        public const int createAccount = 2;
-        public const int endProgram = 3;
-    }
-
+    
     class UI : UITooI
     {
-        public int LogInOrCreateAccount()  //로그인이나 아이디 생성을 위한 초기 화면 출력
+        public CustomerInformationVO StartInitScene(List<CustomerInformationVO> customerList)
+        {
+            int selectedNumber = 0;
+            bool loginSucessful = false;
+            CustomerInformationVO logInCustomer = null;
+            CustomerInformationVO createdAccount;
+
+            while (!loginSucessful)            //로그인 성공 시 까지 반복
+            {
+                Console.SetWindowSize(50, 30);
+
+                selectedNumber = LogInOrCreateAccount();
+
+                switch (selectedNumber)
+                {
+                    case Constants.LOGIN:
+                        logInCustomer = LoginCustomer(customerList);
+                        if (logInCustomer == null) continue;
+
+                        loginSucessful = true;
+                        break;
+
+                    case Constants.CREATE_ACCOUNT:
+                        Console.SetWindowSize(50, 40);
+                        createdAccount = CreateCustomerAccount(customerList);
+                        if (createdAccount == null) continue;  //뒤로가기
+                        customerList.Add(createdAccount);
+                        break;
+
+                    case Constants.PROGRAM_END:
+                        Environment.Exit(0);
+                        break;
+
+                    default:
+                        break;
+                }              
+            }
+
+            return logInCustomer;
+        }
+
+        public void StartAdministratorScene(List<CustomerInformationVO> customerList,List<BookInformationVO> bookList,CustomerInformationVO logInCustomer)
+        {
+            bool loginSucessful = true;
+            int selectedNumber;
+
+            while (loginSucessful)
+            {
+                
+                Console.SetWindowSize(50, 30);
+
+                selectedNumber = PrintAdministratorUserMenu();  //관리자 모드 실행
+
+                switch (selectedNumber)
+                {
+                    case 1:
+                        Console.SetWindowSize(90, 36);
+                        PrintAndSerchAndRentBook(bookList, logInCustomer);      //도서 출력, 검색, 대여                               
+                        break;
+
+                    case 2:
+                        Console.SetWindowSize(90, 36);
+                        PrintBookReturn(logInCustomer, bookList);   //도서 반납
+                        break;
+
+                    case 3:              //도서 등록
+                        ResisterBook(bookList);
+                        break;
+
+                    case 4:               //도서 삭제
+                        Console.SetWindowSize(90, 36);
+                        DeleteBook(bookList);
+                        break;
+
+                    case 5:            //회원리스트 보기
+                        Console.SetWindowSize(130, 36);
+                        ShowCustomerList(customerList);
+                        break;
+
+                    case 6:           //회원 삭제
+                        Console.SetWindowSize(130, 36);
+                        DeleteCustomer(customerList);
+                        break;
+
+                    case 7:           //내정보 수정
+                        Console.SetWindowSize(90, 36);
+                        ModifyMyData(logInCustomer, customerList);
+                        break;
+
+                    case 8:           //로그아웃
+                        loginSucessful = false;
+                        break;
+
+                    case 9:           //프로그램 종료
+                        Environment.Exit(0);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public void StartGeneralUserScene(List<CustomerInformationVO> customerList, List<BookInformationVO> bookList, CustomerInformationVO logInCustomer)
+        {
+            bool loginSucessful = true;
+            int selectedNumber;
+
+            while (loginSucessful)
+            {
+                Console.SetWindowSize(50, 30);
+
+                selectedNumber = PrintUserMenu();  //관리자 모드 실행
+
+                switch (selectedNumber)
+                {
+                    case 1:
+                        Console.SetWindowSize(90, 36);
+                        PrintAndSerchAndRentBook(bookList, logInCustomer);
+
+                        break;
+                    case 2:
+                        Console.SetWindowSize(90, 36);
+                        PrintBookReturn(logInCustomer, bookList);
+                        break;
+                    case 3:           //내정보 수정
+                        Console.SetWindowSize(90, 36);
+                        ModifyMyData(logInCustomer, customerList);
+                        break;
+                    case 4:           //로그아웃
+                        loginSucessful = false;
+                        break;
+                    case 5:           //프로그램 종료
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+        }
+
+        private int LogInOrCreateAccount()  //로그인이나 아이디 생성을 위한 초기 화면 출력
         {
             string inputNumberInString = null;
             int inputNumber = -2;
@@ -55,7 +191,7 @@ namespace BookManagementProgram
             return inputNumber;
         }
         
-        public CustomerInformationVO LoginCustomer(List<CustomerInformationVO> customerList)  //로그인 함수
+        private CustomerInformationVO LoginCustomer(List<CustomerInformationVO> customerList)  //로그인 함수
         {
             string id = null;
             string password = null;
@@ -85,13 +221,11 @@ namespace BookManagementProgram
             return loginCustomer;
         }
 
-        public CustomerInformationVO CreateCustomerAccount(List<CustomerInformationVO> customerList)  //계정생성
+        private CustomerInformationVO CreateCustomerAccount(List<CustomerInformationVO> customerList)  //계정생성
         {
             CustomerManagement customerManagement = new CustomerManagement();
             CustomerInformationVO customerToBeAdded = new CustomerInformationVO();
             
-            
-
             Console.Clear();
 
             PrintTitle(7);
@@ -120,8 +254,8 @@ namespace BookManagementProgram
 
             return customerToBeAdded;
         }
-              
-        public int PrintAdministratorUserMenu()  //관리자 모드일 떄 메뉴 화면
+
+        private int PrintAdministratorUserMenu()  //관리자 모드일 떄 메뉴 화면
         {
             List<string> Menu = new List<string>(){
                "1. 도서 리스트 보기/검색/대여",
@@ -156,7 +290,7 @@ namespace BookManagementProgram
             return inputNumber;
         }
 
-        public int PrintUserMenu()
+        private int PrintUserMenu()
         {
             List<string> menu = new List<string>(){
                "1. 도서 리스트 보기/검색/대여",
@@ -185,7 +319,7 @@ namespace BookManagementProgram
             return inputNumber;
         }
 
-        public void PrintAndSerchAndRentBook(List<BookInformationVO> bookList, CustomerInformationVO logInCustomer)  //도서 리스트 출력후 검색 또는 대여 화면
+        private void PrintAndSerchAndRentBook(List<BookInformationVO> bookList, CustomerInformationVO logInCustomer)  //도서 리스트 출력후 검색 또는 대여 화면
         {
             BookManagement bookManageMent = new BookManagement();
             List<BookInformationVO> serchingBookList = new List<BookInformationVO>();
@@ -326,7 +460,7 @@ namespace BookManagementProgram
 
         }
 
-        public void PrintBookReturn(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList)   //대여한 도서를 반납하는함수
+        private void PrintBookReturn(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList)   //대여한 도서를 반납하는함수
         {
             BookManagement bookMangement = new BookManagement();
             string inputNumberInString;
@@ -398,7 +532,7 @@ namespace BookManagementProgram
             }
 
         }
-        public void ModifyMyData(CustomerInformationVO logInCustomer,List<CustomerInformationVO> customerList)   //고객의 개인정보 수정
+        private void ModifyMyData(CustomerInformationVO logInCustomer,List<CustomerInformationVO> customerList)   //고객의 개인정보 수정
         {
             bool isEnd = false;
             int inputNumber = 0;
@@ -450,7 +584,7 @@ namespace BookManagementProgram
             }
         }
 
-        public void ResisterBook(List<BookInformationVO> bookList)   //책 등록, 반복되는 코드 함수화 필요
+        private void ResisterBook(List<BookInformationVO> bookList)   //책 등록, 반복되는 코드 함수화 필요
         {
             bool isEnd = false;
             BookInformationVO newBook = new BookInformationVO();
@@ -599,7 +733,7 @@ namespace BookManagementProgram
             Console.Clear();
         }
 
-        public void ShowCustomerList(List<CustomerInformationVO> customerList)
+        private void ShowCustomerList(List<CustomerInformationVO> customerList)
         {
             CustomerManagement customerManagement = new CustomerManagement();
 
@@ -620,7 +754,7 @@ namespace BookManagementProgram
             Console.SetWindowSize(90, 36);
         }
 
-        public void DeleteCustomer(List<CustomerInformationVO> customerList)  //계정삭제
+        private void DeleteCustomer(List<CustomerInformationVO> customerList)  //계정삭제
         {
             CustomerManagement customerManagement = new CustomerManagement();
             string inputId = null;
