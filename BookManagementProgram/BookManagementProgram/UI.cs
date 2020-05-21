@@ -330,7 +330,7 @@ namespace BookManagementProgram
             {
                 PrintTitle(27);
 
-                bookManageMent.PrintBookList(bookList);
+                PrintBookList(bookList);
 
                 PrintMenuList(controlMenu);
 
@@ -343,31 +343,30 @@ namespace BookManagementProgram
                 }
 
                 inputNumberInString = Console.ReadLine();
-                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, controlMenu.Count, inputNumberInString);
+                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, controlMenu.Count, inputNumberInString);  //메뉴선택
 
                 if(inputNumber == ExceptionHandling.wrongInput)
                 {
                     Console.Clear();
                     continue;
                 }
-                
-
+               
                 switch (inputNumber)
                 {
                     case 1:       //이름으로 검색
-                        serchingBookList = bookManageMent.SerchByName(bookList);
+                        serchingBookList = bookManageMent.SerchByTitle(bookList);
                         Console.Clear();
                         PrintTitle(7);
+
                         if (serchingBookList.Count > 0)
                         {
-                            bookManageMent.PrintBookList(serchingBookList);
-                            RentBook(logInCustomer, serchingBookList);
+                            PrintBookList(serchingBookList);
+                            bookManageMent.RentBook(logInCustomer, serchingBookList);
                         }
                         else
                         {
                             Console.WriteLine("해당 도서가 존재하지 않습니다");
-                            Console.WriteLine("Press Any Key...");
-                            
+                            Console.WriteLine("Press Any Key...");                            
                             Console.ReadKey();
                         }
                         break;
@@ -378,8 +377,8 @@ namespace BookManagementProgram
                         PrintTitle(7);
                         if (serchingBookList.Count > 0)
                         {
-                            bookManageMent.PrintBookList(serchingBookList);
-                            RentBook(logInCustomer, serchingBookList);
+                            PrintBookList(serchingBookList);
+                            bookManageMent.RentBook(logInCustomer, serchingBookList);
                         }
                         else
                         {
@@ -393,8 +392,8 @@ namespace BookManagementProgram
                         PrintTitle(7);
                         if (serchingBookList.Count > 0)
                         {
-                            bookManageMent.PrintBookList(serchingBookList);
-                            RentBook(logInCustomer, serchingBookList);
+                            PrintBookList(serchingBookList);
+                            bookManageMent.RentBook(logInCustomer, serchingBookList);
                         }
                         else
                         {
@@ -403,7 +402,7 @@ namespace BookManagementProgram
                         break;
 
                     case 4:    //도서대여
-                        RentBook(logInCustomer, bookList);
+                        bookManageMent.RentBook(logInCustomer, bookList);
                         break;
 
                     case 5:
@@ -418,38 +417,24 @@ namespace BookManagementProgram
             }
         }
 
-        private void RentBook(CustomerInformationVO logInCustomer,List<BookInformationVO> bookList)  //책대여 함수
+        private void PrintBookList(List<BookInformationVO> bookList)
         {
-            int inputNumber = 0;
-            string inputNumberInString = null;
+            string divisionLine = new String('-', 76);
 
-            Console.Write("대여할 책 번호 입력 : ");
-            inputNumberInString = Console.ReadLine();
-            inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, bookList.Count, inputNumberInString);
-            
-            if(inputNumber != ExceptionHandling.wrongInput && bookList[inputNumber - 1].Quantity > 0) //올바른 번호가 입력되고 남은 수량이 있으면
+            for (int order = 0; order < bookList.Count; order++)
             {
-               
-                foreach(BookInformationVO rentedBook in logInCustomer.RentedBook)
-                {
-                    if(rentedBook == bookList[inputNumber - 1]) //이미 대여중인 책이면
-                    {
-                        PrintFailMessage("이미 대여한 도서입니다.");
+                Console.WriteLine(divisionLine);
 
-                        return;
-                    }
-                }
+                OneSpace(bookList[order].No.ToString(), 3);
+                OneSpace(bookList[order].Name, 30);
+                OneSpace(bookList[order].Author, 20);
+                OneSpace(bookList[order].Publisher, 10);
 
-                bookList[inputNumber - 1].Quantity -= 1;
-                logInCustomer.RentedBook.Add(bookList[inputNumber - 1]);               
-
-                PrintFailMessage("대여가 완료되었습니다.");
-            }
-            else
-            {
-                PrintFailMessage("해당 도서가 존재하지 않습니다.");
+                Console.Write(" " + bookList[order].Quantity + "권");
+                Console.WriteLine();
             }
 
+            Console.WriteLine(divisionLine);
         }
 
         private void PrintBookReturn(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList)   //대여한 도서를 반납하는함수
@@ -629,7 +614,7 @@ namespace BookManagementProgram
                 Console.WriteLine();
                 Console.Write("(10권까지)권수 : ");
                 quantityInString = Console.ReadLine();
-                quantity = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_MAXIMUM, quantityInString);
+                quantity = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_QUANTITY_MAXIMUM, quantityInString);
 
                 if (quantity == ExceptionHandling.wrongInput)
                 {
@@ -668,7 +653,7 @@ namespace BookManagementProgram
             Console.WriteLine();
             Console.WriteLine("    도서 삭제\n");
 
-            bookManagement.PrintBookList(bookList);
+            PrintBookList(bookList);
 
             Console.Write(" 삭제할 도서 이름 입력 : ");
             name = ExceptionHandling.Instance.InputString(1, 30);

@@ -17,7 +17,7 @@ namespace BookManagementProgram
             BookManagement bookManagement = new BookManagement();
             CustomerManagement customerMangement = new CustomerManagement();
 
-            bookManagement.InitializeBookList(bookList);
+            bookManagement.InitializeBookList(bookList);                  //도서와 고객정보 불러오기
             customerMangement.IntializeCustomerList(customerList);
 
             CustomerInformationVO logInCustomer = null;

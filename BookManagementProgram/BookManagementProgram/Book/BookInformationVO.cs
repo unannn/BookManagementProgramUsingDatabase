@@ -15,6 +15,12 @@ namespace BookManagementProgram
         private int quantity;       //최대 9권
         private int maxQuantity;
 
+        public int No
+        {
+            get { return no; }
+            set { no = value; }
+        }
+
         public string Name
         {
             get { return name; }
@@ -44,13 +50,7 @@ namespace BookManagementProgram
             get { return maxQuantity; }
             set { maxQuantity = value; }
         }
-
-        private int No
-        {
-            get { return no; }
-            set { no = value; }
-        }
-
+                
         public BookInformationVO()
         {
             name = null;
