@@ -11,7 +11,6 @@ namespace BookManagementProgram
         public void StartProgram()
         {
             Console.Title = "BookManagementProgram";
-            Console.SetWindowSize(90,36);
 
             List<BookInformationVO> bookList = new List<BookInformationVO>() {
                 new BookInformationVO("투명 드래곤","이윤환","한빛미디어",5),
@@ -28,17 +27,13 @@ namespace BookManagementProgram
             };
             CustomerInformationVO logInCustomer = null;
             UI ui = new UI();
-            
-            bool endOfProgram = false;
-                           
-            while (!endOfProgram)
+                                       
+            while (true)
             {
                 logInCustomer = ui.StartInitScene(customerList);      //  로그인, 계정만들기, 게임종료 선택          
                                                                    
                 if(logInCustomer.IsAdministrator == true) ui.StartAdministratorScene(customerList, bookList, logInCustomer);  //관리자 아이디로 로그인시
-                else ui.StartGeneralUserScene(customerList, bookList, logInCustomer);                                         //일반유저모드로 로그인시
-
-                
+                else ui.StartGeneralUserScene(customerList, bookList, logInCustomer);           //일반유저모드로 로그인시
             }           
         }
     }

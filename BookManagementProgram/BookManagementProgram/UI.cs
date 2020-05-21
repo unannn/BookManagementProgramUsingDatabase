@@ -6,13 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookManagementProgram
 {
-    class InputNumberRange        //입력할떄 커서의 위치
-    {
-        public const int startNumber = 1;
-        public const int inputLocationX = 40;
-        public const int inputLocationY = 5;
-    }
-    
+        
     class UI : UITooI
     {
         public CustomerInformationVO StartInitScene(List<CustomerInformationVO> customerList)
@@ -24,7 +18,7 @@ namespace BookManagementProgram
 
             while (!loginSucessful)            //로그인 성공 시 까지 반복
             {
-                Console.SetWindowSize(50, 30);
+                Console.SetWindowSize(Constants.INIT_WIDTH,Constants.INIT_HEIGHT);
 
                 selectedNumber = LogInOrCreateAccount();
 
@@ -38,7 +32,7 @@ namespace BookManagementProgram
                         break;
 
                     case Constants.CREATE_ACCOUNT:
-                        Console.SetWindowSize(50, 40);
+                        Console.SetWindowSize(Constants.CREATE_ACCOUNT_WIDTH, Constants.CREATE_ACCOUNT_HEIGHT);
                         createdAccount = CreateCustomerAccount(customerList);
                         if (createdAccount == null) continue;  //뒤로가기
                         customerList.Add(createdAccount);
@@ -64,19 +58,19 @@ namespace BookManagementProgram
             while (loginSucessful)
             {
                 
-                Console.SetWindowSize(50, 30);
+                Console.SetWindowSize(Constants.INIT_WIDTH,Constants.INIT_HEIGHT);
 
                 selectedNumber = PrintAdministratorUserMenu();  //관리자 모드 실행
 
                 switch (selectedNumber)
                 {
                     case 1:
-                        Console.SetWindowSize(90, 36);
+                        Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         PrintAndSerchAndRentBook(bookList, logInCustomer);      //도서 출력, 검색, 대여                               
                         break;
 
                     case 2:
-                        Console.SetWindowSize(90, 36);
+                        Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         PrintBookReturn(logInCustomer, bookList);   //도서 반납
                         break;
 
@@ -85,22 +79,22 @@ namespace BookManagementProgram
                         break;
 
                     case 4:               //도서 삭제
-                        Console.SetWindowSize(90, 36);
+                        Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         DeleteBook(bookList);
                         break;
 
                     case 5:            //회원리스트 보기
-                        Console.SetWindowSize(130, 36);
+                        Console.SetWindowSize(Constants.CUSTOMER_PROCESS_WIDTH,Constants.CUSTOMER_PROCESS_HEIGHT);
                         ShowCustomerList(customerList);
                         break;
 
                     case 6:           //회원 삭제
-                        Console.SetWindowSize(130, 36);
+                        Console.SetWindowSize(Constants.CUSTOMER_PROCESS_WIDTH, Constants.CUSTOMER_PROCESS_HEIGHT);
                         DeleteCustomer(customerList);
                         break;
 
                     case 7:           //내정보 수정
-                        Console.SetWindowSize(90, 36);
+                        Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         ModifyMyData(logInCustomer, customerList);
                         break;
 
@@ -125,23 +119,23 @@ namespace BookManagementProgram
 
             while (loginSucessful)
             {
-                Console.SetWindowSize(50, 30);
+                Console.SetWindowSize(Constants.INIT_WIDTH,Constants.INIT_HEIGHT);
 
                 selectedNumber = PrintUserMenu();  //관리자 모드 실행
 
                 switch (selectedNumber)
                 {
                     case 1:
-                        Console.SetWindowSize(90, 36);
+                        Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         PrintAndSerchAndRentBook(bookList, logInCustomer);
 
                         break;
                     case 2:
-                        Console.SetWindowSize(90, 36);
+                        Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         PrintBookReturn(logInCustomer, bookList);
                         break;
                     case 3:           //내정보 수정
-                        Console.SetWindowSize(90, 36);
+                        Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         ModifyMyData(logInCustomer, customerList);
                         break;
                     case 4:           //로그아웃
@@ -177,13 +171,11 @@ namespace BookManagementProgram
                 PrintMenuList(initialMenu);
                 if(inputNumber == ExceptionHandling.wrongInput)Console.Write("\n다시 입력해 주세요.");
 
-                //Console.SetCursorPosition(InputNumberRange.inputLocationX, InputNumberRange.inputLocationY + 1);
-
                 Console.Write("선택 메뉴 번호 입력 : ");
 
                 inputNumberInString = Console.ReadLine();
 
-                inputNumber = ExceptionHandling.Instance.InputNumber(InputNumberRange.startNumber, initialMenu.Count, inputNumberInString);  //정수입력
+                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, initialMenu.Count, inputNumberInString);  //정수입력
 
                 Console.Clear();
             }
@@ -751,7 +743,7 @@ namespace BookManagementProgram
             Console.ReadKey();
             Console.Clear();
 
-            Console.SetWindowSize(90, 36);
+            Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
         }
 
         private void DeleteCustomer(List<CustomerInformationVO> customerList)  //계정삭제
