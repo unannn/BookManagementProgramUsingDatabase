@@ -30,12 +30,13 @@ namespace BookManagementProgram
             int inputNumber = wrongInput;
             int number = 0;
 
-            if (!string.IsNullOrEmpty(numberInString))
+            if (!string.IsNullOrEmpty(numberInString) && numberInString.Length < 10)
             {
                 for (number = 0; number < numberInString.Length; number++)
                 {
                     if (numberInString[number] < '0' || numberInString[number] > '9') break;
                 }
+
                 if (number == numberInString.Length && number != 0)
                 {
                     inputNumber = int.Parse(numberInString);
