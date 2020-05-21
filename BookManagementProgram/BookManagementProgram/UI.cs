@@ -113,7 +113,7 @@ namespace BookManagementProgram
             Console.WriteLine("휴대폰번호 ('-'없이 11글자)");
             PrintInputBox("");
 
-            Console.WriteLine("주소 (1~20글자)");
+            Console.WriteLine("주소 (1~20글자 ○○시 ○○구 형식)");
             PrintInputBox("");
 
             customerToBeAdded = customerManagement.InputCustomerAccountInformation(customerList);

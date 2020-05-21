@@ -220,7 +220,7 @@ namespace BookManagementProgram
             if (name == "q") return name;
 
 
-            if (!string.IsNullOrEmpty(name) && name.Length >= 2 && name.Length <= 11)       // above 이상 below 이하의 길이 일때
+            if (!string.IsNullOrEmpty(name) && name.Length >= 2 && name.Length <= 11)  
             {
                 ClearErrorMessage();
                 return name;
@@ -231,6 +231,31 @@ namespace BookManagementProgram
                 return null;
             }            
         }
+
+        public string InputAdress()
+        {
+            string adress;
+            bool isCollect = false;
+
+            adress = Console.ReadLine();
+            
+            if (adress == "q") return adress;
+
+            //isCollect = Regex.IsMatch(adress, @"[^a-zA-Z0-9가-힣]");
+            isCollect = Regex.IsMatch(adress, @"[가-힣]{2,4}시\s[가-힣]{1,3}구\s[가-힣0-9]{1,10}");
+
+            if (!string.IsNullOrEmpty(adress) && adress.Length >= 2 && adress.Length <= 20 && isCollect)
+            {
+                ClearErrorMessage();
+                return adress;
+            }
+            else
+            {
+                PrintErrorMessage("잘못된 입력입니다.");
+                return null;
+            }
+        }
+
 
         public string InputString(int above, int below) //above 이상 below 이하 만큼 크기의 문자열 입력 실패시 널 반환
         {

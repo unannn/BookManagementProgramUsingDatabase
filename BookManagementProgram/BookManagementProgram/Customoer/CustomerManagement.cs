@@ -16,7 +16,6 @@ namespace BookManagementProgram
             string name = null;
             string phoneNumber = null;
             string adress = null;
-            string yesOrNo = null;
             int createOrder = 0;
             while (createOrder < 6)
             {
@@ -59,7 +58,7 @@ namespace BookManagementProgram
 
                     case 5:
                         Console.SetCursorPosition(2, Constants.ADRESS_LOCATION_Y);                        ;
-                        adress = ExceptionHandling.Instance.InputString(1, 30);       //주소 입력
+                        adress = ExceptionHandling.Instance.InputAdress();       //주소 입력
                         if (adress == null) --createOrder;
                         else if (adress == "q") return null;
                         break;
