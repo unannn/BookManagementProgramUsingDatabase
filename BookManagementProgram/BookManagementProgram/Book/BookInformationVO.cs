@@ -12,6 +12,7 @@ namespace BookManagementProgram
         private string author;      //작가이름 최대10자 
         private string publisher;   //출판사 최대10자
         private int quantity;       //최대 9권
+        private int maxQuantity;
 
         public string Name
         {
@@ -37,6 +38,12 @@ namespace BookManagementProgram
             set { quantity = value; }
         }
 
+        public int MaxQuantity
+        {
+            get { return maxQuantity; }
+            set { maxQuantity = value; }
+        }
+
         public BookInformationVO()
         {
             name = null;
@@ -51,6 +58,7 @@ namespace BookManagementProgram
             this.author = author;
             this.publisher = publisher;
             this.quantity = quantity;
+            this.maxQuantity = quantity;
         }
 
         public object Clone()

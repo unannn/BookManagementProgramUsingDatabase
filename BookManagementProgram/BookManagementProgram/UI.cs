@@ -151,8 +151,7 @@ namespace BookManagementProgram
                 inputNumber = ExceptionHandling.Instance.InputNumber(1, Menu.Count, inputNumberInString);
 
                 Console.Clear();
-            }
-                      
+            }                      
 
             return inputNumber;
         }
@@ -246,6 +245,7 @@ namespace BookManagementProgram
                             Console.ReadKey();
                         }
                         break;
+
                     case 2:        //저자로 검색
                         serchingBookList = bookManageMent.SerchByAuthor(bookList);
                         Console.Clear();
@@ -260,6 +260,7 @@ namespace BookManagementProgram
                             PrintFailMessage("해당 도서가 존재하지 않습니다.");
                         }
                         break;
+
                     case 3:  //출판사로 검색
                         serchingBookList = bookManageMent.SerchedByPublisher(bookList);
                         Console.Clear();
@@ -274,12 +275,15 @@ namespace BookManagementProgram
                             PrintFailMessage("해당 도서가 존재하지 않습니다");
                         }
                         break;
+
                     case 4:    //도서대여
                         RentBook(logInCustomer, bookList);
                         break;
+
                     case 5:
                         isEnd = true;
                         break;
+
                     default:
                         break;
                 }
@@ -513,6 +517,7 @@ namespace BookManagementProgram
                 newBook.Author = author;
                 newBook.Publisher = publisher;
                 newBook.Quantity = quantity;
+                newBook.MaxQuantity = quantity;
 
                 bookList.Add(newBook);
                 Console.WriteLine();
@@ -554,13 +559,21 @@ namespace BookManagementProgram
             }
 
             if(confirmationMessage == "y")
-            {
+            {                
+
                 if (name != null)
                 {
                     for (int book = 0; book < bookList.Count; book++)
                     {
                         if (bookList[book].Name == name)
                         {
+                            if(bookList[book].Quantity != bookList[book].MaxQuantity)
+                            {
+                                PrintFailMessage("반납되지 않은 도서가 있습니다.");
+                                Console.Clear();
+                                return;
+                            }
+
                             bookList.RemoveAt(book);
                             Console.WriteLine();
 
@@ -573,7 +586,6 @@ namespace BookManagementProgram
                 }
             }      
             
-
             Console.WriteLine();
 
             PrintFailMessage("해당 도서가 존재하지 않습니다.");
