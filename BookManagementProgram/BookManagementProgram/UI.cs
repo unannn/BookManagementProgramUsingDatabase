@@ -58,13 +58,13 @@ namespace BookManagementProgram
 
             while (loginSucessful)
             {
-                
+                Console.Clear();
                 Console.SetWindowSize(Constants.INIT_WIDTH,Constants.INIT_HEIGHT);
 
                 selectedNumber = PrintAdministratorUserMenu();  //관리자 모드 실행
 
                 switch (selectedNumber)
-                {
+                {                    
                     case 1:
                         Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         PrintAndSerchAndRentBook(bookList, logInCustomer);      //도서 출력, 검색, 대여                               
@@ -596,13 +596,19 @@ namespace BookManagementProgram
                 Console.WriteLine("\n      새 도서 등록\n");
                 //책정보입력
                 Console.WriteLine();
+                Console.WriteLine("q 입력시 도서등록 종료");
+                Console.WriteLine();
+
                 Console.Write("     도서 이름 : ");
                 name = ExceptionHandling.Instance.InputString(1, 30);
                 if (name == null)
                 {
                     PrintFailMessage("잘못된 입력 입니다.");
 
-                    Console.Clear();
+                    continue;                    
+                }
+                else if(name == "q")
+                {
                     break;
                 }
 
@@ -614,7 +620,10 @@ namespace BookManagementProgram
                 {
                     PrintFailMessage("잘못된 입력 입니다.");
 
-                    Console.Clear();
+                    continue;
+                }
+                else if (author == "q")
+                {
                     break;
                 }
 
@@ -625,29 +634,34 @@ namespace BookManagementProgram
                 {
                     PrintFailMessage("잘못된 입력 입니다.");
 
-                    Console.Clear();
+                    continue;
+                }
+                else if (publisher == "q")
+                {
                     break;
                 }
 
                 Console.WriteLine();
                 Console.Write("(10권까지)권수 : ");
                 quantityInString = Console.ReadLine();
+                if (quantityInString == "q") break;
+
                 quantity = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_QUANTITY_MAXIMUM, quantityInString);
 
                 if (quantity == ExceptionHandling.wrongInput)
                 {
                     PrintFailMessage("잘못된 입력 입니다.");
 
-                    Console.Clear();
-                    break;
+                    continue;
                 }
+                
 
                 newBook.Name = name;
                 newBook.Author = author;
                 newBook.Publisher = publisher;
                 newBook.Quantity = quantity;
                 newBook.MaxQuantity = quantity;
-
+                BookDB.Instance.InsertNewBook(name, author, publisher, quantity);  //데베에 도서정보 삽입
                 bookList.Add(newBook);
                 Console.WriteLine();
 

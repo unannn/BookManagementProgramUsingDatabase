@@ -83,5 +83,19 @@ namespace BookManagementProgram
 
             return rowNumber;
         }
+
+        public void InsertNewBook(string name, string author, string publisher, int quantity)
+        {
+            connection.Open();
+
+            string insertQuery = "INSERT INTO book(title,author,publisher,quantity,maxQuntity) VALUES(\"" + name + "\",\"" + author + "\",\"" + publisher + "\"," + quantity + "," + quantity + ")";
+
+            MySqlCommand command = new MySqlCommand(insertQuery, connection);
+
+            command.ExecuteNonQuery();
+
+            connection.Close();
+            
+        }
     }
 }
