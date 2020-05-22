@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace BookManagementProgram
 {  
-    class ExceptionHandling
+    class ExceptionHandling:UITooI
     {
         private static ExceptionHandling instance = null;
 
@@ -48,6 +48,43 @@ namespace BookManagementProgram
             return inputNumber;
         }
 
+        public bool RentBook(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList, int inputNumber)
+        {
+            if (inputNumber == ExceptionHandling.wrongInput)  //음수나 최대 책 개수 이상 입력
+            {
+                PrintFailMessage("해당 도서가 존재하지 않습니다.");
+                return false;
+            }
+
+            if (logInCustomer.RentedBook.Count >= Constants.RENT_BOOK_MAXIMUM)   //최대 대여가능 도서수 제한
+            {
+                PrintFailMessage("더이상 대여할 수 없습니다(최대 5권 대여가능).");
+                return false;
+            }
+
+            foreach (BookInformationVO rentedBooks in logInCustomer.RentedBook)  //중복대여 여부 검사
+            {
+                if (rentedBooks.No == inputNumber)
+                {
+                    PrintFailMessage("이미 대여한 도서입니다.");
+                    return false;
+                }
+            }
+
+            foreach (BookInformationVO book in bookList)
+            {
+                if (book.No == inputNumber)
+                {
+                    if (book.Quantity < 1) //대여할 책이 남아있는지 검사
+                    {
+                        PrintFailMessage("대여할 도서가 없습니다.");
+                        return false;
+                    }                   
+                }
+            }
+
+            return true;
+        }
         public string InputYesOrNo(string yesOrNo)   //문자열이 y 인지 n인지 아님 다른값이 들어왔는지 판단 후 반환
         {
             if (!string.IsNullOrEmpty(yesOrNo) && yesOrNo.Length == 1)

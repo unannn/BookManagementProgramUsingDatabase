@@ -49,7 +49,7 @@ namespace BookManagementProgram
         public const int BOOK_NAME_LENGTH_MAXIMUM = 20;
         public const int BOOK_AUTHOER_LENGTH_MAXIMUM = 15;
         public const int BOOK_PUBLISHER_LENGTH_MAXIMUM = 10;
-
+        public const int DATE_LENGTH_MAXIMUM = 10;
         //관리자모드 메뉴
 
         public const int BOOK_SERCHING_RENTAL = 1;

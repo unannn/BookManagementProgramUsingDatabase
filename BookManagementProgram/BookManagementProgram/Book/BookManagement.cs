@@ -16,44 +16,24 @@ namespace BookManagementProgram
 
         public void RentBook(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList)  //책대여 함수
         {
+            bool isCollect = false;
             int inputNumber = 0;
             int rowNumber = 0;
             string inputNumberInString = null;
-
             
 
             Console.Write("대여할 책 번호 입력 : ");
             inputNumberInString = Console.ReadLine();
             inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_NUMBER_MAXIMUM, inputNumberInString);
+
+            isCollect = ExceptionHandling.Instance.RentBook(logInCustomer,bookList,inputNumber);
             
-
-            if (inputNumber != ExceptionHandling.wrongInput) 
+            if (isCollect)
             {
-                if (logInCustomer.RentedBook.Count >= Constants.RENT_BOOK_MAXIMUM)   //최대 대여가능 도서수 제한
-                {
-                    PrintFailMessage("더이상 대여할 수 없습니다(최대 5권 대여가능).");
-                    return;
-                }
-
-                foreach (BookInformationVO rentedBooks in logInCustomer.RentedBook)  //중복대여 여부 검사
-                {
-                    if(rentedBooks.No == inputNumber)
-                    {
-                        PrintFailMessage("이미 대여한 도서입니다.");
-                        return;
-                    }
-                }
-                
                 foreach (BookInformationVO book in bookList)
                 {
                     if (book.No == inputNumber)
                     {
-                        if (book.Quantity < 1) //대여할 책이 남아있는지 검사
-                        {
-                            PrintFailMessage("대여할 도서가 없습니다.");
-                            return;
-                        }
-
                         rowNumber = BookDB.Instance.UpdateRentalBook(inputNumber);
                         RentalBookDB.Instance.InsertRentalBookInfo(logInCustomer.No, inputNumber);
                         book.Quantity -= 1;
@@ -62,16 +42,17 @@ namespace BookManagementProgram
                         return;
                     }
                 }
-
-                PrintFailMessage("해당 도서가 존재하지 않습니다.");
             }
             else
             {
-                PrintFailMessage("해당 도서가 존재하지 않습니다.");
+                return;
             }
 
+            PrintFailMessage("해당 도서가 존재하지 않습니다.");
+
+
         }
-             
+
 
         public void PrintBookListForReturn(CustomerInformationVO logInCustomer)  //대여일과 반납일 추가하기
         {
@@ -79,16 +60,16 @@ namespace BookManagementProgram
             string[] rentalAndReturnDate;
             Console.WriteLine(divisionLine);
 
-            OneSpace("NO", Constants.BOOK_NUMBER_MAXIMUM.ToString().Length);
+            OneSpace("NO", Constants.BOOK_NUMBER_MAXIMUM.ToString().Length);  //도서의 요소 종류 출력
             OneSpace("이름", Constants.BOOK_NAME_LENGTH_MAXIMUM);
             OneSpace("저자", Constants.BOOK_AUTHOER_LENGTH_MAXIMUM);
             OneSpace("출판사", Constants.BOOK_PUBLISHER_LENGTH_MAXIMUM);
-            OneSpace("대여일", 10);
-            OneSpace("반납일", 10);
+            OneSpace("대여일", Constants.DATE_LENGTH_MAXIMUM);
+            OneSpace("반납일", Constants.DATE_LENGTH_MAXIMUM);
 
             Console.WriteLine();
 
-            for (int order = 0; order < logInCustomer.RentedBook.Count; order++)
+            for (int order = 0; order < logInCustomer.RentedBook.Count; order++)  //반납해야하는 도서리스트 출력
             {
                 Console.WriteLine(divisionLine);
 
@@ -97,8 +78,8 @@ namespace BookManagementProgram
                 OneSpace(logInCustomer.RentedBook[order].Author, Constants.BOOK_AUTHOER_LENGTH_MAXIMUM);
                 OneSpace(logInCustomer.RentedBook[order].Publisher, Constants.BOOK_PUBLISHER_LENGTH_MAXIMUM);
                 rentalAndReturnDate = RentalBookDB.Instance.SelectRentalAndReturnDate(logInCustomer.No, logInCustomer.RentedBook[order].No);
-                OneSpace(rentalAndReturnDate[0].Substring(0,10), 10);
-                OneSpace(rentalAndReturnDate[1].Substring(0, 10), 10);
+                OneSpace(rentalAndReturnDate[0].Substring(0, Constants.DATE_LENGTH_MAXIMUM), Constants.DATE_LENGTH_MAXIMUM);
+                OneSpace(rentalAndReturnDate[1].Substring(0, Constants.DATE_LENGTH_MAXIMUM), Constants.DATE_LENGTH_MAXIMUM);
                 Console.WriteLine();
             }
 
