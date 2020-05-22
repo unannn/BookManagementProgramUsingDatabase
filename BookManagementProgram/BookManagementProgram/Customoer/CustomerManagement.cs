@@ -184,6 +184,7 @@ namespace BookManagementProgram
             {
                 if (customerList[customer].RentedBook.Count == 0)   
                 {
+                    CustomerDB.Instance.DeleteCusomter(customerList[customer].No);
                     customerList.RemoveAt(customer);
                     PrintFailMessage("해당 아이디가 삭제 됐습니다.");
                 }

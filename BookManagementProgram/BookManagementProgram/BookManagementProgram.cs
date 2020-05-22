@@ -20,16 +20,19 @@ namespace BookManagementProgram
 
             bookManagement.InitializeBookList(bookList);                  //도서와 고객정보 불러오기
             customerMangement.IntializeCustomerList(customerList);
+            foreach (CustomerInformationVO customer in customerList)  //회원들이 대여한 책들 리스트 초기화
+            {
+                RentalBookDB.Instance.InitializeCustomerRentalBook(customer);
+            }
 
             CustomerInformationVO logInCustomer = null;
             UI ui = new UI();
             int logOutNumber = 0;
-                                       
+                           
+           
             while (true)
             {
                 logInCustomer = ui.StartInitScene(customerList);      //  로그인, 계정만들기, 게임종료 선택          
-
-                if(logOutNumber == 0)RentalBookDB.Instance.InitializeCustomerRentalBook(logInCustomer);
                          
                 if(logInCustomer.IsAdministrator == true) ui.StartAdministratorScene(customerList, bookList, logInCustomer);  //관리자 아이디로 로그인시
                 else ui.StartGeneralUserScene(customerList, bookList, logInCustomer);           //일반유저모드로 로그인시

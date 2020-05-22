@@ -51,5 +51,19 @@ namespace BookManagementProgram
 
             return no;
         }
+
+        public void DeleteCusomter(int inputNumber)
+        {
+            connection.Open();
+
+            string deleteQuery = "DELETE FROM customer WHERE no = " + inputNumber;
+
+            MySqlCommand command = new MySqlCommand(deleteQuery, connection);
+
+            command.ExecuteNonQuery();
+
+            connection.Close();
+
+        }
     }
 }

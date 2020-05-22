@@ -445,7 +445,7 @@ namespace BookManagementProgram
             int inputNumber = 0;
             bool isEnd = false;
             string confirmationMessage = null;
-            
+            int bookIndex;
             while (!isEnd)    
             {
                 Console.Clear();
@@ -465,6 +465,7 @@ namespace BookManagementProgram
                                 
                 Console.Write("반납 할 책 번호 입력 : ");
 
+
                 if (inputNumber == ExceptionHandling.wrongInput)      //잘못된 입력시
                 {
                     Console.WriteLine();
@@ -477,7 +478,19 @@ namespace BookManagementProgram
                 inputNumberInString = Console.ReadLine();
                 inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER,Constants.BOOK_NUMBER_MAXIMUM,inputNumberInString);                                
                 
-               if(inputNumber != ExceptionHandling.wrongInput)
+                for(bookIndex = 0;bookIndex < bookList.Count;bookIndex++)   //해당도서가 존재하는지 조사
+                {
+                    if (bookList[bookIndex].No == inputNumber) break;
+                }
+
+                if (bookIndex == bookList.Count)
+                {
+                    PrintFailMessage("해당 도서가 존재하지 않습니다.");
+                    Console.Clear();
+                    return;
+                }
+
+                if (inputNumber != ExceptionHandling.wrongInput)
                 {
                     while (true)
                     {
@@ -809,7 +822,6 @@ namespace BookManagementProgram
                     }
                 }
                 PrintFailMessage("해당 아이디가 없습니다.");
-
             }
             else
             {
