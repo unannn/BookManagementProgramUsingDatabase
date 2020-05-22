@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace BookManagementProgram
 {
         
     class UI : UITooI
-    {
+    {       
         public CustomerInformationVO StartInitScene(List<CustomerInformationVO> customerList)
         {
             int selectedNumber = 0;
@@ -476,8 +477,7 @@ namespace BookManagementProgram
                 }
 
                 inputNumberInString = Console.ReadLine();
-                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER,logInCustomer.RentedBook.Count,inputNumberInString);
-                                
+                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER,Constants.BOOK_NUMBER_MAXIMUM,inputNumberInString);                                
                 
                if(inputNumber != ExceptionHandling.wrongInput)
                 {
@@ -486,8 +486,14 @@ namespace BookManagementProgram
                         Console.Write("정말로 반납 하시겠습니까?[y,n]");
                         confirmationMessage = ExceptionHandling.Instance.InputString(1, 1);
 
-                        if (confirmationMessage != "y" && confirmationMessage != "n") continue;
-                       
+                        if (confirmationMessage != "y" && confirmationMessage != "n")
+                        {
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', 80));
+                            Console.SetCursorPosition(0, Console.CursorTop);
+
+                            continue;
+                        }
                         break;
                     }
 
@@ -497,6 +503,13 @@ namespace BookManagementProgram
                     {
                         if (book.Name == logInCustomer.RentedBook[inputNumber - 1].Name) book.Quantity += 1;    //같은 제목의 책을 리스트에찾아 반납
                     }
+
+                    MySqlConnection connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
+                    string updateQuery = "UPDATE book SET quantity = quantity + 1 WHERE book.no = " + inputNumber;
+                    connection.Open();
+                    MySqlCommand command = new MySqlCommand(updateQuery, connection);
+                    //rowNumber = command.ExecuteNonQuery();
+                    connection.Close();
 
                     logInCustomer.RentedBook.RemoveAt(inputNumber - 1);       //대여한 도서 목록에서 삭제
 

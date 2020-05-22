@@ -8,7 +8,7 @@ using MySql.Data.MySqlClient;
 namespace BookManagementProgram
 {
     class CustomerManagement : UITooI
-    {   
+    {        
         public void IntializeCustomerList(List<CustomerInformationVO> customerList)
         {
             MySqlConnection connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");

@@ -38,6 +38,7 @@ namespace BookManagementProgram
         //입력 범위
         public const int STARTING_NUMBER = 1;
         public const int BOOK_QUANTITY_MAXIMUM = 10;
-        public const int
+        public const int BOOK_NUMBER_MAXIMUM = 10000;
+        public const int RENT_BOOK_MAXIMUM = 5;
     }
 }
