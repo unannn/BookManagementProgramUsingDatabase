@@ -104,20 +104,20 @@ namespace BookManagementProgram
             Console.WriteLine();
             Console.Write("바꿀 주소(2~20글자) : ");
 
-            modifiedAdress = ExceptionHandling.Instance.InputString(2, 20);
+            modifiedAdress = ExceptionHandling.Instance.InputAdress();
+
             if(modifiedAdress != null)
             {
                 logInCustomer.Adress = modifiedAdress;
-               
-                PrintFailMessage("주소가 변경되었습니다.");
+                CustomerDB.Instance.UpdateMyAdress(logInCustomer.No, modifiedAdress);
 
+                PrintFailMessage("주소가 변경되었습니다.");
             }
             else
             {
                 PrintFailMessage("잘못된 입력입니다.");
-
-
             }
+
         }
 
         public void ModifyPhoneNumber(CustomerInformationVO logInCustomer,List<CustomerInformationVO> customerList)
@@ -130,9 +130,12 @@ namespace BookManagementProgram
             Console.Write("바꿀 번호 : ");
 
             modifiedPhoneNumber = ExceptionHandling.Instance.InputPhoneNumber(customerList);
+
             if (modifiedPhoneNumber != null)
             {
                 logInCustomer.PhoneNumber = modifiedPhoneNumber;
+                CustomerDB.Instance.UpdateMyPhoneNumber(logInCustomer.No, modifiedPhoneNumber);
+
                 PrintFailMessage("번호가 변경되었습니다.");
             }
             else

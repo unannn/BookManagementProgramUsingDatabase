@@ -65,5 +65,32 @@ namespace BookManagementProgram
             connection.Close();
 
         }
+
+        public void UpdateMyPhoneNumber(int customerNumber, string modifiedPhoneNumber)
+        {
+            connection.Open();
+            
+            string updateQuery = "UPDATE customer SET phoneNumber = \""+modifiedPhoneNumber+"\" WHERE customer.no = " + customerNumber;
+
+            MySqlCommand command = new MySqlCommand(updateQuery, connection);
+
+            command.ExecuteNonQuery();
+
+            connection.Close();
+        }
+
+        public void UpdateMyAdress(int customerNumber, string modifiedAdress)
+        {
+            connection.Open();
+
+            string updateQuery = "UPDATE customer SET adress = \"" + modifiedAdress + "\" WHERE customer.no = " + customerNumber;
+
+            MySqlCommand command = new MySqlCommand(updateQuery, connection);
+
+            command.ExecuteNonQuery();
+
+            connection.Close();
+
+        }
     }
 }
