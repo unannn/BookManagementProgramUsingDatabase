@@ -74,7 +74,6 @@ namespace BookManagementProgram
         public void PrintBookListForReturn(List<BookInformationVO> bookList)  //대여일과 반납일 추가하기
         {
             string divisionLine = new String('-', 72);
-            //string blank = null;
 
             for (int order = 0; order < bookList.Count; order++)
             {

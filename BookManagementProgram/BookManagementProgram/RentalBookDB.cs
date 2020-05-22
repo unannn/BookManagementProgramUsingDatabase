@@ -29,10 +29,6 @@ namespace BookManagementProgram
             
         }
 
-        //~RentalBookDB()
-        //{
-        //    connection.Close();
-        //}
         public void InitializeCustomerRentalBook(CustomerInformationVO logInCustomer)
         {
             connection.Open();

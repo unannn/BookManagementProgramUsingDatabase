@@ -90,6 +90,7 @@ namespace BookManagementProgram
             newCustomer.Name = name;
             newCustomer.PhoneNumber = phoneNumber;
             newCustomer.Adress = adress;
+            newCustomer.No = CustomerDB.Instance.InsertNewCustomer(id, password, name, phoneNumber, adress);
 
             return newCustomer;
         }
@@ -160,11 +161,11 @@ namespace BookManagementProgram
             OneSpace("주소", 40);
             Console.WriteLine();
 
-            for (int order = 0; order < customerList.Count; order++)
+            for (int order = 0; order < customerList.Count; order++)  //고객 정보 리스트 출력
             {
                 Console.WriteLine(divisionLine);
 
-                OneSpace((order + 1).ToString(), 5);
+                OneSpace(customerList[order].No.ToString(), 5);
                 OneSpace(customerList[order].Id, 23);
                 OneSpace(customerList[order].Name, 23);
                 OneSpace(customerList[order].PhoneNumber, 23);
@@ -172,6 +173,7 @@ namespace BookManagementProgram
                 
                 Console.WriteLine();
             }
+
             Console.WriteLine(divisionLine);
 
         }

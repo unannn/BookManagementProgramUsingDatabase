@@ -28,13 +28,7 @@ namespace BookManagementProgram
         {
             connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
         }
-
-
-        //~BookDB()
-        //{
-        //    connection.Close();
-        //}
-
+                
         public void SelectAllBooks(List<BookInformationVO> bookList)
         {
             connection.Open();
