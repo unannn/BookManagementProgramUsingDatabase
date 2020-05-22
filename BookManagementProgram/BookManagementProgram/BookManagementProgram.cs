@@ -23,15 +23,18 @@ namespace BookManagementProgram
 
             CustomerInformationVO logInCustomer = null;
             UI ui = new UI();
+            int logOutNumber = 0;
                                        
             while (true)
             {
                 logInCustomer = ui.StartInitScene(customerList);      //  로그인, 계정만들기, 게임종료 선택          
 
-                RentalBookDB.Instance.InitializeCustomerRentalBook(logInCustomer);
+                if(logOutNumber == 0)RentalBookDB.Instance.InitializeCustomerRentalBook(logInCustomer);
                          
                 if(logInCustomer.IsAdministrator == true) ui.StartAdministratorScene(customerList, bookList, logInCustomer);  //관리자 아이디로 로그인시
                 else ui.StartGeneralUserScene(customerList, bookList, logInCustomer);           //일반유저모드로 로그인시
+
+                ++logOutNumber;
             }           
         }
     }

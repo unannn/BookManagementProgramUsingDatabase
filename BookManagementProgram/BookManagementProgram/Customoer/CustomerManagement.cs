@@ -182,7 +182,7 @@ namespace BookManagementProgram
         {
             if (customerList[customer].IsAdministrator == false)
             {
-                if (customerList[customer].RentedBook.Count == 0)   //왜 대여 했을때도 Count 가 0인지 모르겠음
+                if (customerList[customer].RentedBook.Count == 0)   
                 {
                     customerList.RemoveAt(customer);
                     PrintFailMessage("해당 아이디가 삭제 됐습니다.");
