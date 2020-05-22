@@ -8,25 +8,7 @@ using MySql.Data.MySqlClient;
 namespace BookManagementProgram
 {
     class CustomerManagement : UITooI
-    {        
-        public void IntializeCustomerList(List<CustomerInformationVO> customerList)
-        {
-            MySqlConnection connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
-
-            string selectQuery = "SELECT * FROM customer";
-
-            connection.Open();
-            MySqlCommand command = new MySqlCommand(selectQuery, connection);
-            MySqlDataReader customers = command.ExecuteReader();
-
-            while (customers.Read())
-            {
-                customerList.Add(new CustomerInformationVO(int.Parse(customers["no"].ToString()), customers["id"].ToString(), customers["password"].ToString(), customers["name"].ToString(), customers["phoneNumber"].ToString(), customers["adress"].ToString(), bool.Parse(customers["administrator"].ToString())));
-            }
-
-            connection.Close();
-        }
-
+    { 
         public CustomerInformationVO InputCustomerAccountInformation( List<CustomerInformationVO> customerList)   //등록하고자하는 계정정보 반환
         {
             CustomerInformationVO newCustomer = new CustomerInformationVO();
@@ -36,47 +18,48 @@ namespace BookManagementProgram
             string phoneNumber = null;
             string adress = null;
             int createOrder = 0;
+
             while (createOrder < 6)
             {
                 switch (createOrder)
                 {
-                    case 0:
-                        Console.SetCursorPosition(2, Constants.INPUTID_LOCATION_Y);
+                    case Constants.INPUT_ID:
+                        Console.SetCursorPosition(Constants.LOCATION_X, Constants.INPUTID_LOCATION_Y);
                         id = ExceptionHandling.Instance.InputId(customerList);   //id 입력
                         if (id == null) --createOrder;
                         else if (id == "q") return null;
                         break;
 
-                    case 1:                       
-                        Console.SetCursorPosition(2, Constants.PASSWORD_LOCATION_Y);
+                    case Constants.INPUT_PASSWORD:                       
+                        Console.SetCursorPosition(Constants.LOCATION_X, Constants.PASSWORD_LOCATION_Y);
                         password = ExceptionHandling.Instance.InputPassword(null);  //password 입력
                         if (password == null) --createOrder;
                         else if (password == "q") return null;
                         break;
 
-                    case 2:
-                        Console.SetCursorPosition(2, Constants.PASSWORD_CONF_LOCATION_Y);
+                    case Constants.INPUT_PASSWORD_CONFIRM:
+                        Console.SetCursorPosition(Constants.LOCATION_X, Constants.PASSWORD_CONF_LOCATION_Y);
                         passwordConfirmation = ExceptionHandling.Instance.InputPassword(password);  //비밀번호 확인 입력
                         if (passwordConfirmation == null) --createOrder;                       
                         else if (passwordConfirmation == "q") return null;
                         break;
 
-                    case 3:
-                        Console.SetCursorPosition(2, Constants.NAME_LOCATION_Y);
-                        name = ExceptionHandling.Instance.InputName();
+                    case Constants.INPUT_NAME:
+                        Console.SetCursorPosition(Constants.LOCATION_X, Constants.NAME_LOCATION_Y);
+                        name = ExceptionHandling.Instance.InputName();                //이름입력
                         if (name == null) --createOrder;
                         else if (name == "q") return null;
                         break;
 
-                    case 4:
-                        Console.SetCursorPosition(2, Constants.PHONE_LOCATION_Y);
+                    case Constants.INPUT_PHONENUMBER:
+                        Console.SetCursorPosition(Constants.LOCATION_X, Constants.PHONE_LOCATION_Y);
                         phoneNumber = ExceptionHandling.Instance.InputPhoneNumber(customerList);  //휴대번호 입력
                         if (phoneNumber == null) --createOrder;
                         else if (phoneNumber == "q") return null;
                         break;
 
-                    case 5:
-                        Console.SetCursorPosition(2, Constants.ADRESS_LOCATION_Y);                        ;
+                    case Constants.INPUT_ADRESS:
+                        Console.SetCursorPosition(Constants.LOCATION_X, Constants.ADRESS_LOCATION_Y);                        ;
                         adress = ExceptionHandling.Instance.InputAdress();       //주소 입력
                         if (adress == null) --createOrder;
                         else if (adress == "q") return null;
@@ -90,7 +73,7 @@ namespace BookManagementProgram
             newCustomer.Name = name;
             newCustomer.PhoneNumber = phoneNumber;
             newCustomer.Adress = adress;
-            newCustomer.No = CustomerDB.Instance.InsertNewCustomer(id, password, name, phoneNumber, adress);
+            newCustomer.No = CustomerDB.Instance.InsertNewCustomer(id, password, name, phoneNumber, adress); //계정의 고유번호
 
             return newCustomer;
         }
@@ -106,18 +89,17 @@ namespace BookManagementProgram
 
             modifiedAdress = ExceptionHandling.Instance.InputAdress();
 
-            if(modifiedAdress != null)
+            if (modifiedAdress != null)
             {
                 logInCustomer.Adress = modifiedAdress;
                 CustomerDB.Instance.UpdateMyAdress(logInCustomer.No, modifiedAdress);
 
                 PrintFailMessage("주소가 변경되었습니다.");
-            }
-            else
-            {
-                PrintFailMessage("잘못된 입력입니다.");
+
+                return;
             }
 
+            PrintFailMessage("잘못된 입력입니다.");
         }
 
         public void ModifyPhoneNumber(CustomerInformationVO logInCustomer,List<CustomerInformationVO> customerList)
@@ -137,20 +119,14 @@ namespace BookManagementProgram
                 CustomerDB.Instance.UpdateMyPhoneNumber(logInCustomer.No, modifiedPhoneNumber);
 
                 PrintFailMessage("번호가 변경되었습니다.");
-            }
-            else
-            {
-                PrintFailMessage("잘못된 입력입니다.");
+
+                return;
             }
 
-        }
+            PrintFailMessage("잘못된 입력입니다.");
 
-        public List<CustomerInformationVO> SerchCustomer(List<CustomerInformationVO> customer,string serchString)
-        {
-            List<CustomerInformationVO> serchedCustomers = new List<CustomerInformationVO>();
-
-            return  serchedCustomers;
         }
+        
         public void PrintAllCustomer(List<CustomerInformationVO> customerList)
         {
             string divisionLine = new String('-', 123) + "+";

@@ -15,28 +15,23 @@ namespace BookManagementProgram
             
             List<BookInformationVO> bookList = new List<BookInformationVO>();
             List<CustomerInformationVO> customerList = new List<CustomerInformationVO>();
-            BookManagement bookManagement = new BookManagement();
-            CustomerManagement customerMangement = new CustomerManagement();
+            CustomerInformationVO logInCustomer = null;
+            UI ui = new UI();
 
-            bookManagement.InitializeBookList(bookList);                  //도서와 고객정보 불러오기
-            customerMangement.IntializeCustomerList(customerList);
+            BookDB.Instance.SelectAllBooks(bookList);             //도서와 고객정보 db 에서 불러오기
+            CustomerDB.Instance.SelectAllCustomers(customerList);
+           
             foreach (CustomerInformationVO customer in customerList)  //회원들이 대여한 책들 리스트 초기화
             {
                 RentalBookDB.Instance.InitializeCustomerRentalBook(customer);
             }
-
-            CustomerInformationVO logInCustomer = null;
-            UI ui = new UI();
-            int logOutNumber = 0;
-                                      
+                                                 
             while (true)
             {
                 logInCustomer = ui.StartInitScene(customerList);      //  로그인, 계정만들기, 게임종료 선택          
                          
-                if(logInCustomer.IsAdministrator == true) ui.StartAdministratorScene(customerList, bookList, logInCustomer);  //관리자 아이디로 로그인시
+                if(logInCustomer.IsAdministrator) ui.StartAdministratorScene(customerList, bookList, logInCustomer);  //관리자 아이디로 로그인시
                 else ui.StartGeneralUserScene(customerList, bookList, logInCustomer);           //일반유저모드로 로그인시
-
-                ++logOutNumber;
             }           
         }
     }

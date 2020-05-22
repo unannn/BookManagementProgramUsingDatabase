@@ -48,6 +48,7 @@ namespace BookManagementProgram
             return inputNumber;
         }
 
+        //도서대여 예외처리
         public bool RentBook(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList, int inputNumber)
         {
             if (inputNumber == ExceptionHandling.wrongInput)  //음수나 최대 책 개수 이상 입력
@@ -83,7 +84,7 @@ namespace BookManagementProgram
                 }
             }
 
-            return true;
+            return true;   //위 조건들을 모두 통과하면 대여
         }
         public string InputYesOrNo(string yesOrNo)   //문자열이 y 인지 n인지 아님 다른값이 들어왔는지 판단 후 반환
         {

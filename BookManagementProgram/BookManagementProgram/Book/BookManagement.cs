@@ -8,12 +8,7 @@ using MySql.Data.MySqlClient;
 namespace BookManagementProgram
 {
     class BookManagement:UITooI
-    {       
-        public void InitializeBookList(List<BookInformationVO> bookList)
-        {
-            BookDB.Instance.SelectAllBooks(bookList);
-        }
-
+    { 
         public void RentBook(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList)  //책대여 함수
         {
             bool isCollect = false;
@@ -42,18 +37,13 @@ namespace BookManagementProgram
                         return;
                     }
                 }
-            }
-            else
-            {
-                return;
+
+                PrintFailMessage("해당 도서가 존재하지 않습니다.");
             }
 
-            PrintFailMessage("해당 도서가 존재하지 않습니다.");
-
-
+            return;
         }
-
-
+        
         public void PrintBookListForReturn(CustomerInformationVO logInCustomer)  //대여일과 반납일 추가하기
         {
             string divisionLine = new String('-', 81) + "+";
@@ -102,7 +92,7 @@ namespace BookManagementProgram
             {
                 if (!string.IsNullOrEmpty(inputString) && bookList[book].Name.Contains(inputString))   //검색된 문자열이 책이름에 포함되는 책리스트의 책이 있으면
                 {
-                    serchedBooks.Add((BookInformationVO)bookList[book]);   //복사해서 serchedBooks 리스트에 추가
+                    serchedBooks.Add(bookList[book]);   //복사해서 serchedBooks 리스트에 추가
                 }
             }
 
@@ -125,7 +115,7 @@ namespace BookManagementProgram
             {
                 if (!string.IsNullOrEmpty(inputString) && bookList[book].Author.Contains(inputString))   //검색된 문자열이 책이름에 포함되는 책리스트의 책이 있으면
                 {
-                    serchedBooks.Add((BookInformationVO)bookList[book]);   //복사해서 serchedBooks 리스트에 추가
+                    serchedBooks.Add(bookList[book]);   //복사해서 serchedBooks 리스트에 추가
                 }
             }
 
@@ -148,7 +138,7 @@ namespace BookManagementProgram
             {
                 if (inputString != null && bookList[book].Publisher.Contains(inputString))   //검색된 문자열이 책이름에 포함되는 책리스트의 책이 있으면
                 {
-                    serchedBooks.Add((BookInformationVO)bookList[book]);   //복사해서 serchedBooks 리스트에 추가
+                    serchedBooks.Add(bookList[book]);   //복사해서 serchedBooks 리스트에 추가
                 }
             }
 

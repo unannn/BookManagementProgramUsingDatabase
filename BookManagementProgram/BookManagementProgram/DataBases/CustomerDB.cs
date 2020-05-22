@@ -29,6 +29,22 @@ namespace BookManagementProgram
             connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
         }
 
+        public void SelectAllCustomers(List<CustomerInformationVO> customerList)         //전체 도서 목록 가져옴
+        {
+            connection.Open();
+
+            string selectQuery = "SELECT * FROM customer";
+            MySqlCommand command = new MySqlCommand(selectQuery, connection);
+            MySqlDataReader customers = command.ExecuteReader();
+
+            while (customers.Read())
+            {
+                customerList.Add(new CustomerInformationVO(int.Parse(customers["no"].ToString()), customers["id"].ToString(), customers["password"].ToString(), customers["name"].ToString(), customers["phoneNumber"].ToString(), customers["adress"].ToString(), bool.Parse(customers["administrator"].ToString())));
+            }
+
+            connection.Close();
+        }
+
         public int InsertNewCustomer(string id,string password, string name, string PhoneNumber,string adress)  //새 계정 생성
         {
             int no;

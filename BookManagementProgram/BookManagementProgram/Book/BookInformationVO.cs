@@ -14,6 +14,7 @@ namespace BookManagementProgram
         private string publisher;   //출판사 최대10자
         private int quantity;       //최대 9권
         private int maxQuantity;
+        private int price;
 
         public int No
         {
@@ -50,7 +51,12 @@ namespace BookManagementProgram
             get { return maxQuantity; }
             set { maxQuantity = value; }
         }
-                
+
+        public int Price
+        {
+            get { return price; }
+            set { price = value; }
+        }
         public BookInformationVO()
         {
             name = null;
@@ -58,18 +64,8 @@ namespace BookManagementProgram
             publisher = null;
             quantity = 0;
         }
-                
-        public BookInformationVO(int no, string name, string author, string publisher, int quantity)
-        {
-            this.no = no;
-            this.name = name;
-            this.author = author;
-            this.publisher = publisher;
-            this.quantity = quantity;
-            this.maxQuantity = quantity;
-        }
 
-        public BookInformationVO(int no, string name, string author, string publisher, int quantity, int maxQuantity)
+        public BookInformationVO(int no, string name, string author, string publisher, int quantity, int maxQuantity, int price)
         {
             this.no = no;
             this.name = name;
@@ -77,6 +73,7 @@ namespace BookManagementProgram
             this.publisher = publisher;
             this.quantity = quantity;
             this.maxQuantity = maxQuantity;
+            this.price = price;
         }
 
         public object Clone()

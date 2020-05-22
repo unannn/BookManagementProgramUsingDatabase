@@ -40,7 +40,7 @@ namespace BookManagementProgram
 
             while (books.Read())
             {
-                bookList.Add(new BookInformationVO(int.Parse(books["no"].ToString()), books["title"].ToString(), books["author"].ToString(), books["publisher"].ToString(), int.Parse(books["quantity"].ToString()), int.Parse(books["maxQuntity"].ToString())));
+                bookList.Add(new BookInformationVO(int.Parse(books["no"].ToString()), books["title"].ToString(), books["author"].ToString(), books["publisher"].ToString(), int.Parse(books["quantity"].ToString()), int.Parse(books["maxQuntity"].ToString()), int.Parse(books["book_price"].ToString())));
             }
 
             connection.Close();
@@ -78,14 +78,14 @@ namespace BookManagementProgram
             return rowNumber;
         }
 
-        public int InsertNewBook(string name, string author, string publisher, int quantity)         //새 도서 등록
+        public int InsertNewBook(string name, string author, string publisher, int quantity,int price)         //새 도서 등록
         {
             int no;
 
             connection.Open();
 
-            string insertQuery = "INSERT INTO book(title,author,publisher,quantity,maxQuntity) VALUES(\""
-                + name + "\",\"" + author + "\",\"" + publisher + "\"," + quantity + "," + quantity + ")";
+            string insertQuery = "INSERT INTO book(title,author,publisher,quantity,maxQuntity,book_price) VALUES(\""
+                + name + "\",\"" + author + "\",\"" + publisher + "\"," + quantity + "," + quantity + "," +price + ")";
             string selectQuery = "SELECT LAST_INSERT_ID()";   //방금 등록한 도서의 primary key 를 가져옴
 
             MySqlCommand command = new MySqlCommand(insertQuery, connection);

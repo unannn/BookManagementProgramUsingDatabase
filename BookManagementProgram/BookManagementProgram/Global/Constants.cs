@@ -39,19 +39,21 @@ namespace BookManagementProgram
         public const int LOCATION_X = 2;
         public const int LOGIN_ID_LOCATION_Y = 8;
         public const int LOGIN_PASSWORD_LOCATION_Y = 12;
-
-
+        
         //입력 범위
         public const int STARTING_NUMBER = 1;
         public const int BOOK_QUANTITY_MAXIMUM = 10;
         public const int BOOK_NUMBER_MAXIMUM = 10000;
+        public const int BOOK_PRICE_MINIMUM = 1000;
+
+        public const int BOOK_PRICE_MAXIMUM = 99999;
         public const int RENT_BOOK_MAXIMUM = 5;
         public const int BOOK_NAME_LENGTH_MAXIMUM = 20;
         public const int BOOK_AUTHOER_LENGTH_MAXIMUM = 15;
         public const int BOOK_PUBLISHER_LENGTH_MAXIMUM = 10;
         public const int DATE_LENGTH_MAXIMUM = 10;
+        
         //관리자모드 메뉴
-
         public const int BOOK_SERCHING_RENTAL = 1;
         public const int BOOK_RETURN = 2;
         public const int BOOK_REGISTRATION = 3;
@@ -62,10 +64,37 @@ namespace BookManagementProgram
         public const int LOGOUT = 8;
         public const int PROGRAM_END_ADMIN = 9;
 
-        //일반유저 모드
-        
+        //일반유저 모드 메뉴        
         public const int MY_DATA_MODIFYING_USER = 3;
         public const int LOGOUT_USER = 4;
         public const int PROGRAM_END_USER = 5;
+
+        //새 계정 생성
+        public const int INPUT_ID = 0;
+        public const int INPUT_PASSWORD = 1;
+        public const int INPUT_PASSWORD_CONFIRM = 2;
+        public const int INPUT_NAME = 3;
+        public const int INPUT_PHONENUMBER = 4;
+        public const int INPUT_ADRESS = 5;
+
+        //제목위치
+        public const int BASIC_LOCATION = 7;
+        public const int BOOK_RENT_LOCATION = 27;
+
+        //도서검색및 대여 메뉴
+        public const int SEARCHING_BY_TITLE = 1;
+        public const int SEARCHING_BY_AUTHOER = 2;
+        public const int SEARCHING_BY_PUBLISHER = 3;
+        public const int RENT_BOOK = 4;
+        public const int EXIT_SEARCHING = 5;
+
+        //내정보수정 메뉴
+
+        public const int MODIFYING_PHONENUMBER = 1;
+        public const int MODIFYING_ADRESS = 2;
+        public const int MODIFYING_EXIT = 3;
+
+
+        
     }
 }
