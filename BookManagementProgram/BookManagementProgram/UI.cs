@@ -661,7 +661,8 @@ namespace BookManagementProgram
                 newBook.Publisher = publisher;
                 newBook.Quantity = quantity;
                 newBook.MaxQuantity = quantity;
-                BookDB.Instance.InsertNewBook(name, author, publisher, quantity);  //데베에 도서정보 삽입
+
+                newBook.No = BookDB.Instance.InsertNewBook(name, author, publisher, quantity);  //데베에 도서정보 삽입
                 bookList.Add(newBook);
                 Console.WriteLine();
 
@@ -674,10 +675,11 @@ namespace BookManagementProgram
 
         public void DeleteBook(List<BookInformationVO> bookList) //등록되어있는 책들 삭제하는 함수
         {
-            string name;
+            string inpuNumberInString;
+            int inputNumber;
             string confirmationMessage = null;
             BookManagement bookManagement = new BookManagement();
-
+            int bookIndex;
             Console.Clear();
 
             PrintTitle(7);
@@ -687,8 +689,21 @@ namespace BookManagementProgram
 
             PrintBookList(bookList);
 
-            Console.Write(" 삭제할 도서 이름 입력 : ");
-            name = ExceptionHandling.Instance.InputString(1, 30);
+            Console.Write(" 삭제할 도서 번호 입력 : ");
+            inpuNumberInString = Console.ReadLine();
+            inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_NUMBER_MAXIMUM, inpuNumberInString);
+
+            for(bookIndex = 0;bookIndex < bookList.Count; bookIndex++)  //해당 도서가 있는지 검사
+            {
+                if (bookList[bookIndex].No == inputNumber) break;
+            }
+
+            if (bookIndex == bookList.Count)
+            {
+                PrintFailMessage("해당 도서가 존재하지 않습니다.");
+                Console.Clear();
+                return;
+            }
 
             while (true)
             {
@@ -710,36 +725,40 @@ namespace BookManagementProgram
             if(confirmationMessage == "y")
             {                
 
-                if (name != null)
-                {
-                    for (int book = 0; book < bookList.Count; book++)
+                if (inputNumber != ExceptionHandling.wrongInput )
+                {                    
+                    foreach(BookInformationVO book in bookList)
                     {
-                        if (bookList[book].Name == name)
+                        bookIndex = 0;
+
+                        if (book.No == inputNumber)
                         {
-                            if(bookList[book].Quantity != bookList[book].MaxQuantity)
+                            if(book.Quantity != book.MaxQuantity)
                             {
                                 PrintFailMessage("반납되지 않은 도서가 있습니다.");
                                 Console.Clear();
                                 return;
                             }
 
-                            bookList.RemoveAt(book);
-                            Console.WriteLine();
 
+                            bookList.RemoveAt(bookIndex);
+                            Console.WriteLine();
+                            BookDB.Instance.DeleteBook(inputNumber);
                             PrintFailMessage("해당 도서가 삭제됐습니다.");
 
                             Console.Clear();
                             return;
+
                         }
-                    }
+
+                        ++bookIndex;
+                    }                   
                 }
             }      
             
             Console.WriteLine();
 
-            PrintFailMessage("해당 도서가 존재하지 않습니다.");
-
-            Console.Clear();
+            
         }
 
         private void ShowCustomerList(List<CustomerInformationVO> customerList)

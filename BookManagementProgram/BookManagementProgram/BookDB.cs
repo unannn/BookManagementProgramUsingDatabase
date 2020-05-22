@@ -84,18 +84,41 @@ namespace BookManagementProgram
             return rowNumber;
         }
 
-        public void InsertNewBook(string name, string author, string publisher, int quantity)
+        public int InsertNewBook(string name, string author, string publisher, int quantity)
         {
+            int no;
+
             connection.Open();
 
-            string insertQuery = "INSERT INTO book(title,author,publisher,quantity,maxQuntity) VALUES(\"" + name + "\",\"" + author + "\",\"" + publisher + "\"," + quantity + "," + quantity + ")";
+            string insertQuery = "INSERT INTO book(title,author,publisher,quantity,maxQuntity) VALUES(\""
+                + name + "\",\"" + author + "\",\"" + publisher + "\"," + quantity + "," + quantity + ")";
+            string selectQuery = "SELECT LAST_INSERT_ID()";   //방금 등록한 도서의 primary key 를 가져옴
 
             MySqlCommand command = new MySqlCommand(insertQuery, connection);
 
             command.ExecuteNonQuery();
 
+            command = new MySqlCommand(selectQuery, connection);
+
+            no = int.Parse(command.ExecuteScalar().ToString());    
+
             connection.Close();
-            
+
+            return no;
+        }
+
+        public void DeleteBook(int inputNumber)
+        {
+            connection.Open();
+
+            string deleteQuery = "DELETE FROM book WHERE no = " + inputNumber;
+
+            MySqlCommand command = new MySqlCommand(deleteQuery, connection);
+
+            command.ExecuteNonQuery();
+
+            connection.Close();
+
         }
     }
 }
