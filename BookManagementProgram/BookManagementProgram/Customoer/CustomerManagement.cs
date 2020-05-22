@@ -23,6 +23,7 @@ namespace BookManagementProgram
             {
                 customerList.Add(new CustomerInformationVO(int.Parse(customers["no"].ToString()), customers["id"].ToString(), customers["password"].ToString(), customers["name"].ToString(), customers["phoneNumber"].ToString(), customers["adress"].ToString(), bool.Parse(customers["administrator"].ToString())));
             }
+
             connection.Close();
         }
 

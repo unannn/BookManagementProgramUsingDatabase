@@ -12,9 +12,7 @@ namespace BookManagementProgram
         public void StartProgram()
         {
             Console.Title = "BookManagementProgram";
-            MySqlConnection connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
-
-
+            
             List<BookInformationVO> bookList = new List<BookInformationVO>();
             List<CustomerInformationVO> customerList = new List<CustomerInformationVO>();
             BookManagement bookManagement = new BookManagement();

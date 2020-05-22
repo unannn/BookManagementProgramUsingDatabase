@@ -26,17 +26,23 @@ namespace BookManagementProgram
         RentalBookDB()
         {
             connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
+            
+        }
+
+        //~RentalBookDB()
+        //{
+        //    connection.Close();
+        //}
+
+        public void InsertRentalBookInfo(int customerNumber,int bookNumber)
+        {
             connection.Open();
-        }
 
-        ~RentalBookDB()
-        {
+            string insertQuery = "INSERT INTO rentalinfo(customer_no,book_no,rental_date,return_date) VALUES("+customerNumber+","+bookNumber + ",CURDATE(),DATE_ADD(CURDATE(),INTERVAL 7 day))";
+            MySqlCommand command = new MySqlCommand(insertQuery, connection);
+            command.ExecuteNonQuery();
+
             connection.Close();
-        }
-
-        public void InsertRentalBookInfo(int customer_no)
-        {
-
         }
     }
 }

@@ -11,12 +11,7 @@ namespace BookManagementProgram
     {       
         public void InitializeBookList(List<BookInformationVO> bookList)
         {
-            MySqlDataReader books = BookDB.Instance.SelectAllBooks();
-
-            while (books.Read())
-            {
-                bookList.Add(new BookInformationVO(int.Parse(books["no"].ToString()), books["title"].ToString(), books["author"].ToString(), books["publisher"].ToString(), int.Parse(books["quantity"].ToString()),int.Parse(books["maxQuntity"].ToString())));
-            }
+            MySqlDataReader books = BookDB.Instance.SelectAllBooks(bookList);
         }
 
         public void RentBook(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList)  //책대여 함수
@@ -31,27 +26,42 @@ namespace BookManagementProgram
             inputNumberInString = Console.ReadLine();
             inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_NUMBER_MAXIMUM, inputNumberInString);
 
+            if(logInCustomer.RentedBook.Count > Constants.RENT_BOOK_MAXIMUM)   //최대 대여가능 도서수 제한
+            {
+                PrintFailMessage("더이상 대여할 수 없습니다(최대 5권 대여가능).");
+                return;
+            }
+
             if (inputNumber != ExceptionHandling.wrongInput) //올바른 번호가 입력되고 남은 수량이 있으면
             {
-                rowNumber = BookDB.Instance.UpdateRentalBook(inputNumber);
-
-                if (rowNumber != 0)                              //중복대여여부 검사해야함
+                foreach(BookInformationVO rentedBooks in logInCustomer.RentedBook)  //중복대여 여부 검사
                 {
-                    foreach(BookInformationVO book in bookList)
+                    if(rentedBooks.No == inputNumber)
                     {
-                        if(book.No == inputNumber)
-                        {
-                           book.Quantity -= 1;
-                            logInCustomer.RentedBook.Add(book);
-                            PrintFailMessage("대여가 완료되었습니다.");
-                            return;
-                        }
+                        PrintFailMessage("이미 대여한 도서입니다.");
+                        return;
                     }
                 }
-                else
+                
+                foreach (BookInformationVO book in bookList)
                 {
-                    PrintFailMessage("해당 도서가 존재하지 않습니다.");
-                }                
+                    if (book.No == inputNumber)
+                    {
+                        if (book.Quantity < 1) //대여할 책이 남아있는지 검사
+                        {
+                            PrintFailMessage("대여할 도서가 없습니다.");
+                            return;
+                        }
+
+                        rowNumber = BookDB.Instance.UpdateRentalBook(inputNumber);
+                        RentalBookDB.Instance.InsertRentalBookInfo(logInCustomer.No, inputNumber);
+                        book.Quantity -= 1;
+                        logInCustomer.RentedBook.Add(book);
+                        PrintFailMessage("대여가 완료되었습니다.");
+                        return;
+                    }
+                }
+
             }
             else
             {

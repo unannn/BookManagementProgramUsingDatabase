@@ -17,7 +17,7 @@ namespace BookManagementProgram
         private bool isAdministrator;
         private List<BookInformationVO> rentedBook;
 
-        private int No
+        public int No
         {
             get { return no; }
             set { no = value; }

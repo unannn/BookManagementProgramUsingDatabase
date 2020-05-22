@@ -26,32 +26,45 @@ namespace BookManagementProgram
         BookDB()
         {
             connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
+        }
+
+
+        //~BookDB()
+        //{
+        //    connection.Close();
+        //}
+
+        public MySqlDataReader SelectAllBooks(List<BookInformationVO> bookList)
+        {
             connection.Open();
-        }
 
-
-        ~BookDB()
-        {
-            connection.Close();
-        }
-
-        public MySqlDataReader SelectAllBooks()
-        {
             string selectQuery = "SELECT * FROM book";
             MySqlCommand command = new MySqlCommand(selectQuery, connection);
             MySqlDataReader books = command.ExecuteReader();
+
+
+            while (books.Read())
+            {
+                bookList.Add(new BookInformationVO(int.Parse(books["no"].ToString()), books["title"].ToString(), books["author"].ToString(), books["publisher"].ToString(), int.Parse(books["quantity"].ToString()), int.Parse(books["maxQuntity"].ToString())));
+            }
+
+            connection.Close();
 
             return books;
         }
 
         public int UpdateRentalBook(int inputNumber)
         {
+            connection.Open();
+
             int rowNumber;
             string updateQuery = "UPDATE book SET quantity = quantity - 1 WHERE book.no = " + inputNumber;
 
             MySqlCommand command = new MySqlCommand(updateQuery, connection);
 
             rowNumber = command.ExecuteNonQuery();
+
+            connection.Close();
 
             return rowNumber;  
         }
