@@ -461,7 +461,7 @@ namespace BookManagementProgram
                 }
 
                 Console.WriteLine("대여중인 도서 목록\n");
-                bookMangement.PrintBookListForReturn(logInCustomer.RentedBook);
+                bookMangement.PrintBookListForReturn(logInCustomer);
                                 
                 Console.Write("반납 할 책 번호 입력 : ");
 
@@ -612,8 +612,8 @@ namespace BookManagementProgram
                 Console.WriteLine("q 입력시 도서등록 종료");
                 Console.WriteLine();
 
-                Console.Write("     도서 이름 : ");
-                name = ExceptionHandling.Instance.InputString(1, 30);
+                Console.Write("(20글자까지)도서 이름 : ");
+                name = ExceptionHandling.Instance.InputString(Constants.STARTING_NUMBER, Constants.BOOK_NAME_LENGTH_MAXIMUM);
                 if (name == null)
                 {
                     PrintFailMessage("잘못된 입력 입니다.");
@@ -626,8 +626,8 @@ namespace BookManagementProgram
                 }
 
                 Console.WriteLine();
-                Console.Write("     도서 저자 : ");
-                author = ExceptionHandling.Instance.InputString(1, 20);
+                Console.Write("(15글자까지)도서 저자 : ");
+                author = ExceptionHandling.Instance.InputString(Constants.STARTING_NUMBER, Constants.BOOK_AUTHOER_LENGTH_MAXIMUM);
 
                 if (author == null)
                 {
@@ -641,8 +641,8 @@ namespace BookManagementProgram
                 }
 
                 Console.WriteLine();
-                Console.Write("   도서 출판사 : ");
-                publisher = ExceptionHandling.Instance.InputString(1, 10);
+                Console.Write("(10글자까지)도서 출판사 : ");
+                publisher = ExceptionHandling.Instance.InputString(Constants.STARTING_NUMBER, Constants.BOOK_PUBLISHER_LENGTH_MAXIMUM);
                 if (publisher == null)
                 {
                     PrintFailMessage("잘못된 입력 입니다.");

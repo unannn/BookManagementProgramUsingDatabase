@@ -40,5 +40,8 @@ namespace BookManagementProgram
         public const int BOOK_QUANTITY_MAXIMUM = 10;
         public const int BOOK_NUMBER_MAXIMUM = 10000;
         public const int RENT_BOOK_MAXIMUM = 5;
+        public const int BOOK_NAME_LENGTH_MAXIMUM = 20;
+        public const int BOOK_AUTHOER_LENGTH_MAXIMUM = 15;
+        public const int BOOK_PUBLISHER_LENGTH_MAXIMUM = 10;
     }
 }

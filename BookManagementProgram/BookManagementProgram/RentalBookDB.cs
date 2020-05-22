@@ -67,5 +67,24 @@ namespace BookManagementProgram
 
             connection.Close();
         }
+
+        public string[] SelectRentalAndReturnDate(int custmerNumber,int bookNumber)
+        {
+            string[] rentalAndReturnDate = new string[2];
+            connection.Open();
+
+            string selectQuery = "SELECT rental_date,return_date FROM rentalInfo WHERE customer_no = " + custmerNumber + " AND book_no = " + bookNumber;
+            MySqlCommand command = new MySqlCommand(selectQuery, connection);
+            MySqlDataReader date = command.ExecuteReader();
+
+            date.Read();
+
+            rentalAndReturnDate[0] = date["rental_date"].ToString();
+            rentalAndReturnDate[1] = date["return_date"].ToString();
+            
+            connection.Close();
+
+            return rentalAndReturnDate;      
+        }
     }
 }

@@ -71,19 +71,32 @@ namespace BookManagementProgram
         }
              
 
-        public void PrintBookListForReturn(List<BookInformationVO> bookList)  //대여일과 반납일 추가하기
+        public void PrintBookListForReturn(CustomerInformationVO logInCustomer)  //대여일과 반납일 추가하기
         {
-            string divisionLine = new String('-', 72);
+            string divisionLine = new String('-', 81) + "+";
+            string[] rentalAndReturnDate;
+            Console.WriteLine(divisionLine);
 
-            for (int order = 0; order < bookList.Count; order++)
+            OneSpace("NO", Constants.BOOK_NUMBER_MAXIMUM.ToString().Length);
+            OneSpace("이름", Constants.BOOK_NAME_LENGTH_MAXIMUM);
+            OneSpace("저자", Constants.BOOK_AUTHOER_LENGTH_MAXIMUM);
+            OneSpace("출판사", Constants.BOOK_PUBLISHER_LENGTH_MAXIMUM);
+            OneSpace("대여일", 10);
+            OneSpace("반납일", 10);
+
+            Console.WriteLine();
+
+            for (int order = 0; order < logInCustomer.RentedBook.Count; order++)
             {
                 Console.WriteLine(divisionLine);
 
-                OneSpace(bookList[order].No.ToString(), 3);
-                OneSpace(bookList[order].Name, 30);
-                OneSpace(bookList[order].Author, 20);
-                OneSpace(bookList[order].Publisher, 10);
-                                
+                OneSpace(logInCustomer.RentedBook[order].No.ToString(), Constants.BOOK_NUMBER_MAXIMUM.ToString().Length);
+                OneSpace(logInCustomer.RentedBook[order].Name, Constants.BOOK_NAME_LENGTH_MAXIMUM);
+                OneSpace(logInCustomer.RentedBook[order].Author, Constants.BOOK_AUTHOER_LENGTH_MAXIMUM);
+                OneSpace(logInCustomer.RentedBook[order].Publisher, Constants.BOOK_PUBLISHER_LENGTH_MAXIMUM);
+                rentalAndReturnDate = RentalBookDB.Instance.SelectRentalAndReturnDate(logInCustomer.No, logInCustomer.RentedBook[order].No);
+                OneSpace(rentalAndReturnDate[0].Substring(0,10), 10);
+                OneSpace(rentalAndReturnDate[1].Substring(0, 10), 10);
                 Console.WriteLine();
             }
 
