@@ -44,5 +44,16 @@ namespace BookManagementProgram
 
             connection.Close();
         }
+
+        public void DeleteRentalBookInfo(int customerNumber, int bookNumber)
+        {
+            connection.Open();
+
+            string deleteQuery = "DELETE FROM rentalinfo WHERE customer_no = " +customerNumber + " AND book_no = " + bookNumber;
+            MySqlCommand command = new MySqlCommand(deleteQuery, connection);
+            command.ExecuteNonQuery();
+
+            connection.Close();
+        }
     }
 }

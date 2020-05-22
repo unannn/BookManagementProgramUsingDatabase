@@ -463,8 +463,6 @@ namespace BookManagementProgram
                 Console.WriteLine("대여중인 도서 목록\n");
                 bookMangement.PrintBookListForReturn(logInCustomer.RentedBook);
                                 
-               
-
                 Console.Write("반납 할 책 번호 입력 : ");
 
                 if (inputNumber == ExceptionHandling.wrongInput)      //잘못된 입력시
@@ -501,21 +499,28 @@ namespace BookManagementProgram
 
                     foreach (BookInformationVO book in bookList)
                     {
-                        if (book.Name == logInCustomer.RentedBook[inputNumber - 1].Name) book.Quantity += 1;    //같은 제목의 책을 리스트에찾아 반납
+                        if (book.No == inputNumber)
+                        {
+                            book.Quantity += 1;    //같은 제목의 책을 리스트에찾아 반납
+                            BookDB.Instance.UpdateReturnBook(inputNumber);
+                            for (int rentalIndex = 0; rentalIndex < logInCustomer.RentedBook.Count; rentalIndex++) //대여한 도서 목록에서 삭제
+                            {
+                                if(logInCustomer.RentedBook[rentalIndex].No == book.No)
+                                {
+                                    logInCustomer.RentedBook.RemoveAt(rentalIndex);
+                                    break;
+                                }
+                            }
+                            RentalBookDB.Instance.DeleteRentalBookInfo(logInCustomer.No, book.No); //도서대여정보 삭제
+                            PrintFailMessage("반납이 완료 됐습니다.");
+                            Console.Clear();
+
+                            return;
+                        }
                     }
 
-                    MySqlConnection connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
-                    string updateQuery = "UPDATE book SET quantity = quantity + 1 WHERE book.no = " + inputNumber;
-                    connection.Open();
-                    MySqlCommand command = new MySqlCommand(updateQuery, connection);
-                    //rowNumber = command.ExecuteNonQuery();
-                    connection.Close();
 
-                    logInCustomer.RentedBook.RemoveAt(inputNumber - 1);       //대여한 도서 목록에서 삭제
 
-                    PrintFailMessage("반납이 완료 됐습니다.");
-
-                    Console.Clear();
                     isEnd = true;
 
                 }

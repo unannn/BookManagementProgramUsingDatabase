@@ -69,6 +69,20 @@ namespace BookManagementProgram
             return rowNumber;  
         }
 
+        public  int UpdateReturnBook(int inputNumber)
+        {
+            connection.Open();
 
+            int rowNumber;
+            string updateQuery = "UPDATE book SET quantity = quantity + 1 WHERE book.no = " + inputNumber;
+
+            MySqlCommand command = new MySqlCommand(updateQuery, connection);
+
+            rowNumber = command.ExecuteNonQuery();
+
+            connection.Close();
+
+            return rowNumber;
+        }
     }
 }
