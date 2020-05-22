@@ -23,6 +23,7 @@ namespace BookManagementProgram
                 return instance;
             }
         }
+
         BookDB()
         {
             connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
@@ -34,7 +35,7 @@ namespace BookManagementProgram
         //    connection.Close();
         //}
 
-        public MySqlDataReader SelectAllBooks(List<BookInformationVO> bookList)
+        public void SelectAllBooks(List<BookInformationVO> bookList)
         {
             connection.Open();
 
@@ -49,8 +50,6 @@ namespace BookManagementProgram
             }
 
             connection.Close();
-
-            return books;
         }
 
         public int UpdateRentalBook(int inputNumber)

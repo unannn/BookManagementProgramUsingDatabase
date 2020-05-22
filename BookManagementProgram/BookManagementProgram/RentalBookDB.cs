@@ -33,6 +33,22 @@ namespace BookManagementProgram
         //{
         //    connection.Close();
         //}
+        public void InitializeCustomerRentalBook(CustomerInformationVO logInCustomer)
+        {
+            connection.Open();
+
+            string selectQuery = "SELECT book.no, title, author, publisher, quantity, maxQuntity FROM rentalInfo LEFT JOIN book ON rentalinfo.book_no = book.no WHERE rentalinfo.customer_no = "+logInCustomer.No;
+            MySqlCommand command = new MySqlCommand(selectQuery, connection);
+            MySqlDataReader books = command.ExecuteReader();
+
+
+            while (books.Read())
+            {
+                logInCustomer.RentedBook.Add(new BookInformationVO(int.Parse(books["no"].ToString()), books["title"].ToString(), books["author"].ToString(), books["publisher"].ToString(), int.Parse(books["quantity"].ToString()), int.Parse(books["maxQuntity"].ToString())));
+            }
+
+            connection.Close();            
+        }
 
         public void InsertRentalBookInfo(int customerNumber,int bookNumber)
         {

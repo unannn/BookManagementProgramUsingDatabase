@@ -11,7 +11,7 @@ namespace BookManagementProgram
     {       
         public void InitializeBookList(List<BookInformationVO> bookList)
         {
-            MySqlDataReader books = BookDB.Instance.SelectAllBooks(bookList);
+            BookDB.Instance.SelectAllBooks(bookList);
         }
 
         public void RentBook(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList)  //책대여 함수
