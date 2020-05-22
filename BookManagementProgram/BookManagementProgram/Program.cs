@@ -4,8 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
-using MySql.Data.MySqlClient;
+/*
+    관리자모드 
+    id : admin  password : 0000
 
+    일반사용자모드 
+    id : asdf  password : asdf
+    id : as  password : as     
+*/
 namespace BookManagementProgram
 {
     class Program

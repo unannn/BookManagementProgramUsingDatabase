@@ -65,45 +65,45 @@ namespace BookManagementProgram
 
                 switch (selectedNumber)
                 {                    
-                    case 1:
+                    case Constants.BOOK_SERCHING_RENTAL:
                         Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         PrintAndSerchAndRentBook(bookList, logInCustomer);      //도서 출력, 검색, 대여                               
                         break;
 
-                    case 2:
+                    case Constants.BOOK_RETURN:
                         Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         PrintBookReturn(logInCustomer, bookList);   //도서 반납
                         break;
 
-                    case 3:              //도서 등록
+                    case Constants.BOOK_REGISTRATION:             //도서 등록
                         ResisterBook(bookList);
                         break;
 
-                    case 4:               //도서 삭제
+                    case Constants.BOOK_DELETE:               //도서 삭제
                         Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         DeleteBook(bookList);
                         break;
 
-                    case 5:            //회원리스트 보기
+                    case Constants.CUSOMTER_LIST:            //회원리스트 보기
                         Console.SetWindowSize(Constants.CUSTOMER_PROCESS_WIDTH,Constants.CUSTOMER_PROCESS_HEIGHT);
                         ShowCustomerList(customerList);
                         break;
 
-                    case 6:           //회원 삭제
+                    case Constants.CUSTOMER_DELETE:           //회원 삭제
                         Console.SetWindowSize(Constants.CUSTOMER_PROCESS_WIDTH, Constants.CUSTOMER_PROCESS_HEIGHT);
                         DeleteCustomer(customerList);
                         break;
 
-                    case 7:           //내정보 수정
+                    case Constants.MY_DATA_MODIFYING:           //내정보 수정
                         Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         ModifyMyData(logInCustomer, customerList);
                         break;
 
-                    case 8:           //로그아웃
+                    case Constants.LOGOUT:           //로그아웃
                         loginSucessful = false;
                         break;
 
-                    case 9:           //프로그램 종료
+                    case Constants.PROGRAM_END_ADMIN:           //프로그램 종료
                         Environment.Exit(0);
                         break;
 
@@ -126,28 +126,31 @@ namespace BookManagementProgram
 
                 switch (selectedNumber)
                 {
-                    case 1:
+                    case Constants.BOOK_SERCHING_RENTAL:
                         Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         PrintAndSerchAndRentBook(bookList, logInCustomer);
-
                         break;
-                    case 2:
+
+                    case Constants.BOOK_RETURN:
                         Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         PrintBookReturn(logInCustomer, bookList);
                         break;
-                    case 3:           //내정보 수정
+
+                    case Constants.MY_DATA_MODIFYING_USER:           //내정보 수정
                         Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         ModifyMyData(logInCustomer, customerList);
                         break;
-                    case 4:           //로그아웃
+
+                    case Constants.LOGOUT_USER:           //로그아웃
                         loginSucessful = false;
                         break;
-                    case 5:           //프로그램 종료
+
+                    case Constants.PROGRAM_END_USER:           //프로그램 종료
                         Environment.Exit(0);
                         break;
+
                     default:
                         break;
-
                 }
             }
         }
@@ -222,7 +225,7 @@ namespace BookManagementProgram
             Console.Clear();
 
             PrintTitle(7);
-            Console.WriteLine("q입력 시 종료\n");
+            Console.WriteLine("q입력 시 나가기\n");
 
             Console.WriteLine("아이디 (특수문자 없이 2~11글자)");
             PrintInputBox("");
@@ -420,18 +423,28 @@ namespace BookManagementProgram
 
         private void PrintBookList(List<BookInformationVO> bookList)
         {
-            string divisionLine = new String('-', 76);
+            string divisionLine = new String('-', 64) + "+";
+
+            Console.WriteLine(divisionLine);
+
+            OneSpace("NO", Constants.BOOK_NUMBER_MAXIMUM.ToString().Length);
+            OneSpace("제목", Constants.BOOK_NAME_LENGTH_MAXIMUM);
+            OneSpace("저자", Constants.BOOK_AUTHOER_LENGTH_MAXIMUM);
+            OneSpace("출판사", Constants.BOOK_PUBLISHER_LENGTH_MAXIMUM);
+
+            Console.Write("총권수|");
+            Console.WriteLine();
 
             for (int order = 0; order < bookList.Count; order++)
             {
                 Console.WriteLine(divisionLine);
 
-                OneSpace(bookList[order].No.ToString(), 3);
-                OneSpace(bookList[order].Name, 30);
-                OneSpace(bookList[order].Author, 20);
-                OneSpace(bookList[order].Publisher, 10);
+                OneSpace(bookList[order].No.ToString(), Constants.BOOK_NUMBER_MAXIMUM.ToString().Length);
+                OneSpace(bookList[order].Name, Constants.BOOK_NAME_LENGTH_MAXIMUM);
+                OneSpace(bookList[order].Author, Constants.BOOK_AUTHOER_LENGTH_MAXIMUM);
+                OneSpace(bookList[order].Publisher, Constants.BOOK_PUBLISHER_LENGTH_MAXIMUM);
 
-                Console.Write(" " + bookList[order].Quantity + "권");
+                Console.Write("   " + bookList[order].Quantity + "권|");
                 Console.WriteLine();
             }
 
@@ -450,7 +463,7 @@ namespace BookManagementProgram
             {
                 Console.Clear();
 
-                PrintTitle(7);
+                PrintTitle(27);
 
                 if (logInCustomer.RentedBook.Count == 0)   //대여한 도서가 없을경우 메소드 종료
                 {
@@ -461,6 +474,8 @@ namespace BookManagementProgram
                 }
 
                 Console.WriteLine("대여중인 도서 목록\n");
+                Console.WriteLine("q입력시 나가기\n");
+
                 bookMangement.PrintBookListForReturn(logInCustomer);
                                 
                 Console.Write("반납 할 책 번호 입력 : ");
@@ -476,6 +491,7 @@ namespace BookManagementProgram
                 }
 
                 inputNumberInString = Console.ReadLine();
+                if (inputNumberInString == "q") return;
                 inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER,Constants.BOOK_NUMBER_MAXIMUM,inputNumberInString);                                
                 
                 for(bookIndex = 0;bookIndex < bookList.Count;bookIndex++)   //해당도서가 존재하는지 조사
@@ -528,14 +544,9 @@ namespace BookManagementProgram
                             PrintFailMessage("반납이 완료 됐습니다.");
                             Console.Clear();
 
-                            return;
+                            break;
                         }
                     }
-
-
-
-                    isEnd = true;
-
                 }
             }
 
@@ -600,6 +611,7 @@ namespace BookManagementProgram
 
             string name, author, publisher, quantityInString;
             int quantity;
+
             while (!isEnd)
             {
                 Console.Clear();
@@ -693,85 +705,90 @@ namespace BookManagementProgram
             string confirmationMessage = null;
             BookManagement bookManagement = new BookManagement();
             int bookIndex;
-            Console.Clear();
+            bool isEnd = false;
 
-            PrintTitle(7);
-
-            Console.WriteLine();
-            Console.WriteLine("    도서 삭제\n");
-
-            PrintBookList(bookList);
-
-            Console.Write(" 삭제할 도서 번호 입력 : ");
-            inpuNumberInString = Console.ReadLine();
-            inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_NUMBER_MAXIMUM, inpuNumberInString);
-
-            for(bookIndex = 0;bookIndex < bookList.Count; bookIndex++)  //해당 도서가 있는지 검사
+            while (!isEnd)
             {
-                if (bookList[bookIndex].No == inputNumber) break;
-            }
-
-            if (bookIndex == bookList.Count)
-            {
-                PrintFailMessage("해당 도서가 존재하지 않습니다.");
                 Console.Clear();
-                return;
-            }
 
-            while (true)
-            {
-                Console.Write("정말로 삭제 하시겠습니까?[y,n]");
-                confirmationMessage = ExceptionHandling.Instance.InputString(1, 1);
+                PrintTitle(27);
 
-                if (confirmationMessage != "y" && confirmationMessage != "n")
+                Console.WriteLine();
+                Console.WriteLine("    도서 삭제\n");
+                Console.WriteLine("q입력시 나가기\n");
+
+                PrintBookList(bookList);
+
+                Console.Write(" 삭제할 도서 번호 입력 : ");
+                inpuNumberInString = Console.ReadLine();
+                if (inpuNumberInString == "q") return;            //q입력시 종료
+                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_NUMBER_MAXIMUM, inpuNumberInString);
+
+                for (bookIndex = 0; bookIndex < bookList.Count; bookIndex++)  //해당 도서가 있는지 검사
                 {
-                    Console.SetCursorPosition(0, Console.CursorTop-1);
-                    Console.Write(new string(' ', 76));
-                    Console.SetCursorPosition(0, Console.CursorTop);
+                    if (bookList[bookIndex].No == inputNumber) break;
+                }
 
+                if (bookIndex == bookList.Count)
+                {
+                    PrintFailMessage("해당 도서가 존재하지 않습니다.");
                     continue;
                 }
 
-                break;
-            }
+                while (true)
+                {
+                    Console.Write("정말로 삭제 하시겠습니까?[y,n]");
+                    confirmationMessage = ExceptionHandling.Instance.InputString(1, 1);
 
-            if(confirmationMessage == "y")
-            {                
+                    if (confirmationMessage != "y" && confirmationMessage != "n")
+                    {
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', 76));
+                        Console.SetCursorPosition(0, Console.CursorTop);
 
-                if (inputNumber != ExceptionHandling.wrongInput )
-                {                    
-                    foreach(BookInformationVO book in bookList)
+                        continue;
+                    }
+
+                    break;
+                }
+
+                if (confirmationMessage == "y")
+                {
+
+                    if (inputNumber != ExceptionHandling.wrongInput)
                     {
                         bookIndex = 0;
 
-                        if (book.No == inputNumber)
+                        foreach (BookInformationVO book in bookList)
                         {
-                            if(book.Quantity != book.MaxQuantity)
+                            if (book.No == inputNumber)
                             {
-                                PrintFailMessage("반납되지 않은 도서가 있습니다.");
+                                if (book.Quantity != book.MaxQuantity)
+                                {
+                                    PrintFailMessage("반납되지 않은 도서가 있습니다.");
+                                    Console.Clear();
+                                    break;
+                                }
+
+
+                                bookList.RemoveAt(bookIndex);
+                                Console.WriteLine();
+                                BookDB.Instance.DeleteBook(inputNumber);
+                                PrintFailMessage("해당 도서가 삭제됐습니다.");
+
                                 Console.Clear();
-                                return;
+                                break;
+
                             }
 
-
-                            bookList.RemoveAt(bookIndex);
-                            Console.WriteLine();
-                            BookDB.Instance.DeleteBook(inputNumber);
-                            PrintFailMessage("해당 도서가 삭제됐습니다.");
-
-                            Console.Clear();
-                            return;
-
+                            ++bookIndex;
                         }
-
-                        ++bookIndex;
-                    }                   
+                        continue;
+                    }
                 }
-            }      
-            
-            Console.WriteLine();
 
-            
+                Console.WriteLine();
+            }         
         }
 
         private void ShowCustomerList(List<CustomerInformationVO> customerList)

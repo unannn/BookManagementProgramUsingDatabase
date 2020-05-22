@@ -29,7 +29,7 @@ namespace BookManagementProgram
             connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
         }
                 
-        public void SelectAllBooks(List<BookInformationVO> bookList)
+        public void SelectAllBooks(List<BookInformationVO> bookList)         //전체 도서 목록 가져옴
         {
             connection.Open();
 
@@ -46,7 +46,7 @@ namespace BookManagementProgram
             connection.Close();
         }
 
-        public int UpdateRentalBook(int inputNumber)
+        public int UpdateRentalBook(int inputNumber)     //도서를 대여하면 여분도서 정보 업데이트
         {
             connection.Open();
 
@@ -62,7 +62,7 @@ namespace BookManagementProgram
             return rowNumber;  
         }
 
-        public  int UpdateReturnBook(int inputNumber)
+        public  int UpdateReturnBook(int inputNumber)                //도서를 반납하면 여분도서 정보 업데이트
         {
             connection.Open();
 
@@ -78,7 +78,7 @@ namespace BookManagementProgram
             return rowNumber;
         }
 
-        public int InsertNewBook(string name, string author, string publisher, int quantity)
+        public int InsertNewBook(string name, string author, string publisher, int quantity)         //새 도서 등록
         {
             int no;
 
@@ -101,7 +101,7 @@ namespace BookManagementProgram
             return no;
         }
 
-        public void DeleteBook(int inputNumber)
+        public void DeleteBook(int inputNumber)             //도서 삭제
         {
             connection.Open();
 

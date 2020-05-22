@@ -29,7 +29,7 @@ namespace BookManagementProgram
             
         }
 
-        public void InitializeCustomerRentalBook(CustomerInformationVO customer)
+        public void InitializeCustomerRentalBook(CustomerInformationVO customer)    //고객들의 대여 도서 초기화
         {
             connection.Open();
 
@@ -46,7 +46,7 @@ namespace BookManagementProgram
             connection.Close();            
         }
 
-        public void InsertRentalBookInfo(int customerNumber,int bookNumber)
+        public void InsertRentalBookInfo(int customerNumber,int bookNumber)         //어떤고객이 어떤 도서를 대여했는지 정보 추가
         {
             connection.Open();
 
@@ -57,7 +57,7 @@ namespace BookManagementProgram
             connection.Close();
         }
 
-        public void DeleteRentalBookInfo(int customerNumber, int bookNumber)
+        public void DeleteRentalBookInfo(int customerNumber, int bookNumber)          //반납이 완료되면 대여 정보 삭제
         {
             connection.Open();
 
@@ -68,7 +68,7 @@ namespace BookManagementProgram
             connection.Close();
         }
 
-        public string[] SelectRentalAndReturnDate(int custmerNumber,int bookNumber)
+        public string[] SelectRentalAndReturnDate(int custmerNumber,int bookNumber)           //대여일과 반납일을 반환
         {
             string[] rentalAndReturnDate = new string[2];
             connection.Open();

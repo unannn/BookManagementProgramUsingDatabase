@@ -153,7 +153,7 @@ namespace BookManagementProgram
         }
         public void PrintAllCustomer(List<CustomerInformationVO> customerList)
         {
-            string divisionLine = new String('-', 125);
+            string divisionLine = new String('-', 123) + "+";
 
             Console.WriteLine(divisionLine);
 

@@ -251,7 +251,6 @@ namespace BookManagementProgram
             
             if (adress == "q") return adress;
 
-            //isCollect = Regex.IsMatch(adress, @"[^a-zA-Z0-9가-힣]");
             isCollect = Regex.IsMatch(adress, @"[가-힣]{2,4}시\s[가-힣]{1,3}구\s[가-힣0-9]{1,10}");
 
             if (!string.IsNullOrEmpty(adress) && adress.Length >= 2 && adress.Length <= 20 && isCollect)

@@ -28,8 +28,7 @@ namespace BookManagementProgram
             CustomerInformationVO logInCustomer = null;
             UI ui = new UI();
             int logOutNumber = 0;
-                           
-           
+                                      
             while (true)
             {
                 logInCustomer = ui.StartInitScene(customerList);      //  로그인, 계정만들기, 게임종료 선택          

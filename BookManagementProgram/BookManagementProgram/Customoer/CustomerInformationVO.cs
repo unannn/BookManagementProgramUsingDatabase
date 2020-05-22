@@ -76,17 +76,6 @@ namespace BookManagementProgram
             this.rentedBook = new List<BookInformationVO>();
         }
 
-        public CustomerInformationVO(string id, string password, string name, string phoneNumber, string adress,bool isAdministrator)
-        {
-            this.id = id;
-            this.password = password;
-            this.name = name;
-            this.phoneNumber = phoneNumber;
-            this.adress = adress;
-            this.isAdministrator = isAdministrator;
-            this.rentedBook = new List<BookInformationVO>();
-        }
-
         public CustomerInformationVO(int no, string id, string password, string name, string phoneNumber, string adress, bool isAdministrator)
         {
             this.no = no;

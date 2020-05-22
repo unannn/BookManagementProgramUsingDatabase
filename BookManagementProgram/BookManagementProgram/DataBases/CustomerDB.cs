@@ -24,12 +24,12 @@ namespace BookManagementProgram
             }
         }
 
-        CustomerDB()
+        CustomerDB()  //생성자
         {
             connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");
         }
 
-        public int InsertNewCustomer(string id,string password, string name, string PhoneNumber,string adress)
+        public int InsertNewCustomer(string id,string password, string name, string PhoneNumber,string adress)  //새 계정 생성
         {
             int no;
 
@@ -52,7 +52,7 @@ namespace BookManagementProgram
             return no;
         }
 
-        public void DeleteCusomter(int inputNumber)
+        public void DeleteCusomter(int inputNumber)   //계정 삭제
         {
             connection.Open();
 
@@ -66,7 +66,7 @@ namespace BookManagementProgram
 
         }
 
-        public void UpdateMyPhoneNumber(int customerNumber, string modifiedPhoneNumber)
+        public void UpdateMyPhoneNumber(int customerNumber, string modifiedPhoneNumber)       //폰번호 수정
         {
             connection.Open();
             
@@ -79,7 +79,7 @@ namespace BookManagementProgram
             connection.Close();
         }
 
-        public void UpdateMyAdress(int customerNumber, string modifiedAdress)
+        public void UpdateMyAdress(int customerNumber, string modifiedAdress)           //주소수정
         {
             connection.Open();
 

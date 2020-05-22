@@ -27,11 +27,14 @@ namespace BookManagementProgram
         {
             string whiteSpace = new string(' ', 40);
             string yesOrNo = null;
-            Console.WriteLine("아이디 (2~11글자)");
+
+            Console.WriteLine("아이디");
 
             PrintInputBox("");
 
-            PrintInputBox("비밀번호");
+            Console.WriteLine("비밀번호");
+
+            PrintInputBox("");
 
             if (inputInspection == ExceptionHandling.wrongInput)             //입력 오류 체크
             {
@@ -66,12 +69,10 @@ namespace BookManagementProgram
                
             }
 
-            Console.SetCursorPosition(Console.CursorLeft + 2, Console.CursorTop - 5 + inputInspection);  //입력받을 때 커서위치 이동후 입력받음
+            Console.SetCursorPosition(Constants.LOCATION_X, Constants.LOGIN_ID_LOCATION_Y);  //입력받을 때 커서위치 이동후 입력받음
             id = Console.ReadLine();
-
-            Console.SetCursorPosition(Console.CursorLeft + 2, Console.CursorTop + 2);
-             Console.Write(whiteSpace);
-            Console.SetCursorPosition(2, Console.CursorTop);
+                       
+            Console.SetCursorPosition(Constants.LOCATION_X, Constants.LOGIN_PASSWORD_LOCATION_Y);
             password = ExceptionHandling.Instance.InputPassword(null);                       
         }
               
@@ -116,7 +117,7 @@ namespace BookManagementProgram
 
             Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop + 3);
             Console.Write(whiteSpace);
-            Console.SetCursorPosition(2, Console.CursorTop);
+            Console.SetCursorPosition(Constants.LOCATION_X, Console.CursorTop);
         }
     }
 }

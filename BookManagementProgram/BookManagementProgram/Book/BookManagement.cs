@@ -25,16 +25,17 @@ namespace BookManagementProgram
             Console.Write("대여할 책 번호 입력 : ");
             inputNumberInString = Console.ReadLine();
             inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_NUMBER_MAXIMUM, inputNumberInString);
+            
 
-            if(logInCustomer.RentedBook.Count > Constants.RENT_BOOK_MAXIMUM)   //최대 대여가능 도서수 제한
+            if (inputNumber != ExceptionHandling.wrongInput) 
             {
-                PrintFailMessage("더이상 대여할 수 없습니다(최대 5권 대여가능).");
-                return;
-            }
+                if (logInCustomer.RentedBook.Count >= Constants.RENT_BOOK_MAXIMUM)   //최대 대여가능 도서수 제한
+                {
+                    PrintFailMessage("더이상 대여할 수 없습니다(최대 5권 대여가능).");
+                    return;
+                }
 
-            if (inputNumber != ExceptionHandling.wrongInput) //올바른 번호가 입력되고 남은 수량이 있으면
-            {
-                foreach(BookInformationVO rentedBooks in logInCustomer.RentedBook)  //중복대여 여부 검사
+                foreach (BookInformationVO rentedBooks in logInCustomer.RentedBook)  //중복대여 여부 검사
                 {
                     if(rentedBooks.No == inputNumber)
                     {
@@ -62,6 +63,7 @@ namespace BookManagementProgram
                     }
                 }
 
+                PrintFailMessage("해당 도서가 존재하지 않습니다.");
             }
             else
             {
