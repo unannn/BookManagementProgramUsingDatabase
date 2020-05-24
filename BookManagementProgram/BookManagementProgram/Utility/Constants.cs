@@ -9,7 +9,7 @@ namespace BookManagementProgram
     static class Constants
     {
         //화면 사이즈
-        public const int BASIC_WIDTH = 90;
+        public const int BASIC_WIDTH = 130;
         public const int BASIC_HEIGHT = 49;
 
         public const int INIT_WIDTH = 50;
@@ -48,13 +48,14 @@ namespace BookManagementProgram
 
         public const int BOOK_PRICE_MAXIMUM = 99999;
         public const int RENT_BOOK_MAXIMUM = 5;
-        public const int BOOK_NAME_LENGTH_MAXIMUM = 20;
-        public const int BOOK_AUTHOER_LENGTH_MAXIMUM = 15;
-        public const int BOOK_PUBLISHER_LENGTH_MAXIMUM = 10;
+        public const int BOOK_NAME_LENGTH_MAXIMUM = 40;
+        public const int BOOK_AUTHOER_LENGTH_MAXIMUM = 30;
+        public const int BOOK_PUBLISHER_LENGTH_MAXIMUM = 20;
         public const int DATE_LENGTH_MAXIMUM = 10;
+        public const int BOOK_NUMBER_LENGTH_MAXIMUM = 6;
         
         //관리자모드 메뉴
-        public const int BOOK_SERCHING_RENTAL = 1;
+        public const int BOOK_SEARCHING_RENTAL = 1;
         public const int BOOK_RETURN = 2;
         public const int BOOK_REGISTRATION = 3;
         public const int BOOK_DELETE = 4;
@@ -79,7 +80,7 @@ namespace BookManagementProgram
 
         //제목위치
         public const int BASIC_LOCATION = 7;
-        public const int BOOK_RENT_LOCATION = 27;
+        public const int BOOK_RENT_LOCATION = 47;
 
         //도서검색및 대여 메뉴
         public const int SEARCHING_BY_TITLE = 1;
@@ -94,7 +95,16 @@ namespace BookManagementProgram
         public const int MODIFYING_ADRESS = 2;
         public const int MODIFYING_EXIT = 3;
 
+        //책 정보 테이블 너비
 
-        
+        public const int BOOK_TABLE_WIDTH = 117;
+        public const int RETURN_BOOK_TABLE_WIDTH = 126;
+        //책 대여 예외처리
+
+        public const int NOT_EXIST = 1;
+        public const int OVER_MAXIMUM_RENTAL_BOOK = 2;
+        public const int ALEADY_RENTAL_BOOK = 3;
+        public const int NO_OVERLEFT_BOOK = 4;
+        public const int RENTAL_SUCESS = 5;        
     }
 }

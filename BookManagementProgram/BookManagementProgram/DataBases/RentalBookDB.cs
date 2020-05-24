@@ -23,6 +23,7 @@ namespace BookManagementProgram
                 return instance;
             }
         }
+
         RentalBookDB()
         {
             connection = new MySqlConnection("Server=localhost;Port=3306;Database=library;Uid=root;Pwd=0000");

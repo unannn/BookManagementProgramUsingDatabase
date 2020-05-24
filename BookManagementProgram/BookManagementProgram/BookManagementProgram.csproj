@@ -58,18 +58,18 @@
   <ItemGroup>
     <Compile Include="DataBases\BookDB.cs" />
     <Compile Include="BookManagementProgram.cs" />
-    <Compile Include="Book\BookInformationVO.cs" />
+    <Compile Include="VO\BookInformationVO.cs" />
     <Compile Include="Book\BookManagement.cs" />
-    <Compile Include="Global\Constants.cs" />
+    <Compile Include="Utility\Constants.cs" />
     <Compile Include="DataBases\CustomerDB.cs" />
-    <Compile Include="Customoer\CustomerInformationVO.cs" />
-    <Compile Include="Customoer\CustomerManagement.cs" />
-    <Compile Include="Global\ExceptionHandling.cs" />
+    <Compile Include="VO\CustomerInformationVO.cs" />
+    <Compile Include="Customer\CustomerManagement.cs" />
+    <Compile Include="Utility\ExceptionHandling.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataBases\RentalBookDB.cs" />
     <Compile Include="UI\UI.cs" />
-    <Compile Include="UI\UITooI.cs" />
+    <Compile Include="UI\UiModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

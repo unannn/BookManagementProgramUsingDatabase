@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 
 namespace BookManagementProgram
 {
-    class CustomerManagement : UITooI
+    class CustomerManagement
     { 
         public CustomerInformationVO InputCustomerAccountInformation( List<CustomerInformationVO> customerList)   //등록하고자하는 계정정보 반환
         {
@@ -78,15 +78,10 @@ namespace BookManagementProgram
             return newCustomer;
         }
 
-        public void ModifyAdress(CustomerInformationVO logInCustomer)
+        public bool ModifyAdress(CustomerInformationVO logInCustomer)
         {
             string modifiedAdress = null;
-
-            Console.WriteLine();
-            Console.WriteLine("          현재 주소 : " + logInCustomer.Adress);
-            Console.WriteLine();
-            Console.Write("바꿀 주소(2~20글자) : ");
-
+                        
             modifiedAdress = ExceptionHandling.Instance.InputAdress();
 
             if (modifiedAdress != null)
@@ -94,88 +89,39 @@ namespace BookManagementProgram
                 logInCustomer.Adress = modifiedAdress;
                 CustomerDB.Instance.UpdateMyAdress(logInCustomer.No, modifiedAdress);
 
-                PrintFailMessage("주소가 변경되었습니다.");
-
-                return;
+                return true;
             }
-
-            PrintFailMessage("잘못된 입력입니다.");
+                        
+            return false;
         }
 
-        public void ModifyPhoneNumber(CustomerInformationVO logInCustomer,List<CustomerInformationVO> customerList)
+        public bool ModifyPhoneNumber(CustomerInformationVO logInCustomer,List<CustomerInformationVO> customerList)
         {
             string modifiedPhoneNumber = null;
-
-            Console.WriteLine();
-            Console.WriteLine("현재 번호 : " + logInCustomer.PhoneNumber);
-            Console.WriteLine();
-            Console.Write("바꿀 번호 : ");
-
+            
             modifiedPhoneNumber = ExceptionHandling.Instance.InputPhoneNumber(customerList);
 
             if (modifiedPhoneNumber != null)
             {
                 logInCustomer.PhoneNumber = modifiedPhoneNumber;
                 CustomerDB.Instance.UpdateMyPhoneNumber(logInCustomer.No, modifiedPhoneNumber);
-
-                PrintFailMessage("번호가 변경되었습니다.");
-
-                return;
+                            
+                return true;
             }
 
-            PrintFailMessage("잘못된 입력입니다.");
-
-        }
-        
-        public void PrintAllCustomer(List<CustomerInformationVO> customerList)
-        {
-            string divisionLine = new String('-', 123) + "+";
-
-            Console.WriteLine(divisionLine);
-
-            OneSpace(("번호").ToString(), 5);
-            OneSpace("아이디", 23);
-            OneSpace("이름", 23);
-            OneSpace("휴대폰번호", 23);
-            OneSpace("주소", 40);
-            Console.WriteLine();
-
-            for (int order = 0; order < customerList.Count; order++)  //고객 정보 리스트 출력
-            {
-                Console.WriteLine(divisionLine);
-
-                OneSpace(customerList[order].No.ToString(), 5);
-                OneSpace(customerList[order].Id, 23);
-                OneSpace(customerList[order].Name, 23);
-                OneSpace(customerList[order].PhoneNumber, 23);
-                OneSpace(customerList[order].Adress, 40);
-                
-                Console.WriteLine();
-            }
-
-            Console.WriteLine(divisionLine);
-
+            return false;
         }
 
-        public void CheckId(int customer, List<CustomerInformationVO> customerList)
+        public string CheckId(int customer, List<CustomerInformationVO> customerList)
         {
-            if (customerList[customer].IsAdministrator == false)
-            {
-                if (customerList[customer].RentedBook.Count == 0)   
-                {
-                    CustomerDB.Instance.DeleteCusomter(customerList[customer].No);
-                    customerList.RemoveAt(customer);
-                    PrintFailMessage("해당 아이디가 삭제 됐습니다.");
-                }
-                else
-                {
-                    PrintFailMessage("반납하지 않은 도서가 있는 아이디입니다.");
-                }
-            }
-            else
-            {
-                PrintFailMessage("관리자의 아이디 입니다.");
-            }
+            if (customerList[customer].IsAdministrator) return "관리자의 아이디 입니다.";
+            
+            if (customerList[customer].RentedBook.Count != 0) return "반납하지 않은 도서가 있는 아이디입니다.";
+            
+            CustomerDB.Instance.DeleteCusomter(customerList[customer].No);
+            customerList.RemoveAt(customer);
+
+            return "해당 아이디가 삭제 됐습니다.";
         }
     }
 }

@@ -7,23 +7,22 @@ using MySql.Data.MySqlClient;
 
 namespace BookManagementProgram
 {
-    class BookManagement:UITooI
+    class BookManagement
     { 
-        public void RentBook(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList)  //책대여 함수
+        public int RentBook(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList)  //책대여 함수
         {
-            bool isCollect = false;
             int inputNumber = 0;
             int rowNumber = 0;
+            int rentalControl;
             string inputNumberInString = null;
             
 
-            Console.Write("대여할 책 번호 입력 : ");
             inputNumberInString = Console.ReadLine();
             inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_NUMBER_MAXIMUM, inputNumberInString);
 
-            isCollect = ExceptionHandling.Instance.RentBook(logInCustomer,bookList,inputNumber);
-            
-            if (isCollect)
+            rentalControl = ExceptionHandling.Instance.RentBook(logInCustomer,bookList,inputNumber);
+
+            if (rentalControl == Constants.RENTAL_SUCESS)
             {
                 foreach (BookInformationVO book in bookList)
                 {
@@ -33,61 +32,24 @@ namespace BookManagementProgram
                         RentalBookDB.Instance.InsertRentalBookInfo(logInCustomer.No, inputNumber);
                         book.Quantity -= 1;
                         logInCustomer.RentedBook.Add(book);
-                        PrintFailMessage("대여가 완료되었습니다.");
-                        return;
+                        return rentalControl;
                     }
                 }
 
-                PrintFailMessage("해당 도서가 존재하지 않습니다.");
-            }
+                return Constants.NOT_EXIST;
+            }          
 
-            return;
+            return rentalControl;
         }
-        
-        public void PrintBookListForReturn(CustomerInformationVO logInCustomer)  //대여일과 반납일 추가하기
-        {
-            string divisionLine = new String('-', 81) + "+";
-            string[] rentalAndReturnDate;
-            Console.WriteLine(divisionLine);
-
-            OneSpace("NO", Constants.BOOK_NUMBER_MAXIMUM.ToString().Length);  //도서의 요소 종류 출력
-            OneSpace("이름", Constants.BOOK_NAME_LENGTH_MAXIMUM);
-            OneSpace("저자", Constants.BOOK_AUTHOER_LENGTH_MAXIMUM);
-            OneSpace("출판사", Constants.BOOK_PUBLISHER_LENGTH_MAXIMUM);
-            OneSpace("대여일", Constants.DATE_LENGTH_MAXIMUM);
-            OneSpace("반납일", Constants.DATE_LENGTH_MAXIMUM);
-
-            Console.WriteLine();
-
-            for (int order = 0; order < logInCustomer.RentedBook.Count; order++)  //반납해야하는 도서리스트 출력
-            {
-                Console.WriteLine(divisionLine);
-
-                OneSpace(logInCustomer.RentedBook[order].No.ToString(), Constants.BOOK_NUMBER_MAXIMUM.ToString().Length);
-                OneSpace(logInCustomer.RentedBook[order].Name, Constants.BOOK_NAME_LENGTH_MAXIMUM);
-                OneSpace(logInCustomer.RentedBook[order].Author, Constants.BOOK_AUTHOER_LENGTH_MAXIMUM);
-                OneSpace(logInCustomer.RentedBook[order].Publisher, Constants.BOOK_PUBLISHER_LENGTH_MAXIMUM);
-                rentalAndReturnDate = RentalBookDB.Instance.SelectRentalAndReturnDate(logInCustomer.No, logInCustomer.RentedBook[order].No);
-                OneSpace(rentalAndReturnDate[0].Substring(0, Constants.DATE_LENGTH_MAXIMUM), Constants.DATE_LENGTH_MAXIMUM);
-                OneSpace(rentalAndReturnDate[1].Substring(0, Constants.DATE_LENGTH_MAXIMUM), Constants.DATE_LENGTH_MAXIMUM);
-                Console.WriteLine();
-            }
-
-            Console.WriteLine(divisionLine);
-        }
+            
                
         public List<BookInformationVO> SerchByTitle(List<BookInformationVO> bookList)
         {
             List<BookInformationVO> serchedBooks = new List<BookInformationVO>();
             string inputString = null;
-
-            Console.Write("도서 이름 입력 : ");
-            Console.Write("                  ");
-            Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-
+            
             inputString = ExceptionHandling.Instance.InputString(1, 20);
-            
-            
+                        
             for (int book = 0; book < bookList.Count; book++)
             {
                 if (!string.IsNullOrEmpty(inputString) && bookList[book].Name.Contains(inputString))   //검색된 문자열이 책이름에 포함되는 책리스트의 책이 있으면
@@ -103,11 +65,7 @@ namespace BookManagementProgram
         {
             List<BookInformationVO> serchedBooks = new List<BookInformationVO>();
             string inputString = null;
-
-            Console.Write("도서 저자 입력 : ");
-            Console.Write("                  ");
-            Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-
+            
             inputString = ExceptionHandling.Instance.InputString(1, 20);
 
 
@@ -127,13 +85,8 @@ namespace BookManagementProgram
             List<BookInformationVO> serchedBooks = new List<BookInformationVO>();
             string inputString = null;
 
-            Console.Write("도서 출판사 입력 : ");
-            Console.Write("                  ");
-            Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);
-
             inputString = ExceptionHandling.Instance.InputString(1, 20);
-
-
+            
             for (int book = 0; book < bookList.Count; book++)
             {
                 if (inputString != null && bookList[book].Publisher.Contains(inputString))   //검색된 문자열이 책이름에 포함되는 책리스트의 책이 있으면

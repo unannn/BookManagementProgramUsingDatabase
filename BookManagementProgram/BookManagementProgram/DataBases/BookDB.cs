@@ -78,14 +78,16 @@ namespace BookManagementProgram
             return rowNumber;
         }
 
-        public int InsertNewBook(string name, string author, string publisher, int quantity,int price)         //새 도서 등록
+        public int InsertNewBook(string name, string author, string publisher, int quantity, int price)         //새 도서 등록
         {
             int no;
-
+            
             connection.Open();
 
+            ExceptionHandling.Instance.MakeQuotesUse(ref name, ref author, ref publisher);
+
             string insertQuery = "INSERT INTO book(title,author,publisher,quantity,maxQuntity,book_price) VALUES(\""
-                + name + "\",\"" + author + "\",\"" + publisher + "\"," + quantity + "," + quantity + "," +price + ")";
+                + name + "\",\"" + author + "\",\"" + publisher + "\"," + quantity + "," + quantity + "," + price + ")";
             string selectQuery = "SELECT LAST_INSERT_ID()";   //방금 등록한 도서의 primary key 를 가져옴
 
             MySqlCommand command = new MySqlCommand(insertQuery, connection);
@@ -94,7 +96,7 @@ namespace BookManagementProgram
 
             command = new MySqlCommand(selectQuery, connection);
 
-            no = int.Parse(command.ExecuteScalar().ToString());    
+            no = int.Parse(command.ExecuteScalar().ToString());
 
             connection.Close();
 

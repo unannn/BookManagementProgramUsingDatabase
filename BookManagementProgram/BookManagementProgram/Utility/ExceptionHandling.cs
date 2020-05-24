@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace BookManagementProgram
 {  
-    class ExceptionHandling:UITooI
+    class ExceptionHandling
     {
         private static ExceptionHandling instance = null;
 
@@ -49,26 +49,23 @@ namespace BookManagementProgram
         }
 
         //도서대여 예외처리
-        public bool RentBook(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList, int inputNumber)
+        public int RentBook(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList, int inputNumber)
         {
             if (inputNumber == ExceptionHandling.wrongInput)  //음수나 최대 책 개수 이상 입력
             {
-                PrintFailMessage("해당 도서가 존재하지 않습니다.");
-                return false;
+                return Constants.NOT_EXIST;
             }
 
             if (logInCustomer.RentedBook.Count >= Constants.RENT_BOOK_MAXIMUM)   //최대 대여가능 도서수 제한
             {
-                PrintFailMessage("더이상 대여할 수 없습니다(최대 5권 대여가능).");
-                return false;
+                return Constants.OVER_MAXIMUM_RENTAL_BOOK;
             }
 
             foreach (BookInformationVO rentedBooks in logInCustomer.RentedBook)  //중복대여 여부 검사
             {
                 if (rentedBooks.No == inputNumber)
                 {
-                    PrintFailMessage("이미 대여한 도서입니다.");
-                    return false;
+                    return Constants.ALEADY_RENTAL_BOOK;
                 }
             }
 
@@ -78,13 +75,12 @@ namespace BookManagementProgram
                 {
                     if (book.Quantity < 1) //대여할 책이 남아있는지 검사
                     {
-                        PrintFailMessage("대여할 도서가 없습니다.");
-                        return false;
+                        return Constants.NO_OVERLEFT_BOOK;
                     }                   
                 }
             }
 
-            return true;   //위 조건들을 모두 통과하면 대여
+            return Constants.RENTAL_SUCESS;   //위 조건들을 모두 통과하면 대여
         }
         public string InputYesOrNo(string yesOrNo)   //문자열이 y 인지 n인지 아님 다른값이 들어왔는지 판단 후 반환
         {
@@ -334,6 +330,27 @@ namespace BookManagementProgram
         {
             Console.SetCursorPosition(35, Console.CursorTop - 1);
             Console.Write(new string(' ',30));
+        }
+
+        public void MakeQuotesUse(ref string name, ref string author, ref string publisher)   //입력 정보에 작은따옴표나 큰따옴표가 포함되는지 확인
+        {
+            if(Regex.IsMatch(name, @"[""]{1,20}")) name = ConvertToQuote(name);
+            if(Regex.IsMatch(author, @"[""]{1,15}")) author = ConvertToQuote(author);
+            if(Regex.IsMatch(publisher, @"[""]{1,10}")) publisher = ConvertToQuote(publisher);
+        }
+
+        private string ConvertToQuote(string inputString)     //문자열에 포함된 큰따옴표냐 작은 따옴표를 mysql에서 저장할수있도록 변환
+        {
+            for(int letter = 0;letter < inputString.Length; letter++)
+            {               
+                if (inputString[letter] == '\"')
+                {
+                    inputString = inputString.Insert(letter, "\"");
+                    ++letter;
+                }
+            }
+
+            return inputString;
         }
     }
 }

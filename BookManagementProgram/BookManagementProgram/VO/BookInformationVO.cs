@@ -57,6 +57,7 @@ namespace BookManagementProgram
             get { return price; }
             set { price = value; }
         }
+
         public BookInformationVO()
         {
             name = null;
@@ -87,7 +88,5 @@ namespace BookManagementProgram
 
             return bookInformation;
         }
-    }
-
-    
+    }    
 }
