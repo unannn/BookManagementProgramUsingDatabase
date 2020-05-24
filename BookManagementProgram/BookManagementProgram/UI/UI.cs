@@ -61,7 +61,7 @@ namespace BookManagementProgram
         }
 
         //초기화면
-        public CustomerInformationVO StartInitScene(List<CustomerInformationVO> customerList)
+        public CustomerInformationVO StartInitScene()
         {
             int selectedNumber = 0;
             bool loginSucessful = false;
@@ -84,9 +84,9 @@ namespace BookManagementProgram
 
                     case Constants.CREATE_ACCOUNT:
                         Console.SetWindowSize(Constants.CREATE_ACCOUNT_WIDTH, Constants.CREATE_ACCOUNT_HEIGHT);
-                        createdAccount = CreateCustomerAccount(customerList);
+                        createdAccount = CreateCustomerAccount();
                         if (createdAccount == null) continue;  //뒤로가기
-                        customerList.Add(createdAccount);
+                        
                         break;
 
                     case Constants.PROGRAM_END:
@@ -101,10 +101,17 @@ namespace BookManagementProgram
             return logInCustomer;
         }
 
-        public void StartAdministratorScene(List<CustomerInformationVO> customerList, List<BookInformationVO> bookList, CustomerInformationVO logInCustomer)
+        public void StartAdministratorScene(List<BookInformationVO> bookList, CustomerInformationVO logInCustomer)
         {
             bool loginSucessful = true;
             int selectedNumber;
+            List<CustomerInformationVO> customerList = new List<CustomerInformationVO>();
+            CustomerDB.Instance.SelectAllCustomers(customerList);
+
+            foreach (CustomerInformationVO customer in customerList)  //회원들이 대여한 책들 리스트 초기화
+            {
+                RentalBookDB.Instance.InitializeCustomerRentalBook(customer);
+            }
 
             while (loginSucessful)
             {
@@ -146,7 +153,7 @@ namespace BookManagementProgram
 
                     case Constants.MY_DATA_MODIFYING:           //내정보 수정
                         Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
-                        ModifyMyData(logInCustomer, customerList);
+                        ModifyMyData(logInCustomer);
                         break;
 
                     case Constants.LOGOUT:           //로그아웃
@@ -163,7 +170,7 @@ namespace BookManagementProgram
             }
         }
 
-        public void StartGeneralUserScene(List<CustomerInformationVO> customerList, List<BookInformationVO> bookList, CustomerInformationVO logInCustomer)
+        public void StartGeneralUserScene(List<BookInformationVO> bookList, CustomerInformationVO logInCustomer)
         {
             bool loginSucessful = true;
             int selectedNumber;
@@ -188,7 +195,7 @@ namespace BookManagementProgram
 
                     case Constants.MY_DATA_MODIFYING_USER:           //내정보 수정
                         Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
-                        ModifyMyData(logInCustomer, customerList);
+                        ModifyMyData(logInCustomer);
                         break;
 
                     case Constants.LOGOUT_USER:           //로그아웃
@@ -251,6 +258,9 @@ namespace BookManagementProgram
                 if (id == null && password == null) return null;             //y 입력
 
                 logInCustomer = CustomerDB.Instance.SelectLoginCustomer(id, password, logInCustomer); //입력한 아이디비번의 계정이 있는지 디비에서 검색
+
+                if(logInCustomer != null)RentalBookDB.Instance.InitializeCustomerRentalBook(logInCustomer);
+
                 inputInspection = -1;
                 Console.Clear();
             }
@@ -258,7 +268,7 @@ namespace BookManagementProgram
             return logInCustomer;
         }
 
-        private CustomerInformationVO CreateCustomerAccount(List<CustomerInformationVO> customerList)  //계정생성
+        private CustomerInformationVO CreateCustomerAccount()  //계정생성
         {
             CustomerInformationVO customerToBeAdded = new CustomerInformationVO();
 
@@ -280,7 +290,7 @@ namespace BookManagementProgram
 
             PrintInputBox("주소 (1~20글자 ○○시 ○○구 형식)");
 
-            customerToBeAdded = customerManagement.InputCustomerAccountInformation(customerList);
+            customerToBeAdded = customerManagement.InputCustomerAccountInformation();
 
             return customerToBeAdded;
         }
@@ -522,7 +532,7 @@ namespace BookManagementProgram
             }
         }
 
-        private void ModifyMyData(CustomerInformationVO logInCustomer, List<CustomerInformationVO> customerList)   //고객의 개인정보 수정
+        private void ModifyMyData(CustomerInformationVO logInCustomer)   //고객의 개인정보 수정
         {
             bool isEnd = false;
             bool isSucessful = false;
@@ -550,7 +560,7 @@ namespace BookManagementProgram
                     {
                         case Constants.MODIFYING_PHONENUMBER:
                             PrintModifyingAdresss(logInCustomer);
-                            isSucessful = customerManagement.ModifyPhoneNumber(logInCustomer, customerList);
+                            isSucessful = customerManagement.ModifyPhoneNumber(logInCustomer);
                             break;
 
                         case Constants.MODIFYING_ADRESS:

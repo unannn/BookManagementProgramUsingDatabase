@@ -80,6 +80,8 @@ namespace BookManagementProgram
                 }
             }
 
+
+
             return Constants.RENTAL_SUCESS;   //위 조건들을 모두 통과하면 대여
         }
 
@@ -101,7 +103,7 @@ namespace BookManagementProgram
             return null;
         }
 
-        public string InputId(List<CustomerInformationVO> customerList)   //id입력 예외처리
+        public string InputId()   //id입력 예외처리
         {
             string id = null;
             bool isSpecial = false;
@@ -117,13 +119,11 @@ namespace BookManagementProgram
             {
                 if (!id.Contains(" ") && !isSpecial)            //띄어쓰기가 없어야 함
                 {
-                    foreach (CustomerInformationVO customer in customerList)
+
+                    if (CustomerDB.Instance.SelectSameId(id))
                     {
-                        if (customer.Id == id)
-                        {
-                            PrintErrorMessage("이미 존재하는 아이디 입니다.");
-                            return null;
-                        }
+                        PrintErrorMessage("이미 존재하는 아이디 입니다.");
+                        return null;
                     }
 
                     ClearErrorMessage();
@@ -211,7 +211,7 @@ namespace BookManagementProgram
             }
         }
 
-        public string InputPhoneNumber(List<CustomerInformationVO> customerList) //전화번호 입력후 11자리 숫자가 입력되면 string으로 반환 아니면 null 반환
+        public string InputPhoneNumber() //전화번호 입력후 11자리 숫자가 입력되면 string으로 반환 아니면 null 반환
         {
             string phoneNumber;
             int number;
@@ -237,14 +237,12 @@ namespace BookManagementProgram
                     return null;
                 }
 
-                foreach (CustomerInformationVO customer in customerList)
+                if (CustomerDB.Instance.SelectSamePhoneNumber(phoneNumber))
                 {
-                    if (customer.PhoneNumber == phoneNumber)
-                    {
-                        PrintErrorMessage("이미 존재하는 번호 입니다.");
-                        return null;
-                    }
+                    PrintErrorMessage("이미 존재하는 번호 입니다.");
+                    return null;
                 }
+
 
                 ClearErrorMessage();
                 return phoneNumber;
@@ -306,9 +304,17 @@ namespace BookManagementProgram
             string inputString = null;
             
             inputString = Console.ReadLine();
+            int letter;
 
             if (inputString == "q") return inputString;
         
+            for(letter = 0;letter < inputString.Length; letter++)
+            {
+                if (inputString[letter] != ' ') break;
+            }
+
+            if (letter == inputString.Length) return null;
+
             if (!string.IsNullOrEmpty(inputString) && inputString.Length >= above && inputString.Length <= below)       // above 이상 below 이하의 길이 일때
             {
                 return inputString;

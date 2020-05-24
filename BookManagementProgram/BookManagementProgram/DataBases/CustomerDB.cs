@@ -86,6 +86,44 @@ namespace BookManagementProgram
             return logInCustomer;
         }
 
+        public bool SelectSamePhoneNumber(string phoneNumber)
+        {
+            connection.Open();
+
+            string selectQuery = "SELECT no FROM customer WHERE phoneNumber = '" + phoneNumber + "'";
+            MySqlCommand command = new MySqlCommand(selectQuery, connection);
+            MySqlDataReader customers = command.ExecuteReader();
+
+            while (customers.Read())
+            {
+                connection.Close();
+                return true;
+            }
+
+            connection.Close();
+
+            return false;
+        }
+
+        public bool SelectSameId(string id)
+        {
+            connection.Open();
+
+            string selectQuery = "SELECT no FROM customer WHERE id = '" + id + "'";
+            MySqlCommand command = new MySqlCommand(selectQuery, connection);
+            MySqlDataReader customers = command.ExecuteReader();
+
+            while (customers.Read())
+            {
+                connection.Close();
+                return true;
+            }
+
+            connection.Close();
+
+            return false;
+        }
+
         public void DeleteCusomter(int inputNumber)   //계정 삭제
         {
             connection.Open();

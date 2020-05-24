@@ -9,7 +9,7 @@ namespace BookManagementProgram
 {
     class CustomerManagement
     { 
-        public CustomerInformationVO InputCustomerAccountInformation( List<CustomerInformationVO> customerList)   //등록하고자하는 계정정보 반환
+        public CustomerInformationVO InputCustomerAccountInformation()   //등록하고자하는 계정정보 반환
         {
             CustomerInformationVO newCustomer = new CustomerInformationVO();
             string id = null;
@@ -25,7 +25,7 @@ namespace BookManagementProgram
                 {
                     case Constants.INPUT_ID:
                         Console.SetCursorPosition(Constants.LOCATION_X, Constants.INPUTID_LOCATION_Y);
-                        id = ExceptionHandling.Instance.InputId(customerList);   //id 입력
+                        id = ExceptionHandling.Instance.InputId();   //id 입력
                         if (id == null) --createOrder;
                         else if (id == "q") return null;
                         break;
@@ -53,7 +53,7 @@ namespace BookManagementProgram
 
                     case Constants.INPUT_PHONENUMBER:
                         Console.SetCursorPosition(Constants.LOCATION_X, Constants.PHONE_LOCATION_Y);
-                        phoneNumber = ExceptionHandling.Instance.InputPhoneNumber(customerList);  //휴대번호 입력
+                        phoneNumber = ExceptionHandling.Instance.InputPhoneNumber();  //휴대번호 입력
                         if (phoneNumber == null) --createOrder;
                         else if (phoneNumber == "q") return null;
                         break;
@@ -95,11 +95,11 @@ namespace BookManagementProgram
             return false;
         }
 
-        public bool ModifyPhoneNumber(CustomerInformationVO logInCustomer,List<CustomerInformationVO> customerList)
+        public bool ModifyPhoneNumber(CustomerInformationVO logInCustomer)
         {
             string modifiedPhoneNumber = null;
             
-            modifiedPhoneNumber = ExceptionHandling.Instance.InputPhoneNumber(customerList);
+            modifiedPhoneNumber = ExceptionHandling.Instance.InputPhoneNumber();
 
             if (modifiedPhoneNumber != null)
             {
