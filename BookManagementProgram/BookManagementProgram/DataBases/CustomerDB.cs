@@ -68,6 +68,24 @@ namespace BookManagementProgram
             return no;
         }
 
+        public CustomerInformationVO SelectLoginCustomer(string id, string password, CustomerInformationVO logInCustomer)
+        {
+            connection.Open();
+
+            string selectQuery = "SELECT * FROM customer WHERE id = '" +id + "' AND password = '" + password + "'";
+            MySqlCommand command = new MySqlCommand(selectQuery, connection);
+            MySqlDataReader customers = command.ExecuteReader();
+
+            while (customers.Read())
+            {
+                logInCustomer = new CustomerInformationVO(int.Parse(customers["no"].ToString()), customers["id"].ToString(), customers["password"].ToString(), customers["name"].ToString(), customers["phoneNumber"].ToString(), customers["adress"].ToString(), bool.Parse(customers["administrator"].ToString()));
+            }
+            
+            connection.Close();
+
+            return logInCustomer;
+        }
+
         public void DeleteCusomter(int inputNumber)   //계정 삭제
         {
             connection.Open();

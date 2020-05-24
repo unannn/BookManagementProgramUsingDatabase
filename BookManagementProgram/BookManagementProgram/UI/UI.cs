@@ -77,7 +77,7 @@ namespace BookManagementProgram
                 switch (selectedNumber)
                 {
                     case Constants.LOGIN:
-                        logInCustomer = LoginCustomer(customerList);
+                        logInCustomer = LoginCustomer();
                         if (logInCustomer == null) continue;
                         loginSucessful = true;
                         break;
@@ -231,14 +231,14 @@ namespace BookManagementProgram
             return inputNumber;
         }
 
-        private CustomerInformationVO LoginCustomer(List<CustomerInformationVO> customerList)  //로그인 함수
+        private CustomerInformationVO LoginCustomer()  //로그인 함수
         {
             string id = null;
             string password = null;
-            CustomerInformationVO loginCustomer = null;
+            CustomerInformationVO logInCustomer = null;
             int inputInspection = 0;
 
-            while (loginCustomer == null)
+            while (logInCustomer == null)
             {
                 PrintTitle(Constants.BASIC_LOCATION);
 
@@ -248,21 +248,14 @@ namespace BookManagementProgram
 
                 InputIdAndPassword(ref id, ref password, inputInspection);    //아이디와 비밀번호 입력
 
-                if (id == null && password == null) return null;
+                if (id == null && password == null) return null;             //y 입력
 
-                foreach (CustomerInformationVO customer in customerList)
-                {
-                    if (customer.Id == id && customer.Password == password)
-                    {
-                        loginCustomer = customer;  //깊은복사
-                    }
-                }
-
+                logInCustomer = CustomerDB.Instance.SelectLoginCustomer(id, password, logInCustomer); //입력한 아이디비번의 계정이 있는지 디비에서 검색
                 inputInspection = -1;
                 Console.Clear();
             }
 
-            return loginCustomer;
+            return logInCustomer;
         }
 
         private CustomerInformationVO CreateCustomerAccount(List<CustomerInformationVO> customerList)  //계정생성
@@ -557,7 +550,7 @@ namespace BookManagementProgram
                     {
                         case Constants.MODIFYING_PHONENUMBER:
                             PrintModifyingAdresss(logInCustomer);
-                            customerManagement.ModifyPhoneNumber(logInCustomer, customerList);
+                            isSucessful = customerManagement.ModifyPhoneNumber(logInCustomer, customerList);
                             break;
 
                         case Constants.MODIFYING_ADRESS:
@@ -566,16 +559,17 @@ namespace BookManagementProgram
                             break;
 
                         case Constants.MODIFYING_EXIT:
-                            Console.Clear();
                             isEnd = true;
                             break;
 
                         default:
                             break;
                     }
+                    //Console.WriteLine();
+                    //if (isSucessful) PrintFailMessage("주소가 변경되었습니다.");
+                    //else if (!isEnd) PrintFailMessage("잘못된 입력입니다.");
+                    Console.Clear();
 
-                    if (isSucessful) PrintFailMessage("주소가 변경되었습니다.");
-                    else PrintFailMessage("잘못된 입력입니다.");
                 }
             }
         }

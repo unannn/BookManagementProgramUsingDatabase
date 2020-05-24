@@ -105,6 +105,13 @@ namespace BookManagementProgram
         public const int OVER_MAXIMUM_RENTAL_BOOK = 2;
         public const int ALEADY_RENTAL_BOOK = 3;
         public const int NO_OVERLEFT_BOOK = 4;
-        public const int RENTAL_SUCESS = 5;        
+        public const int RENTAL_SUCESS = 5;
+
+        //사용자 예아니오
+
+        public const int YES = 1;
+        public const int NO = 2;
+        public const int WRONG_INPUT = 3;
+
     }
 }

@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace BookManagementProgram
 {  
-    class ExceptionHandling
+    class ExceptionHandling    //에러메세지 빼자.
     {
         private static ExceptionHandling instance = null;
 
@@ -82,6 +82,7 @@ namespace BookManagementProgram
 
             return Constants.RENTAL_SUCESS;   //위 조건들을 모두 통과하면 대여
         }
+
         public string InputYesOrNo(string yesOrNo)   //문자열이 y 인지 n인지 아님 다른값이 들어왔는지 판단 후 반환
         {
             if (!string.IsNullOrEmpty(yesOrNo) && yesOrNo.Length == 1)
@@ -124,15 +125,14 @@ namespace BookManagementProgram
                             return null;
                         }
                     }
+
                     ClearErrorMessage();
                     return id;
                 }
             }
 
             PrintErrorMessage("다시 입력해주세요.");
-
-            return null;
-            
+            return null;            
         }
 
         public string InputPassword(string password)   //패스워드는 별로 표시
@@ -236,6 +236,7 @@ namespace BookManagementProgram
                     PrintErrorMessage("잘못된 입력입니다.");
                     return null;
                 }
+
                 foreach (CustomerInformationVO customer in customerList)
                 {
                     if (customer.PhoneNumber == phoneNumber)
@@ -316,6 +317,32 @@ namespace BookManagementProgram
             return null;
         }      
         
+        public int GoPrivious(string userRequest)
+        {
+            string whiteSpace = new string(' ', 40);
+
+            if (userRequest == "y" || userRequest == "Y" || userRequest == "yes")
+            {                
+                Console.Clear();
+                return Constants.YES;
+            }
+            else if (userRequest == "n" || userRequest == "N" || userRequest == "no")
+            {
+                Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1);
+                Console.WriteLine(whiteSpace);
+                Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1);
+                return Constants.NO;
+            }
+            else
+            {
+                Console.SetCursorPosition(36, Console.CursorTop - 1);
+                Console.WriteLine(whiteSpace);
+                Console.SetCursorPosition(36, Console.CursorTop - 1);
+
+                return Constants.WRONG_INPUT;
+            }                  
+        }
+
         private void PrintErrorMessage(string message)
         {
             Console.SetCursorPosition(35, Console.CursorTop - 1);
@@ -352,5 +379,7 @@ namespace BookManagementProgram
 
             return inputString;
         }
+
+        
     }
 }

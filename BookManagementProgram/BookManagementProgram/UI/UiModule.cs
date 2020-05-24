@@ -25,40 +25,37 @@ namespace BookManagementProgram
 
         protected void InputIdAndPassword(ref string id, ref string password,int inputInspection)//아이디와 비밀번호를 입력받음
         {
-            string whiteSpace = new string(' ', 40);
-            string yesOrNo = null;
-            
+            string userInput = null;
+            int userRequest;
+            bool isEnd = false;
+
             if (inputInspection == ExceptionHandling.wrongInput)             //입력 오류 체크
             {
-                Console.WriteLine("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
+                Console.WriteLine("가입하지 않은 아이디 이거나, 잘못된 비밀번호입니다.");
                 Console.Write("초기화면으로 돌아가시겠습니까?[y,n] ");
 
-                while (true)
+                while (!isEnd)
                 {
-                    yesOrNo = Console.ReadLine();
-                    if (yesOrNo == "y")
-                    {
-                        id = null;
-                        password = null;
-                        Console.Clear();
-                        return;
-                    }
-                    else if (yesOrNo == "n")
-                    {
-                        Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1);
-                        Console.WriteLine(whiteSpace);
-                        Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1);
+                    userInput = Console.ReadLine();
 
-                        break;
-                    }
-                    else
+                    userRequest = ExceptionHandling.Instance.GoPrivious(userInput);
+
+                    switch (userRequest)
                     {
-                        Console.SetCursorPosition(36, Console.CursorTop - 1 );
-                        Console.WriteLine(whiteSpace);
-                        Console.SetCursorPosition(36, Console.CursorTop - 1);
-                    }
-                }
-               
+                        case Constants.YES:
+                            id = null;
+                            password = null;
+                            Console.Clear();
+                            return;
+
+                        case Constants.NO:
+                            isEnd = true;
+                            break;
+
+                        default:
+                            break;
+                    }                    
+                }               
             }
 
             Console.SetCursorPosition(Constants.LOCATION_X, Constants.LOGIN_ID_LOCATION_Y);  //입력받을 때 커서위치 이동후 입력받음
@@ -256,7 +253,7 @@ namespace BookManagementProgram
 
         protected void PrintSearchingType(int inputNumber)
         {
-            if (inputNumber < Constants.SEARCHING_BY_TITLE && inputNumber > Constants.SEARCHING_BY_PUBLISHER) return;
+            if (inputNumber < Constants.SEARCHING_BY_TITLE || inputNumber > Constants.SEARCHING_BY_PUBLISHER) return;
             string[] types = new string[] { "제목, 저자", "출판사" };
             Console.Write("도서 {0} 입력 : ", types[inputNumber - 1]);
             Console.Write("                  ");
