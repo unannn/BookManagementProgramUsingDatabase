@@ -63,7 +63,7 @@
     <Compile Include="DataBases\BookDB.cs" />
     <Compile Include="BookManagementProgram.cs" />
     <Compile Include="DataBases\Update.cs" />
-    <Compile Include="NaverBooks.cs" />
+    <Compile Include="NaverAPI.cs" />
     <Compile Include="VO\BookInformationVO.cs" />
     <Compile Include="Book\BookManagement.cs" />
     <Compile Include="Utility\Constants.cs" />

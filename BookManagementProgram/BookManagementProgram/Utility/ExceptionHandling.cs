@@ -389,7 +389,7 @@ namespace BookManagementProgram
         public string DeleteHtmlTag(string text)
         {
             Regex regex = new Regex(@"<(.|\n)*?>");
-
+            if (text.Contains("\n")) text = text.Replace("\n", "");
             return regex.Replace(text, "");
         }
         

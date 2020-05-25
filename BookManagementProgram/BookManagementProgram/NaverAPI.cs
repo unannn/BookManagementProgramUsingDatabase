@@ -10,14 +10,10 @@ using Newtonsoft.Json;
 
 namespace BookManagementProgram
 {
-    class Book
-    {      
-
-    }
+   
     class NaverAPI
     {
         private static NaverAPI instance = null;
-
         public static NaverAPI Instance
         {
             get
@@ -29,13 +25,22 @@ namespace BookManagementProgram
                 return instance;
             }
         }
-
-        public void SearchBooks(string title,int searchingNumber)
+        
+        public void SearchBooks(List<BookInformationVO> naverBookList ,string title,int searchingNumber)
         {
+            naverBookList.Clear(); //List 초기화
+
             string clientId = "JP7J1mrKsWbV8xBbBqf0";
             string clientSecret = "2wEGmC5TjY";
-
-            string url = "https://openapi.naver.com/v1/search/book_adv.json?d_titl=" + title + "&display="+searchingNumber; // 결과가 JSON 포맷
+            string name;        //책이름 최대20자
+            string author;      //작가이름 최대10자 
+            string publisher;   //출판사 최대10자
+            
+            int price;
+            string pubDate;
+            string isbn;
+            string description;
+            string url = "https://openapi.naver.com/v1/search/book_adv.json?d_titl=" + title + "&display=" + searchingNumber; // 결과가 JSON 포맷
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Headers.Add("X-Naver-Client-Id", clientId); // 클라이언트 아이디
@@ -56,28 +61,18 @@ namespace BookManagementProgram
                 {
                     if (bookNumber == json["items"].Count())
                     {
-                        Console.Write("더이상 책이 검색되지 않습니다1.");
                         break;
                     }
 
-                    Console.Write(ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["title"].ToString()));
-                    Console.WriteLine();
-                    Console.Write(ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["author"].ToString()));
-                    Console.WriteLine();
-                    Console.Write(json["items"][bookNumber]["publisher"]);
-                    Console.WriteLine();
-                    Console.Write(json["items"][bookNumber]["pubdate"]);
-                    Console.WriteLine();
-                    Console.Write(json["items"][bookNumber]["isbn"]);
-                    Console.WriteLine();
-                    Console.Write(ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["description"].ToString()));
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    Console.WriteLine();
+                    name = ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["title"].ToString());
+                    author = ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["author"].ToString());
+                    publisher = ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["publisher"].ToString());
+                    pubDate = ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["pubdate"].ToString());
+                    isbn = ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["isbn"].ToString()).Substring(13);
+                    description = ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["description"].ToString());  
+                    price = int.Parse(ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["price"].ToString()));
 
-
-                    
+                    naverBookList.Add(new BookInformationVO(name, author, publisher, pubDate, isbn, description, price));
                 }
 
             }

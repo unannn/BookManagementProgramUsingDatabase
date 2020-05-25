@@ -11,6 +11,7 @@ namespace BookManagementProgram
     {
         private CustomerManagement customerManagement;
         private BookManagement bookManagement;
+        private List<BookInformationVO> naverBookList;
 
         private string[] initialMenu;
         private string[] adminMainMenu;
@@ -22,8 +23,9 @@ namespace BookManagementProgram
         {
             customerManagement = new CustomerManagement();
             bookManagement = new BookManagement();
+            naverBookList = new List<BookInformationVO>();
 
-            initialMenu = new string[] {  "1. 로그인", "2. 회원가입", "3. 프로그램종료" };
+        initialMenu = new string[] {  "1. 로그인", "2. 회원가입", "3. 프로그램종료" };
             adminMainMenu = new string[]
             {
                "     1. 도서 리스트 보기/검색/대여",
@@ -429,6 +431,7 @@ namespace BookManagementProgram
         }
         private void SearchOnNaver(CustomerInformationVO logInCustoemr)
         {
+            Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
             string bookTitle;
             string SearchingNumberInString;
             bool isEnd = false;
@@ -438,13 +441,17 @@ namespace BookManagementProgram
             { 
                 Console.Clear();
 
-                PrintTitle(Constants.BOOK_RENT_LOCATION);
+                PrintTitle(Console.LargestWindowWidth/2 - 20);
                 Console.WriteLine("네이버에서 검색");
 
-                Console.Write("도서 제목 : ");
+                Console.WriteLine("\nq입력시 나가기\n");
+
+                Console.Write("도서 제목(두글자 이상 입력) : ");
                 bookTitle = ExceptionHandling.Instance.InputString(Constants.STARTING_NUMBER, Constants.BOOK_NAME_LENGTH_MAXIMUM);
+                if (bookTitle == "q") return;
                 Console.Write("검색 개수 : ");
                 SearchingNumberInString = Console.ReadLine();
+                if (bookTitle == "q") return;
                 searchingNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.NABER_SEARCHING_MAXNUMBER, SearchingNumberInString);
 
                 if (searchingNumber == ExceptionHandling.wrongInput)
@@ -452,9 +459,22 @@ namespace BookManagementProgram
                     PrintFailMessage("다시입력해주세요.");
                     continue;
                 }
-                    NaverAPI.Instance.SearchBooks(bookTitle, searchingNumber);
 
-                Console.ReadKey();
+                NaverAPI.Instance.SearchBooks(naverBookList, bookTitle, searchingNumber);
+                PrintNaverBooks(naverBookList);
+                
+                Console.Write("\n\n대여할 도서 번호 입력 : ");
+                SearchingNumberInString = Console.ReadLine();
+                if (bookTitle == "q") return;
+                searchingNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, naverBookList.Count, SearchingNumberInString);
+
+                if(searchingNumber == ExceptionHandling.wrongInput)
+                {
+                    PrintFailMessage("존재하지않는 도서입니다.");
+                    continue;
+                }
+
+                //대여 도서에 추가와 반납 구현
             }
         }
         //해당 도서의 존재유무 검사

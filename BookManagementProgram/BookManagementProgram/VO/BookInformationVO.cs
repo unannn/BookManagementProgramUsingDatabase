@@ -101,6 +101,17 @@ namespace BookManagementProgram
             this.maxQuantity = maxQuantity;
             this.price = price;
         }
+        //네이버에서 추가할 떄
+        public BookInformationVO(string name, string author, string publisher, string pubDate, string isbn, string description, int price)
+        {
+            this.name = name;
+            this.author = author;
+            this.publisher = publisher;
+            this.pubDate = pubDate;
+            this.isbn = isbn;
+            this.description = description;
+            this.price = price;
+        }
 
         public object Clone()
         {

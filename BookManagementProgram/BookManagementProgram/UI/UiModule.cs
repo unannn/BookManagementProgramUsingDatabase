@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace BookManagementProgram
 {  
@@ -87,6 +88,7 @@ namespace BookManagementProgram
 
         protected void OneSpace(string bookeInformation,int limit) //도서, 고객 목록 출력시 칸 정렬
         {
+            if (bookeInformation.Length * 2 > limit && Regex.IsMatch(bookeInformation,@"[가-힣]")) bookeInformation = bookeInformation.Substring(0, limit/2) + "...";
             Console.Write(" " + bookeInformation);
             Console.Write(new String(' ', limit - Encoding.Default.GetByteCount(bookeInformation)));  //한글영어숫자구분 위해 바이트단위로 계산
             Console.Write("|");
@@ -220,6 +222,50 @@ namespace BookManagementProgram
                 OneSpace(rentalAndReturnDate[0].Substring(0, Constants.DATE_LENGTH_MAXIMUM), Constants.DATE_LENGTH_MAXIMUM);
                 OneSpace(rentalAndReturnDate[1].Substring(0, Constants.DATE_LENGTH_MAXIMUM), Constants.DATE_LENGTH_MAXIMUM);
                 Console.WriteLine();
+            }
+
+            Console.WriteLine(divisionLine);
+        }
+
+        protected void PrintNaverBooks(List<BookInformationVO> naverBookList)  //대여일과 반납일 추가하기
+        {
+            string divisionLine = new String('-', 159) + "+";
+            Console.WriteLine(divisionLine);
+
+            OneSpace("NO", Constants.BOOK_NUMBER_MAXIMUM.ToString().Length);  //도서의 요소 종류 출력
+            OneSpace("이름", Constants.BOOK_NAME_LENGTH_MAXIMUM + 27);
+            OneSpace("저자", Constants.BOOK_AUTHOER_LENGTH_MAXIMUM);
+            OneSpace("출판사", Constants.BOOK_PUBLISHER_LENGTH_MAXIMUM);
+            OneSpace("출판일", 10);
+            OneSpace("isbn번호", 13);
+            OneSpace("가격", Constants.BOOK_PRICE_MAXIMUM.ToString().Length) ;
+
+            Console.WriteLine();
+
+            for (int order = 0; order < naverBookList.Count; order++)  //반납해야하는 도서리스트 출력
+            {
+                Console.WriteLine(divisionLine);
+
+                OneSpace((order+1).ToString(), Constants.BOOK_NUMBER_MAXIMUM.ToString().Length);
+                OneSpace(naverBookList[order].Name, Constants.BOOK_NAME_LENGTH_MAXIMUM + 27);
+                OneSpace(naverBookList[order].Author, Constants.BOOK_AUTHOER_LENGTH_MAXIMUM);
+                OneSpace(naverBookList[order].Publisher, Constants.BOOK_PUBLISHER_LENGTH_MAXIMUM);
+                OneSpace(naverBookList[order].PubDate, 10);
+                OneSpace(naverBookList[order].Isbn, 13);
+                OneSpace(naverBookList[order].Price.ToString(), Constants.BOOK_PRICE_MAXIMUM.ToString().Length);
+
+                Console.WriteLine();
+                Console.WriteLine(divisionLine);
+
+                OneSpace("description", 160);
+                Console.WriteLine();
+
+                Console.WriteLine(divisionLine);
+
+                OneSpace(naverBookList[order].Description,160);
+                Console.WriteLine();
+
+
             }
 
             Console.WriteLine(divisionLine);
