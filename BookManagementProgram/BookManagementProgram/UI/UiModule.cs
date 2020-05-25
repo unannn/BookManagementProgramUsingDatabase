@@ -118,7 +118,7 @@ namespace BookManagementProgram
             OneSpace("제목", Constants.BOOK_NAME_LENGTH_MAXIMUM);
             OneSpace("저자", Constants.BOOK_AUTHOER_LENGTH_MAXIMUM);
             OneSpace("출판사", Constants.BOOK_PUBLISHER_LENGTH_MAXIMUM);
-            OneSpace("총권수", Constants.BOOK_NUMBER_LENGTH_MAXIMUM);
+            OneSpace("권수", Constants.BOOK_NUMBER_LENGTH_MAXIMUM);
             OneSpace("가격", Constants.BOOK_PRICE_MAXIMUM.ToString().Length);
 
             Console.WriteLine();

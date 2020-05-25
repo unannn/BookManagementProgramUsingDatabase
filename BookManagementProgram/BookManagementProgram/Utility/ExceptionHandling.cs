@@ -385,7 +385,6 @@ namespace BookManagementProgram
 
             return inputString;
         }
-
         
     }
 }

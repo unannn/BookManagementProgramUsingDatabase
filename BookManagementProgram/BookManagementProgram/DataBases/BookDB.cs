@@ -78,6 +78,34 @@ namespace BookManagementProgram
             return rowNumber;
         }
 
+        public void UpdateBookQuantity(BookInformationVO book)
+        {
+            connection.Open();
+
+            string updateQuery = "UPDATE book SET maxQuntity = " + book.MaxQuantity +", Quantity = " + book.Quantity +
+                " WHERE book.no = " + book.No;
+
+            MySqlCommand command = new MySqlCommand(updateQuery, connection);
+
+            command.ExecuteNonQuery();
+
+            connection.Close();
+        }
+
+        public void UpdateBookPrice(BookInformationVO book)
+        {
+            connection.Open();
+
+            string updateQuery = "UPDATE book SET book_price = " + book.Price +
+                " WHERE book.no = " + book.No;
+
+            MySqlCommand command = new MySqlCommand(updateQuery, connection);
+
+            command.ExecuteNonQuery();
+
+            connection.Close();
+        }
+
         public int InsertNewBook(string name, string author, string publisher, int quantity, int price)         //새 도서 등록
         {
             int no;

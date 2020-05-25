@@ -17,7 +17,7 @@ namespace BookManagementProgram
         private string[] userMenu;
         private string[] bookMenu;
         private string[] modifyMenu;
-
+        private string[] bookModifyMenu;
         public UI()
         {
             customerManagement = new CustomerManagement();
@@ -26,36 +26,43 @@ namespace BookManagementProgram
             initialMenu = new string[] {  "1. 로그인", "2. 회원가입", "3. 프로그램종료" };
             adminMainMenu = new string[]
             {
-               "1. 도서 리스트 보기/검색/대여",
-               "2. 도서 반납",
-               "3. 도서 등록",
-               "4. 도서 삭제",
-               "5. 회원 리스트 보기",
-               "6. 회원 삭제",
-               "7. 내 정보 수정",
-               "8. 로그아웃",
-               "9. 프로그램 종료"
+               "     1. 도서 리스트 보기/검색/대여",
+               "     2. 도서 반납",
+               "     3. 도서 등록",
+               "     4. 도서 삭제",
+               "     5. 도서 수정",
+               "     6. 회원 리스트 보기",
+               "     7. 회원 삭제",
+               "     8. 내 정보 수정",
+               "     9. 로그아웃",
+               "     10. 프로그램 종료"
             };
             userMenu = new string[]
             {
-               "1. 도서 리스트 보기/검색/대여",
-               "2. 도서 반납",
-               "3. 내 정보 수정",
-               "4. 로그아웃",
-               "5. 프로그램 종료"
+               "     1. 도서 리스트 보기/검색/대여",
+               "     2. 도서 반납",
+               "     3. 내 정보 수정",
+               "     4. 로그아웃",
+               "     5. 프로그램 종료"
             };
             bookMenu = new string[]
             {
-               "1. 도서 이름 검색",
-               "2. 도서 저자 검색",
-               "3. 도서 출판사 검색",
-               "4. 도서 대여",
-               "5. 나가기"
+               "     1. 도서 이름 검색",
+               "     2. 도서 저자 검색",
+               "     3. 도서 출판사 검색",
+               "     4. 도서 대여",
+               "     5. 나가기"
             };
             modifyMenu = new string[]
             {
                 "    1. 휴대폰번호",
                 "    2. 주소",
+                "    3. 종료"
+            };
+            bookModifyMenu = new string[]
+            {
+                "    1. 도서 수량 수정",
+                "    2. 도서 가격 수정",
                 "    3. 종료"
             };
         }
@@ -139,6 +146,11 @@ namespace BookManagementProgram
                     case Constants.BOOK_DELETE:               //도서 삭제
                         Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         DeleteBook(bookList);
+                        break;
+
+                    case Constants.BOOK_MODIFYING:               //도서 수정
+                        Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
+                        ModifyBook(bookList);
                         break;
 
                     case Constants.CUSOMTER_LIST:            //회원리스트 보기
@@ -543,7 +555,7 @@ namespace BookManagementProgram
             {
                 Console.Clear();
 
-                PrintTitle(27);
+                PrintTitle(Constants.MODIFY_MYDATA_LOCATION);
                 
                 PrintMyInfo(logInCustomer);
 
@@ -692,7 +704,7 @@ namespace BookManagementProgram
             }
         }
 
-        public void DeleteBook(List<BookInformationVO> bookList) //등록되어있는 책들 삭제하는 함수
+        private void DeleteBook(List<BookInformationVO> bookList) //등록되어있는 책들 삭제하는 함수
         {
             string inpuNumberInString;
             int inputNumber;
@@ -779,6 +791,82 @@ namespace BookManagementProgram
 
                     ++bookIndex;
                 }
+            }
+        }
+
+        private void ModifyBook(List<BookInformationVO> bookList) //등록되어있는 책들 삭제하는 함수
+        {
+            string inpuNumberInString;
+            int inputNumber;
+            int bookIndex;
+            bool isEnd = false;
+            bool isSucessful = false;
+
+            while (!isEnd)
+            {
+                Console.Clear();
+
+                PrintTitle(Constants.BOOK_RENT_LOCATION);
+
+                Console.WriteLine();
+                Console.WriteLine("    도서 수정\n");
+                Console.WriteLine("q입력시 나가기\n");
+
+                PrintBookList(bookList);
+
+                Console.Write(" 수정할 도서 번호 입력 : ");
+
+                inpuNumberInString = Console.ReadLine();
+                if (inpuNumberInString == "q") return;            //q입력시 종료
+                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_NUMBER_MAXIMUM, inpuNumberInString);
+                
+                if (inputNumber == ExceptionHandling.wrongInput)
+                {
+                    PrintFailMessage("해당 도서가 존재하지 않습니다.");
+                    continue;
+                }
+
+                for (bookIndex = 0; bookIndex < bookList.Count; bookIndex++)  //해당 도서가 있는지 검사
+                {
+                    if (bookList[bookIndex].No == inputNumber) break;
+                }
+
+                if (bookIndex == bookList.Count)
+                {
+                    PrintFailMessage("해당 도서가 존재하지 않습니다.");
+                    continue;
+                }
+
+                PrintMenuList(bookModifyMenu);
+                Console.Write(" 수정할 정보 선택 : ");
+                inpuNumberInString = Console.ReadLine();
+                inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, bookModifyMenu.Length, inpuNumberInString);
+
+                switch (inputNumber)
+                {
+                    case Constants.BOOK_NUMBER_MODIFYING:
+                        Console.WriteLine("선택 도서 총수량 : {0}",bookList[bookIndex].MaxQuantity);
+                        Console.Write("수정할 도서 개수 입력(대여도서 포함) : ");
+                        isSucessful =  bookManagement.ModifyBookNumber(bookList[bookIndex]);
+                        if(isSucessful)PrintFailMessage("수정을 완료했습니다.");
+                        else PrintFailMessage("잘못된 입력입니다.");
+                        break;
+
+                    case Constants.PRICE_MODIFYING:
+                        Console.WriteLine("선택 도서 현재가격 : {0}", bookList[bookIndex].Price);
+                        Console.Write("수정할 가격 입력(1000~99999) : ");
+                        isSucessful = bookManagement.ModifyBookPrice(bookList[bookIndex]);
+                        if (isSucessful) PrintFailMessage("수정을 완료했습니다.");
+                        else PrintFailMessage("잘못된 입력입니다.");
+                        break;
+
+                    case Constants.MODIFYING_END:
+                        break;
+
+                    default:
+                        break;
+                }
+
             }
         }
 

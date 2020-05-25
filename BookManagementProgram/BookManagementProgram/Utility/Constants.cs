@@ -59,11 +59,12 @@ namespace BookManagementProgram
         public const int BOOK_RETURN = 2;
         public const int BOOK_REGISTRATION = 3;
         public const int BOOK_DELETE = 4;
-        public const int CUSOMTER_LIST = 5;
-        public const int CUSTOMER_DELETE = 6;
-        public const int MY_DATA_MODIFYING = 7;
-        public const int LOGOUT = 8;
-        public const int PROGRAM_END_ADMIN = 9;
+        public const int BOOK_MODIFYING = 5;
+        public const int CUSOMTER_LIST = 6;
+        public const int CUSTOMER_DELETE = 7;
+        public const int MY_DATA_MODIFYING = 8;
+        public const int LOGOUT = 9;
+        public const int PROGRAM_END_ADMIN = 10;
 
         //일반유저 모드 메뉴        
         public const int MY_DATA_MODIFYING_USER = 3;
@@ -80,6 +81,7 @@ namespace BookManagementProgram
 
         //제목위치
         public const int BASIC_LOCATION = 7;
+        public const int MODIFY_MYDATA_LOCATION = 27;
         public const int BOOK_RENT_LOCATION = 47;
 
         //도서검색및 대여 메뉴
@@ -113,5 +115,10 @@ namespace BookManagementProgram
         public const int NO = 2;
         public const int WRONG_INPUT = 3;
 
+        //책 정보 수정
+
+        public const int BOOK_NUMBER_MODIFYING = 1;
+        public const int PRICE_MODIFYING = 2;
+        public const int MODIFYING_END = 3;
     }
 }

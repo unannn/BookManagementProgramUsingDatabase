@@ -94,9 +94,46 @@ namespace BookManagementProgram
                     serchedBooks.Add(bookList[book]);   //복사해서 serchedBooks 리스트에 추가
                 }
             }
-
+           
             return serchedBooks;
         }
+        
+        public bool ModifyBookNumber(BookInformationVO bookToBeModified)
+        {
+            string inputNumberInString;
+            int inputNumber;
+            int quantityChangeNumber;
 
+            inputNumberInString = Console.ReadLine();
+            inputNumber = ExceptionHandling.Instance.InputNumber(0, 10, inputNumberInString);
+
+            if(inputNumber == ExceptionHandling.wrongInput) return false;
+
+            quantityChangeNumber = inputNumber - bookToBeModified.MaxQuantity;
+            bookToBeModified.MaxQuantity = inputNumber;
+
+            if (bookToBeModified.Quantity + quantityChangeNumber < 0) bookToBeModified.Quantity = 0;
+            else bookToBeModified.Quantity += quantityChangeNumber;
+            BookDB.Instance.UpdateBookQuantity(bookToBeModified);
+
+            return true;
+        }
+
+        public bool ModifyBookPrice(BookInformationVO bookToBeModified)
+        {
+            string inputNumberInString;
+            int inputNumber;
+
+            inputNumberInString = Console.ReadLine();
+            inputNumber = ExceptionHandling.Instance.InputNumber(Constants.BOOK_PRICE_MINIMUM, Constants.BOOK_PRICE_MAXIMUM, inputNumberInString);
+
+            if (inputNumber == ExceptionHandling.wrongInput) return false;
+
+            bookToBeModified.Price = inputNumber;
+
+            BookDB.Instance.UpdateBookPrice(bookToBeModified);
+
+            return true;
+        }
     }
 }
