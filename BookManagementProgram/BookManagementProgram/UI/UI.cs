@@ -51,7 +51,8 @@ namespace BookManagementProgram
                "     2. 도서 저자 검색",
                "     3. 도서 출판사 검색",
                "     4. 도서 대여",
-               "     5. 나가기"
+               "     5. 네이버에서 검색",
+               "     6. 나가기"
             };
             modifyMenu = new string[]
             {
@@ -300,7 +301,7 @@ namespace BookManagementProgram
 
             PrintInputBox("휴대폰번호 ('-'없이 11글자)");
 
-            PrintInputBox("주소 (1~20글자 ○○시 ○○구 형식)");
+            PrintInputBox("주소 (1~20글자 ○○시 ○○구 ○○○ 형식)");
 
             customerToBeAdded = customerManagement.InputCustomerAccountInformation();
 
@@ -369,7 +370,7 @@ namespace BookManagementProgram
 
                 PrintMenuList(bookMenu);
 
-                Console.Write("1~5 정수 입력 : ");
+                Console.Write("1~6 정수 입력 : ");
 
                 if (inputNumber == ExceptionHandling.wrongInput)
                 {
@@ -411,6 +412,9 @@ namespace BookManagementProgram
                         rentalControl = bookManagement.RentBook(logInCustomer, bookList);
                         PrintRentalBookMessage(rentalControl);
                         break;
+                    case Constants.SEARCHING_ON_NAVER:
+                        SearchOnNaver(logInCustomer);
+                        break;
 
                     case Constants.EXIT_SEARCHING:
                         isEnd = true;
@@ -423,7 +427,36 @@ namespace BookManagementProgram
                 Console.Clear();
             }
         }
+        private void SearchOnNaver(CustomerInformationVO logInCustoemr)
+        {
+            string bookTitle;
+            string SearchingNumberInString;
+            bool isEnd = false;
+            int searchingNumber;
 
+            while (!isEnd)
+            { 
+                Console.Clear();
+
+                PrintTitle(Constants.BOOK_RENT_LOCATION);
+                Console.WriteLine("네이버에서 검색");
+
+                Console.Write("도서 제목 : ");
+                bookTitle = ExceptionHandling.Instance.InputString(Constants.STARTING_NUMBER, Constants.BOOK_NAME_LENGTH_MAXIMUM);
+                Console.Write("검색 개수 : ");
+                SearchingNumberInString = Console.ReadLine();
+                searchingNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.NABER_SEARCHING_MAXNUMBER, SearchingNumberInString);
+
+                if (searchingNumber == ExceptionHandling.wrongInput)
+                {
+                    PrintFailMessage("다시입력해주세요.");
+                    continue;
+                }
+                    NaverAPI.Instance.SearchBooks(bookTitle, searchingNumber);
+
+                Console.ReadKey();
+            }
+        }
         //해당 도서의 존재유무 검사
         private void CheckBookExist(CustomerInformationVO logInCustomer, List<BookInformationVO> serchingBookList, BookManagement bookManageMent)
         {
@@ -587,9 +620,7 @@ namespace BookManagementProgram
                         default:
                             break;
                     }
-                    //Console.WriteLine();
-                    //if (isSucessful) PrintFailMessage("주소가 변경되었습니다.");
-                    //else if (!isEnd) PrintFailMessage("잘못된 입력입니다.");
+                    
                     Console.Clear();
 
                 }

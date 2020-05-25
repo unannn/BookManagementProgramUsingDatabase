@@ -15,6 +15,9 @@ namespace BookManagementProgram
         private int quantity;       //최대 9권
         private int maxQuantity;
         private int price;
+        private string pubDate;
+        private string isbn;
+        private string description;
 
         public int No
         {
@@ -58,11 +61,33 @@ namespace BookManagementProgram
             set { price = value; }
         }
 
+        public string PubDate
+        {
+            get { return pubDate; }
+            set { pubDate = value; }
+        }
+
+        public string Isbn
+        {
+            get { return isbn; }
+            set { isbn = value; }
+        }
+
+        public string Description
+        {
+            get { return description; }
+            set { description = value; }
+        }
+
+
         public BookInformationVO()
         {
             name = null;
             author = null;
             publisher = null;
+            pubDate = null;
+            isbn = null;
+            description = null;
             quantity = 0;
         }
 

@@ -15,6 +15,7 @@ namespace BookManagementProgram
         private string phoneNumber;
         private string adress;
         private bool isAdministrator;
+      
         private List<BookInformationVO> rentedBook;
 
         public int No
@@ -65,6 +66,7 @@ namespace BookManagementProgram
             set { rentedBook = value; }
         }
 
+       
         public CustomerInformationVO()
         {
             this.id = null;
@@ -73,6 +75,7 @@ namespace BookManagementProgram
             this.phoneNumber = null;
             this.adress = null;
             this.isAdministrator = false;
+            
             this.rentedBook = new List<BookInformationVO>();
         }
 

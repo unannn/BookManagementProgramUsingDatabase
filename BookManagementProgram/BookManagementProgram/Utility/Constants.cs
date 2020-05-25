@@ -89,7 +89,8 @@ namespace BookManagementProgram
         public const int SEARCHING_BY_AUTHOER = 2;
         public const int SEARCHING_BY_PUBLISHER = 3;
         public const int RENT_BOOK = 4;
-        public const int EXIT_SEARCHING = 5;
+        public const int SEARCHING_ON_NAVER = 5;
+        public const int EXIT_SEARCHING = 6;
 
         //내정보수정 메뉴
 
@@ -101,8 +102,8 @@ namespace BookManagementProgram
 
         public const int BOOK_TABLE_WIDTH = 117;
         public const int RETURN_BOOK_TABLE_WIDTH = 126;
+        
         //책 대여 예외처리
-
         public const int NOT_EXIST = 1;
         public const int OVER_MAXIMUM_RENTAL_BOOK = 2;
         public const int ALEADY_RENTAL_BOOK = 3;
@@ -110,7 +111,6 @@ namespace BookManagementProgram
         public const int RENTAL_SUCESS = 5;
 
         //사용자 예아니오
-
         public const int YES = 1;
         public const int NO = 2;
         public const int WRONG_INPUT = 3;
@@ -120,5 +120,9 @@ namespace BookManagementProgram
         public const int BOOK_NUMBER_MODIFYING = 1;
         public const int PRICE_MODIFYING = 2;
         public const int MODIFYING_END = 3;
+
+        //네이버 검색
+        public const int NABER_SEARCHING_MAXNUMBER = 100;
+
     }
 }

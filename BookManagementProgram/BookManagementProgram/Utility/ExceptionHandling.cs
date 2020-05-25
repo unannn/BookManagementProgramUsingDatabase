@@ -385,6 +385,13 @@ namespace BookManagementProgram
 
             return inputString;
         }
+
+        public string DeleteHtmlTag(string text)
+        {
+            Regex regex = new Regex(@"<(.|\n)*?>");
+
+            return regex.Replace(text, "");
+        }
         
     }
 }
