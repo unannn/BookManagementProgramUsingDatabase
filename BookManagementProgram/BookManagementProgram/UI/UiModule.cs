@@ -88,10 +88,14 @@ namespace BookManagementProgram
 
         protected void OneSpace(string bookeInformation,int limit) //도서, 고객 목록 출력시 칸 정렬
         {
-            if (bookeInformation.Length * 2 > limit && Regex.IsMatch(bookeInformation,@"[가-힣]")) bookeInformation = bookeInformation.Substring(0, limit/2) + "...";
+            int whiteSpace = limit - Encoding.Default.GetByteCount(bookeInformation);
+
+            if (whiteSpace < 0) whiteSpace = 0;
+
+            if (bookeInformation.Length * 2 > limit && Regex.IsMatch(bookeInformation,@"[a-zA-Z가-힣]")) bookeInformation = bookeInformation.Substring(0, limit/2) + "...";
+
             Console.Write(" " + bookeInformation);
-            Console.Write(new String(' ', limit - Encoding.Default.GetByteCount(bookeInformation)));  //한글영어숫자구분 위해 바이트단위로 계산
-            Console.Write("|");
+            Console.Write(new String(' ', whiteSpace));  //한글영어숫자구분 위해 바이트단위로 계산
         }
 
         protected void PrintFailMessage(string message)
@@ -161,9 +165,9 @@ namespace BookManagementProgram
         protected void PrintModifyingPhoneNumber(CustomerInformationVO logInCustomer)
         {
             Console.WriteLine();
-            Console.WriteLine("현재 번호 : " + logInCustomer.PhoneNumber);
+            Console.WriteLine("    현재 번호 : " + logInCustomer.PhoneNumber);
             Console.WriteLine();
-            Console.Write("바꿀 번호 : ");
+            Console.Write("    바꿀 번호 : ");
         }
 
         protected void PrintAllCustomer(List<CustomerInformationVO> customerList)
@@ -229,7 +233,7 @@ namespace BookManagementProgram
 
         protected void PrintNaverBooks(List<BookInformationVO> naverBookList)  //대여일과 반납일 추가하기
         {
-            string divisionLine = new String('-', 159) + "+";
+            string divisionLine = new String('-', 163) + "+";
             Console.WriteLine(divisionLine);
 
             OneSpace("NO", Constants.BOOK_NUMBER_MAXIMUM.ToString().Length);  //도서의 요소 종류 출력
@@ -257,12 +261,12 @@ namespace BookManagementProgram
                 Console.WriteLine();
                 Console.WriteLine(divisionLine);
 
-                OneSpace("description", 160);
+                OneSpace("description", Constants.BOOK_DESC_LENGTH_MAXIMUM);
                 Console.WriteLine();
 
                 Console.WriteLine(divisionLine);
 
-                OneSpace(naverBookList[order].Description,160);
+                OneSpace(naverBookList[order].Description, Constants.BOOK_DESC_LENGTH_MAXIMUM);
                 Console.WriteLine();
 
 
@@ -300,7 +304,7 @@ namespace BookManagementProgram
         protected void PrintSearchingType(int inputNumber)
         {
             if (inputNumber < Constants.SEARCHING_BY_TITLE || inputNumber > Constants.SEARCHING_BY_PUBLISHER) return;
-            string[] types = new string[] { "제목, 저자", "출판사" };
+            string[] types = new string[] { "제목", "저자", "출판사" };
             Console.Write("도서 {0} 입력 : ", types[inputNumber - 1]);
             Console.Write("                  ");
             Console.SetCursorPosition(Console.CursorLeft - 18, Console.CursorTop);

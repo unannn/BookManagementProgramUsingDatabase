@@ -23,7 +23,7 @@ namespace BookManagementProgram
             customerManagement = new Customer.Management();
             bookManagement = new Book.Management();
             naverBookList = new List<BookInformationVO>();
-            initialMenu = new string[] {  "1. 로그인", "2. 회원가입", "3. 프로그램종료" };
+            initialMenu = new string[] {  "    1. 로그인", "    2. 회원가입", "    3. 프로그램종료" };
             adminMainMenu = new string[]
             {
                "     1. 도서 리스트 보기/검색/대여",
@@ -35,8 +35,9 @@ namespace BookManagementProgram
                "     7. 회원 리스트 보기",
                "     8. 회원 삭제",
                "     9. 내 정보 수정",
-               "     10. 로그아웃",
-               "     11. 프로그램 종료"
+               "     10. 로그 초기화",
+               "     11. 로그아웃",
+               "     12. 프로그램 종료"
             };
             userMenu = new string[]
             {
@@ -105,7 +106,10 @@ namespace BookManagementProgram
                         break;
                 }
             }
-            Utility.ProgramLog.Instance.CreateTextrwriter(logInCustomer.Name,"","로그인");
+            Utility.ProgramLog.Instance.LoginCustomerName = logInCustomer.Name;
+            if(logInCustomer.IsAdministrator)Utility.ProgramLog.Instance.CreateTextrwriter("관리자","로그인");
+            else Utility.ProgramLog.Instance.CreateTextrwriter("일반유저", "로그인");
+
             return logInCustomer;
         }
 
@@ -171,6 +175,10 @@ namespace BookManagementProgram
                     case Constants.MY_DATA_MODIFYING:           //내정보 수정
                         Console.SetWindowSize(Constants.BASIC_WIDTH, Constants.BASIC_HEIGHT);
                         ModifyMyData(logInCustomer);
+                        break;
+
+                    case Constants.INIT_LOG:
+                        Utility.ProgramLog.Instance.InitializeLog();
                         break;
 
                     case Constants.LOGOUT:           //로그아웃
@@ -325,7 +333,7 @@ namespace BookManagementProgram
 
                 PrintMenuList(adminMainMenu);
 
-                Console.Write("1 ~ 9입력 : ");
+                Console.Write("1 ~ 11입력 : ");
 
                 inputNumberInString = Console.ReadLine();
                 inputNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, adminMainMenu.Length, inputNumberInString);
@@ -460,6 +468,7 @@ namespace BookManagementProgram
                     continue;
                 }
 
+                Utility.ProgramLog.Instance.CreateTextrwriter(bookTitle, "네이버에서 도서검색");
                 Book.NaverAPI.Instance.SearchBooks(naverBookList, bookTitle, searchingNumber);
                 PrintNaverBooks(naverBookList);
                 
@@ -489,8 +498,13 @@ namespace BookManagementProgram
                 naverBookList[searchingNumber-1].MaxQuantity = bookNumber;
 
                 //데베에추가
+                Utility.ProgramLog.Instance.CreateTextrwriter(naverBookList[searchingNumber - 1].Name, "네이버에서 도서등록");
+
                 naverBookList[searchingNumber-1].No = BookDB.Instance.AddNaverBook(naverBookList[searchingNumber-1]);
                 bookList.Add(naverBookList[searchingNumber-1]);
+
+                PrintFailMessage("잘못된 입력 입니다.");
+
             }
         }
         //해당 도서의 존재유무 검사
@@ -598,12 +612,15 @@ namespace BookManagementProgram
                         {
                             if (logInCustomer.RentedBook[rentalIndex].No == book.No)
                             {
+                                Utility.ProgramLog.Instance.CreateTextrwriter(logInCustomer.RentedBook[rentalIndex].Name, "도서 반납");
                                 logInCustomer.RentedBook.RemoveAt(rentalIndex);
                                 break;
                             }
                         }
+
                         RentalBookDB.Instance.DeleteRentalBookInfo(logInCustomer.No, book.No); //도서대여정보 삭제
                         PrintFailMessage("반납이 완료 됐습니다.");
+
                         Console.Clear();
 
                         break;
@@ -639,13 +656,14 @@ namespace BookManagementProgram
                     switch (inputNumber)
                     {
                         case Constants.MODIFYING_PHONENUMBER:
-                            PrintModifyingAdresss(logInCustomer);
-                            isSucessful = customerManagement.ModifyPhoneNumber(logInCustomer);
+                            PrintModifyingPhoneNumber(logInCustomer);
+                            isSucessful = customerManagement.ModifyAdress(logInCustomer);
+                           
                             break;
 
                         case Constants.MODIFYING_ADRESS:
-                            PrintModifyingPhoneNumber(logInCustomer);
-                            isSucessful = customerManagement.ModifyAdress(logInCustomer);
+                            PrintModifyingAdresss(logInCustomer);
+                            isSucessful = customerManagement.ModifyPhoneNumber(logInCustomer);
                             break;
 
                         case Constants.MODIFYING_EXIT:
@@ -759,6 +777,8 @@ namespace BookManagementProgram
                 newBook.MaxQuantity = quantity;
                 newBook.Price = price;
 
+                Utility.ProgramLog.Instance.CreateTextrwriter(newBook.Name, "도서 등록");
+
                 newBook.No = BookDB.Instance.InsertNewBook(name, author, publisher, quantity, price);  //데베에 도서정보 삽입
                 bookList.Add(newBook);
                 Console.WriteLine();
@@ -844,7 +864,7 @@ namespace BookManagementProgram
                             break;
                         }
 
-
+                        Utility.ProgramLog.Instance.CreateTextrwriter(bookList[bookIndex].Name, "도서 삭제");
                         bookList.RemoveAt(bookIndex);
                         Console.WriteLine();
                         BookDB.Instance.DeleteBook(inputNumber);
@@ -941,6 +961,8 @@ namespace BookManagementProgram
             Console.Clear();
 
             PrintTitle(46);
+
+            Utility.ProgramLog.Instance.CreateTextrwriter("", "회원 리스트보기");
 
             Console.WriteLine();
             Console.WriteLine("      회원 목록\n");

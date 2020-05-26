@@ -49,7 +49,9 @@ namespace BookManagementProgram.Book
             string inputString = null;
             
             inputString = ExceptionHandling.Instance.InputString(1, 20);
-                        
+
+            Utility.ProgramLog.Instance.CreateTextrwriter( inputString, "제목검색");
+                   
             for (int book = 0; book < bookList.Count; book++)
             {
                 if (!string.IsNullOrEmpty(inputString) && bookList[book].Name.Contains(inputString))   //검색된 문자열이 책이름에 포함되는 책리스트의 책이 있으면
@@ -68,6 +70,7 @@ namespace BookManagementProgram.Book
             
             inputString = ExceptionHandling.Instance.InputString(1, 20);
 
+            Utility.ProgramLog.Instance.CreateTextrwriter(inputString, "저자검색");
 
             for (int book = 0; book < bookList.Count; book++)
             {
@@ -86,7 +89,9 @@ namespace BookManagementProgram.Book
             string inputString = null;
 
             inputString = ExceptionHandling.Instance.InputString(1, 20);
-            
+
+            Utility.ProgramLog.Instance.CreateTextrwriter(inputString, "출판사검색");
+
             for (int book = 0; book < bookList.Count; book++)
             {
                 if (inputString != null && bookList[book].Publisher.Contains(inputString))   //검색된 문자열이 책이름에 포함되는 책리스트의 책이 있으면
@@ -116,6 +121,8 @@ namespace BookManagementProgram.Book
             else bookToBeModified.Quantity += quantityChangeNumber;
             BookDB.Instance.UpdateBookQuantity(bookToBeModified);
 
+            Utility.ProgramLog.Instance.CreateTextrwriter(bookToBeModified.Name +" " + quantityChangeNumber.ToString() + "권", "추가");
+            
             return true;
         }
 
@@ -132,6 +139,7 @@ namespace BookManagementProgram.Book
             bookToBeModified.Price = inputNumber;
 
             BookDB.Instance.UpdateBookPrice(bookToBeModified);
+            Utility.ProgramLog.Instance.CreateTextrwriter(bookToBeModified.Price.ToString(), "원으로 변경");
 
             return true;
         }
