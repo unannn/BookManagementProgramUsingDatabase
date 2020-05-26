@@ -9,8 +9,8 @@ namespace BookManagementProgram
 {
     class UI : UIModule
     {
-        private CustomerManagement customerManagement;
-        private BookManagement bookManagement;
+        private Customer.Management customerManagement;
+        private Book.Management bookManagement;
         private List<BookInformationVO> naverBookList;
 
         private string[] initialMenu;
@@ -21,8 +21,8 @@ namespace BookManagementProgram
         private string[] bookModifyMenu;
         public UI()
         {
-            customerManagement = new CustomerManagement();
-            bookManagement = new BookManagement();
+            customerManagement = new Customer.Management();
+            bookManagement = new Book.Management();
             naverBookList = new List<BookInformationVO>();
 
         initialMenu = new string[] {  "1. 로그인", "2. 회원가입", "3. 프로그램종료" };
@@ -31,13 +31,14 @@ namespace BookManagementProgram
                "     1. 도서 리스트 보기/검색/대여",
                "     2. 도서 반납",
                "     3. 도서 등록",
-               "     4. 도서 삭제",
-               "     5. 도서 수정",
-               "     6. 회원 리스트 보기",
-               "     7. 회원 삭제",
-               "     8. 내 정보 수정",
-               "     9. 로그아웃",
-               "     10. 프로그램 종료"
+               "     4. 네이버에서 검색-등록",
+               "     5. 도서 삭제",
+               "     6. 도서 수정",
+               "     7. 회원 리스트 보기",
+               "     8. 회원 삭제",
+               "     9. 내 정보 수정",
+               "     10. 로그아웃",
+               "     11. 프로그램 종료"
             };
             userMenu = new string[]
             {
@@ -53,8 +54,7 @@ namespace BookManagementProgram
                "     2. 도서 저자 검색",
                "     3. 도서 출판사 검색",
                "     4. 도서 대여",
-               "     5. 네이버에서 검색",
-               "     6. 나가기"
+               "     5. 나가기"
             };
             modifyMenu = new string[]
             {
@@ -144,6 +144,10 @@ namespace BookManagementProgram
 
                     case Constants.BOOK_REGISTRATION:             //도서 등록
                         ResisterBook(bookList);
+                        break;
+
+                    case Constants.SEARCHING_ON_NAVER:
+                        SearchOnNaver(bookList);
                         break;
 
                     case Constants.BOOK_DELETE:               //도서 삭제
@@ -414,10 +418,7 @@ namespace BookManagementProgram
                         rentalControl = bookManagement.RentBook(logInCustomer, bookList);
                         PrintRentalBookMessage(rentalControl);
                         break;
-                    case Constants.SEARCHING_ON_NAVER:
-                        SearchOnNaver(logInCustomer);
-                        break;
-
+                   
                     case Constants.EXIT_SEARCHING:
                         isEnd = true;
                         break;
@@ -429,14 +430,15 @@ namespace BookManagementProgram
                 Console.Clear();
             }
         }
-        private void SearchOnNaver(CustomerInformationVO logInCustoemr)
+        private void SearchOnNaver(List<BookInformationVO> bookList)
         {
             Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
             string bookTitle;
-            string SearchingNumberInString;
             bool isEnd = false;
             int searchingNumber;
-
+            string SearchingNumberInString;
+            int bookNumber;
+            string bookNumberInString;
             while (!isEnd)
             { 
                 Console.Clear();
@@ -451,7 +453,7 @@ namespace BookManagementProgram
                 if (bookTitle == "q") return;
                 Console.Write("검색 개수 : ");
                 SearchingNumberInString = Console.ReadLine();
-                if (bookTitle == "q") return;
+                if (SearchingNumberInString == "q") return;
                 searchingNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.NABER_SEARCHING_MAXNUMBER, SearchingNumberInString);
 
                 if (searchingNumber == ExceptionHandling.wrongInput)
@@ -460,12 +462,12 @@ namespace BookManagementProgram
                     continue;
                 }
 
-                NaverAPI.Instance.SearchBooks(naverBookList, bookTitle, searchingNumber);
+                Book.NaverAPI.Instance.SearchBooks(naverBookList, bookTitle, searchingNumber);
                 PrintNaverBooks(naverBookList);
                 
-                Console.Write("\n\n대여할 도서 번호 입력 : ");
+                Console.Write("\n\n추가할 도서 번호 입력 : ");
                 SearchingNumberInString = Console.ReadLine();
-                if (bookTitle == "q") return;
+                if (SearchingNumberInString == "q") return;
                 searchingNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, naverBookList.Count, SearchingNumberInString);
 
                 if(searchingNumber == ExceptionHandling.wrongInput)
@@ -474,11 +476,27 @@ namespace BookManagementProgram
                     continue;
                 }
 
-                //대여 도서에 추가와 반납 구현
+                Console.Write("\n추가할 도서 개수 입력(최대 10권) : ");
+                bookNumberInString = Console.ReadLine();
+                if (bookNumberInString == "q") return;
+                bookNumber = ExceptionHandling.Instance.InputNumber(Constants.STARTING_NUMBER, Constants.BOOK_QUANTITY_MAXIMUM, SearchingNumberInString);
+
+                if (bookNumber == ExceptionHandling.wrongInput)
+                {
+                    PrintFailMessage("잘못된 입력 입니다.");
+                    continue;
+                }
+
+                naverBookList[searchingNumber-1].Quantity = bookNumber;           //도서추가
+                naverBookList[searchingNumber-1].MaxQuantity = bookNumber;
+
+                //데베에추가
+                naverBookList[searchingNumber-1].No = BookDB.Instance.AddNaverBook(naverBookList[searchingNumber-1]);
+                bookList.Add(naverBookList[searchingNumber-1]);
             }
         }
         //해당 도서의 존재유무 검사
-        private void CheckBookExist(CustomerInformationVO logInCustomer, List<BookInformationVO> serchingBookList, BookManagement bookManageMent)
+        private void CheckBookExist(CustomerInformationVO logInCustomer, List<BookInformationVO> serchingBookList, Book.Management bookManageMent)
         {
             int rentalControl;
             Console.Clear();
@@ -496,7 +514,6 @@ namespace BookManagementProgram
             PrintRentalBookMessage(rentalControl);
 
         }
-
 
         private void PrintBookReturn(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList)   //대여한 도서를 반납하는함수
         {

@@ -10,16 +10,16 @@ namespace BookManagementProgram
     {
         //화면 사이즈
         public const int BASIC_WIDTH = 130;
-        public const int BASIC_HEIGHT = 49;
+        public const int BASIC_HEIGHT = 45;
 
         public const int INIT_WIDTH = 50;
-        public const int INIT_HEIGHT = 30;
+        public const int INIT_HEIGHT = 40;
 
         public const int CREATE_ACCOUNT_WIDTH = 64;
-        public const int CREATE_ACCOUNT_HEIGHT = 40;
+        public const int CREATE_ACCOUNT_HEIGHT = 45;
 
         public const int CUSTOMER_PROCESS_WIDTH = 130;
-        public const int CUSTOMER_PROCESS_HEIGHT = 36;
+        public const int CUSTOMER_PROCESS_HEIGHT = 40;
 
         //초기화면
         public const int LOGIN = 1;
@@ -58,13 +58,14 @@ namespace BookManagementProgram
         public const int BOOK_SEARCHING_RENTAL = 1;
         public const int BOOK_RETURN = 2;
         public const int BOOK_REGISTRATION = 3;
-        public const int BOOK_DELETE = 4;
-        public const int BOOK_MODIFYING = 5;
-        public const int CUSOMTER_LIST = 6;
-        public const int CUSTOMER_DELETE = 7;
-        public const int MY_DATA_MODIFYING = 8;
-        public const int LOGOUT = 9;
-        public const int PROGRAM_END_ADMIN = 10;
+        public const int SEARCHING_ON_NAVER = 4;
+        public const int BOOK_DELETE = 5;
+        public const int BOOK_MODIFYING = 6;
+        public const int CUSOMTER_LIST = 7;
+        public const int CUSTOMER_DELETE = 8;
+        public const int MY_DATA_MODIFYING = 9;
+        public const int LOGOUT = 10;
+        public const int PROGRAM_END_ADMIN = 11;
 
         //일반유저 모드 메뉴        
         public const int MY_DATA_MODIFYING_USER = 3;
@@ -89,8 +90,7 @@ namespace BookManagementProgram
         public const int SEARCHING_BY_AUTHOER = 2;
         public const int SEARCHING_BY_PUBLISHER = 3;
         public const int RENT_BOOK = 4;
-        public const int SEARCHING_ON_NAVER = 5;
-        public const int EXIT_SEARCHING = 6;
+        public const int EXIT_SEARCHING = 5;
 
         //내정보수정 메뉴
 

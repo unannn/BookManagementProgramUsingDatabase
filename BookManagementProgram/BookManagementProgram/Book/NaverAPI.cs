@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
-namespace BookManagementProgram
+namespace BookManagementProgram.Book
 {
    
     class NaverAPI
@@ -71,6 +70,8 @@ namespace BookManagementProgram
                     isbn = ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["isbn"].ToString()).Substring(13);
                     description = ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["description"].ToString());  
                     price = int.Parse(ExceptionHandling.Instance.DeleteHtmlTag(json["items"][bookNumber]["price"].ToString()));
+
+                    ExceptionHandling.Instance.MakeQuotesUse(ref name, ref description);
 
                     naverBookList.Add(new BookInformationVO(name, author, publisher, pubDate, isbn, description, price));
                 }

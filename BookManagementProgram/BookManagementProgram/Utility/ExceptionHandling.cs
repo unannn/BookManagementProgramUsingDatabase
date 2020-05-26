@@ -367,9 +367,15 @@ namespace BookManagementProgram
 
         public void MakeQuotesUse(ref string name, ref string author, ref string publisher)   //입력 정보에 작은따옴표나 큰따옴표가 포함되는지 확인
         {
-            if(Regex.IsMatch(name, @"[""]{1,20}")) name = ConvertToQuote(name);
-            if(Regex.IsMatch(author, @"[""]{1,15}")) author = ConvertToQuote(author);
-            if(Regex.IsMatch(publisher, @"[""]{1,10}")) publisher = ConvertToQuote(publisher);
+            if(Regex.IsMatch(name, @"[""]{1,50}")) name = ConvertToQuote(name);
+            if(Regex.IsMatch(author, @"[""]{1,50}")) author = ConvertToQuote(author);
+            if(Regex.IsMatch(publisher, @"[""]{1,50}")) publisher = ConvertToQuote(publisher);
+        }
+
+        public void MakeQuotesUse(ref string name, ref string description)   //입력 정보에 작은따옴표나 큰따옴표가 포함되는지 확인
+        {
+            if (Regex.IsMatch(name, @"[""]{1,50}")) name = ConvertToQuote(name);
+            if (Regex.IsMatch(description, @"[""]{1,300}")) description = ConvertToQuote(description);
         }
 
         private string ConvertToQuote(string inputString)     //문자열에 포함된 큰따옴표냐 작은 따옴표를 mysql에서 저장할수있도록 변환

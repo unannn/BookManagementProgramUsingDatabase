@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
-namespace BookManagementProgram
+namespace BookManagementProgram.Customer
 {
-    class CustomerManagement
+    class Management
     { 
         public CustomerInformationVO InputCustomerAccountInformation()   //등록하고자하는 계정정보 반환
         {

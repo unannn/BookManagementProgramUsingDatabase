@@ -144,5 +144,29 @@ namespace BookManagementProgram
             connection.Close();
 
         }
+
+        public int AddNaverBook(BookInformationVO naverBook)
+        {
+            int no;
+
+            connection.Open();
+            
+            string insertQuery = "INSERT INTO book(title,author,publisher,quantity,maxQuntity,book_price,pubdate,isbn,description) VALUES(\""
+                + naverBook.Name + "\",\"" +  naverBook.Author + "\",\"" +  naverBook.Publisher + "\"," + naverBook.Quantity + "," 
+                + naverBook.MaxQuantity + "," + naverBook.Price+ ",\"" + naverBook.PubDate + "\",\"" + naverBook.Isbn + "\",\"" + naverBook.Description + "\")";
+            string selectQuery = "SELECT LAST_INSERT_ID()";   //방금 등록한 도서의 primary key 를 가져옴
+
+            MySqlCommand command = new MySqlCommand(insertQuery, connection);
+
+            command.ExecuteNonQuery();
+
+            command = new MySqlCommand(selectQuery, connection);
+
+            no = int.Parse(command.ExecuteScalar().ToString());
+
+            connection.Close();
+
+            return no;
+        }
     }
 }

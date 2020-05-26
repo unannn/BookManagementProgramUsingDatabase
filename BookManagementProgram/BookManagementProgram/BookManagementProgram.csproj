@@ -63,13 +63,13 @@
     <Compile Include="DataBases\BookDB.cs" />
     <Compile Include="BookManagementProgram.cs" />
     <Compile Include="DataBases\Update.cs" />
-    <Compile Include="NaverAPI.cs" />
+    <Compile Include="Book\NaverAPI.cs" />
     <Compile Include="VO\BookInformationVO.cs" />
-    <Compile Include="Book\BookManagement.cs" />
+    <Compile Include="Book\Management.cs" />
     <Compile Include="Utility\Constants.cs" />
     <Compile Include="DataBases\CustomerDB.cs" />
     <Compile Include="VO\CustomerInformationVO.cs" />
-    <Compile Include="Customer\CustomerManagement.cs" />
+    <Compile Include="Customer\Management.cs" />
     <Compile Include="Utility\ExceptionHandling.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

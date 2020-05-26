@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
-namespace BookManagementProgram
+namespace BookManagementProgram.Book
 {
-    class BookManagement
+    class Management
     { 
         public int RentBook(CustomerInformationVO logInCustomer, List<BookInformationVO> bookList)  //책대여 함수
         {
