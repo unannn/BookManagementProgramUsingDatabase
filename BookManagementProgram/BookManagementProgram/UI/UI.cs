@@ -12,7 +12,6 @@ namespace BookManagementProgram
         private Customer.Management customerManagement;
         private Book.Management bookManagement;
         private List<BookInformationVO> naverBookList;
-
         private string[] initialMenu;
         private string[] adminMainMenu;
         private string[] userMenu;
@@ -24,8 +23,7 @@ namespace BookManagementProgram
             customerManagement = new Customer.Management();
             bookManagement = new Book.Management();
             naverBookList = new List<BookInformationVO>();
-
-        initialMenu = new string[] {  "1. 로그인", "2. 회원가입", "3. 프로그램종료" };
+            initialMenu = new string[] {  "1. 로그인", "2. 회원가입", "3. 프로그램종료" };
             adminMainMenu = new string[]
             {
                "     1. 도서 리스트 보기/검색/대여",
@@ -69,7 +67,7 @@ namespace BookManagementProgram
                 "    3. 종료"
             };
         }
-
+       
         //초기화면
         public CustomerInformationVO StartInitScene()
         {
@@ -107,7 +105,7 @@ namespace BookManagementProgram
                         break;
                 }
             }
-
+            Utility.ProgramLog.Instance.CreateTextrwriter(logInCustomer.Name,"","로그인");
             return logInCustomer;
         }
 
