@@ -62,7 +62,7 @@
   <ItemGroup>
     <Compile Include="DataBases\BookDB.cs" />
     <Compile Include="BookManagementProgram.cs" />
-    <Compile Include="DataBases\Update.cs" />
+    <Compile Include="DataBases\LogDB.cs" />
     <Compile Include="Book\NaverAPI.cs" />
     <Compile Include="Utility\ProgramLog.cs" />
     <Compile Include="VO\BookInformationVO.cs" />

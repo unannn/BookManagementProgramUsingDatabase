@@ -88,6 +88,7 @@ namespace BookManagementProgram.Customer
             {
                 logInCustomer.Adress = modifiedAdress;
                 CustomerDB.Instance.UpdateMyAdress(logInCustomer.No, modifiedAdress);
+                Utility.ProgramLog.Instance.CreateTextrwriter(modifiedAdress, "전화번호 수정");
 
                 return true;
             }
@@ -105,7 +106,8 @@ namespace BookManagementProgram.Customer
             {
                 logInCustomer.PhoneNumber = modifiedPhoneNumber;
                 CustomerDB.Instance.UpdateMyPhoneNumber(logInCustomer.No, modifiedPhoneNumber);
-                            
+                Utility.ProgramLog.Instance.CreateTextrwriter(modifiedPhoneNumber, "전화번호 수정");
+
                 return true;
             }
 
@@ -119,7 +121,10 @@ namespace BookManagementProgram.Customer
             if (customerList[customer].RentedBook.Count != 0) return "반납하지 않은 도서가 있는 아이디입니다.";
             
             CustomerDB.Instance.DeleteCusomter(customerList[customer].No);
+            Utility.ProgramLog.Instance.CreateTextrwriter(customerList[customer].Name, "회원 삭제");
+
             customerList.RemoveAt(customer);
+
 
             return "해당 아이디가 삭제 됐습니다.";
         }

@@ -377,7 +377,10 @@ namespace BookManagementProgram
             if (Regex.IsMatch(name, @"[""]{1,50}")) name = ConvertToQuote(name);
             if (Regex.IsMatch(description, @"[""]{1,300}")) description = ConvertToQuote(description);
         }
-
+        public void MakeQuotesUse(ref string log)   //입력 정보에 작은따옴표나 큰따옴표가 포함되는지 확인
+        {
+            if (Regex.IsMatch(log, @"['""]{1,100}")) log = ConvertToQuote(log);
+        }
         private string ConvertToQuote(string inputString)     //문자열에 포함된 큰따옴표냐 작은 따옴표를 mysql에서 저장할수있도록 변환
         {
             for(int letter = 0;letter < inputString.Length; letter++)

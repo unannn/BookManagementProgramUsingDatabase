@@ -503,7 +503,7 @@ namespace BookManagementProgram
                 naverBookList[searchingNumber-1].No = BookDB.Instance.AddNaverBook(naverBookList[searchingNumber-1]);
                 bookList.Add(naverBookList[searchingNumber-1]);
 
-                PrintFailMessage("잘못된 입력 입니다.");
+                PrintFailMessage("도서가 등록 되었습니다.");
 
             }
         }

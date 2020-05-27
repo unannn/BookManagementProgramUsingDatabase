@@ -75,7 +75,6 @@ namespace BookManagementProgram.Book
 
                     naverBookList.Add(new BookInformationVO(name, author, publisher, pubDate, isbn, description, price));
                 }
-
             }
             else
             {

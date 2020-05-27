@@ -53,7 +53,8 @@ namespace BookManagementProgram
         public const int BOOK_PUBLISHER_LENGTH_MAXIMUM = 20;
         public const int DATE_LENGTH_MAXIMUM = 10;
         public const int BOOK_NUMBER_LENGTH_MAXIMUM = 6;
-        
+        public const int BOOK_DESC_LENGTH_MAXIMUM = 162;
+
         //관리자모드 메뉴
         public const int BOOK_SEARCHING_RENTAL = 1;
         public const int BOOK_RETURN = 2;
@@ -64,8 +65,9 @@ namespace BookManagementProgram
         public const int CUSOMTER_LIST = 7;
         public const int CUSTOMER_DELETE = 8;
         public const int MY_DATA_MODIFYING = 9;
-        public const int LOGOUT = 10;
-        public const int PROGRAM_END_ADMIN = 11;
+        public const int INIT_LOG = 10;
+        public const int LOGOUT = 11;
+        public const int PROGRAM_END_ADMIN = 12;
 
         //일반유저 모드 메뉴        
         public const int MY_DATA_MODIFYING_USER = 3;
